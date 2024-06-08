@@ -1,0 +1,16 @@
+services:
+  frontend:
+    container_name: frontend
+    build:
+      ./frontend/
+    ports:
+      - "443:443"
+    volumes:
+      - ./frontend/static/:/var/www/html/
+    networks:
+      - frontend-backend
+    restart: always
+
+networks:
+  frontend-backend:
+    name: frontend-backend

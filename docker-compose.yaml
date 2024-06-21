@@ -1,16 +1,56 @@
+networks:
+  front_back:
+  back_db:
+
 services:
   frontend:
     container_name: frontend
+    volumes:
+      - static_files:/mnt/django/staticfiles
+      - ./frontend/staticfiles:/home/app/staticfiles
     build:
-      ./frontend/
+      context: ./frontend/
     ports:
       - "443:443"
-    volumes:
-      - ./frontend/static/:/var/www/html/
-    networks:
-      - frontend-backend
     restart: always
+    depends_on:
+      - backend
+    # entrypoint: /home/app/entrypoint.sh
+    networks:
+      - front_back
 
-networks:
-  frontend-backend:
-    name: frontend-backend
+  backend:
+    container_name: backend
+    build:
+      context: ./backend/
+    expose:
+      - 8000
+    env_file: .env
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - static_files:/usr/src/app/staticfiles
+      - ./backend/project:/usr/src/app
+    networks:
+      - front_back
+      - back_db
+
+  db:
+    image: postgres:15
+    container_name: postgresql
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - back_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  static_files:
+  db_data:

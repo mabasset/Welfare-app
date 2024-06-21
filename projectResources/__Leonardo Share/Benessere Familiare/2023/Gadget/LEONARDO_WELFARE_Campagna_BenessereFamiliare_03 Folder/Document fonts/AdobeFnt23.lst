@@ -1,0 +1,83 @@
+%!Adobe-FontList 1.23
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:/Users/osx/Dropbox/287_JOINTLY/2022/61_CLIENTI_Leonardo/__Leonardo Share/2024/Benessere Familiare/Gadget/LEONARDO_WELFARE_Campagna_BenessereFamiliare_03 Folder/Document fonts/AdobeFnt23.lst
+FileLength:1879
+FileModTime:737566017
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Epilogue-Bold
+FamilyName:Epilogue
+StyleName:Bold
+MenuName:Epilogue
+StyleBits:2
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Epilogue Bold
+WritingScript:Roman
+OutlineFileName:/Users/osx/Dropbox/287_JOINTLY/2022/61_CLIENTI_Leonardo/__Leonardo Share/2024/Benessere Familiare/Gadget/LEONARDO_WELFARE_Campagna_BenessereFamiliare_03 Folder/Document fonts/Epilogue-Bold.ttf
+DataFormat:sfntData
+hasSVG:no
+hasCOLR:no
+VariableFontType:NonVariableFont
+FileLength:104664
+FileModTime:614815200
+NameArray:0,Win,1,Epilogue
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Epilogue-Regular
+FamilyName:Epilogue
+StyleName:Regular
+MenuName:Epilogue
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Epilogue Regular
+WritingScript:Roman
+OutlineFileName:/Users/osx/Dropbox/287_JOINTLY/2022/61_CLIENTI_Leonardo/__Leonardo Share/2024/Benessere Familiare/Gadget/LEONARDO_WELFARE_Campagna_BenessereFamiliare_03 Folder/Document fonts/Epilogue-Regular.ttf
+DataFormat:sfntData
+hasSVG:no
+hasCOLR:no
+VariableFontType:NonVariableFont
+FileLength:104356
+FileModTime:614815200
+NameArray:0,Win,1,Epilogue
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:TekneLDO-Bold
+FamilyName:Tekne LDO
+StyleName:Bold
+MenuName:Tekne LDO
+StyleBits:2
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Tekne LDO Bold
+WritingScript:Roman
+OutlineFileName:/Users/osx/Dropbox/287_JOINTLY/2022/61_CLIENTI_Leonardo/__Leonardo Share/2024/Benessere Familiare/Gadget/LEONARDO_WELFARE_Campagna_BenessereFamiliare_03 Folder/Document fonts/TekneLDO-Bold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+hasCOLR:no
+VariableFontType:NonVariableFont
+FileLength:153544
+FileModTime:654878990
+NameArray:0,Mac,4,Tekne LDO Bold
+NameArray:0,Win,1,Tekne LDO
+%EndFont
+

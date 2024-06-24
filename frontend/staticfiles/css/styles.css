@@ -1,0 +1,13 @@
+@font-face {
+	font-family: TekneLDO;
+	src: url(/static/fonts/TekneLDO-Medium.otf);
+}
+
+body {
+	min-height: 100vh;
+	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+}	
+
+.tekne {
+	font-family: TekneLDO;
+}

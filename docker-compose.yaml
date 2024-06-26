@@ -6,6 +6,7 @@ services:
   frontend:
     container_name: frontend
     volumes:
+      - ./frontend/nginx.conf:/etc/nginx/nginx.conf
       - static_files:/mnt/django/staticfiles
       - ./frontend/staticfiles:/home/app/staticfiles
     build:
@@ -15,7 +16,6 @@ services:
     restart: always
     depends_on:
       - backend
-    # entrypoint: /home/app/entrypoint.sh
     networks:
       - front_back
 

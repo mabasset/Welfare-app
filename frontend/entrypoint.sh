@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p /mnt/django/staticfiles/
-cp -r /mnt/django/staticfiles/* /home/app/staticfiles/
+mkdir -p /mnt/django/static/
+cp -r /mnt/django/static/* /home/app/static/
 
 exec "$@"

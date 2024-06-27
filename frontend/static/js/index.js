@@ -1,2 +1,2 @@
-
-console.log("aaaaaaaa");
+console.log("pazzesco");
+//# sourceMappingURL=index.js.map

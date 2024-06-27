@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-	  "outDir": "/usr/share/nginx/html/",
+	  "outDir": "/home/app/static/js/",
 	  "sourceMap": true,
 	  "noImplicitAny": true,
 	  "module": "commonjs",
@@ -14,4 +14,4 @@
 		"watchFile": "dynamicPriorityPolling",
 		"watchDirectory": "dynamicPriorityPolling"
 	}
-  }
+}

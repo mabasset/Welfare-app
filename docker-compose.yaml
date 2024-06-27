@@ -13,11 +13,6 @@ services:
       - static_files:/mnt/django/static
       - ./frontend/static:/home/app/static
       - ./frontend/src/:/home/app/src
-      - ./frontend/nginx.conf:/etc/nginx/nginx.conf
-    command: >
-      sh -c "
-      npm run watch &
-      nginx -g 'daemon off;'"
     restart: always
     depends_on:
       - backend

@@ -5,14 +5,14 @@ networks:
 services:
   frontend:
     container_name: frontend
-    build:
-      context: ./frontend/
-    ports:
-      - "443:443"
     volumes:
       - static_files:/mnt/django/static
       - ./frontend/static:/home/app/static
       - ./frontend/src/:/home/app/src
+    build:
+      context: ./frontend/
+    ports:
+      - "443:443"
     restart: always
     depends_on:
       - backend

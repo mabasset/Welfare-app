@@ -1,4 +1,4 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-console.log("impressa")
+console.log("ha funxionato ")

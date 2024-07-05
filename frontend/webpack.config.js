@@ -1,7 +1,8 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-	entry: './src/index.ts', // Adjust to your main entry point
+	entry: './src/index.ts',
 	module: {
 		rules: [
 			{
@@ -11,10 +12,15 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
+				use: [MiniCssExtractPlugin.loader, 'css-loader'],
 			}
 		],
 	},
+	plugins: [
+		new MiniCssExtractPlugin({
+		  filename: 'css/bootstrap.css',
+		}),
+	],
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'static/public'),

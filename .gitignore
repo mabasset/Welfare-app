@@ -1,5 +1,6 @@
 ./frontend/node_modules
 ./frontend/static/bundle.js
+./frontend/static/admin
 ./frontend/static/public/css/public/bootstrap.css
 ./backend/project/static
 

@@ -13,11 +13,11 @@ RUN apt-get update \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+COPY ./requirements.txt ./entrypoint.sh /usr/src/
+RUN pip install -r /usr/src/requirements.txt
 
 WORKDIR /usr/src/app
-COPY . .
 
-COPY ./entrypoint.sh /
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+COPY ./project .
+
+ENTRYPOINT ["sh", "/usr/src/entrypoint.sh"]

@@ -6,9 +6,9 @@ services:
   frontend:
     container_name: frontend
     volumes:
-      - static_files:/mnt/django/static
-      - ./frontend/static:/home/app/static
       - ./frontend/src/:/home/app/src
+      - ./frontend/public:/home/app/static/public
+      - static_files:/home/app/static
     build:
       context: ./frontend/
     ports:
@@ -30,8 +30,8 @@ services:
     depends_on:
       - db
     volumes:
-      - static_files:/usr/src/app/static
       - ./backend/project:/usr/src/app
+      - static_files:/usr/src/static
     networks:
       - front_back
       - back_db

@@ -18,12 +18,12 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-		  filename: 'css/bootstrap.css',
+		  filename: 'public/css/bootstrap.css',
 		}),
 	],
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, 'static/public'),
+		path: path.resolve(__dirname, 'static'),
 	},
 	mode: 'development',
 	watchOptions: {

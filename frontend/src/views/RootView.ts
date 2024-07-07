@@ -10,7 +10,7 @@ export default class extends View {
 
 	protected override generateMarkup() : string {
 		return `
-
+			<h1>rootView<h1>
 		`;
 	}
 }

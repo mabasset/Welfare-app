@@ -1,6 +1,6 @@
 import { ip, port } from "../config"
 
-export default class{
+export default class {
 
 	private baseUrl = `https://${ip}:${port}`;
 	
@@ -30,8 +30,9 @@ export default class{
 		const options: RequestInit = {
 			method,
 			headers,
-			body,
 		};
+		if (method !== "GET" && method !== "HEAD")
+			options.body = body;
 		return await fetch(url, options);
 	}
 

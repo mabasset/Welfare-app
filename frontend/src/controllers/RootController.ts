@@ -1,4 +1,4 @@
-import Controller from "./controller";
+import Controller from "./Controller";
 import Model from "../models/Model";
 import RootView from "../views/RootView";
 
@@ -8,7 +8,7 @@ export default class extends Controller {
 		super(model);
 	}
 
-	public async renderView(): Promise<void> {
+	public override async renderView(): Promise<void> {
 		const data = await this.model.getUserData("me");
 		const view = new RootView(data);
 		view.render();

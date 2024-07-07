@@ -3,6 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
 	entry: './src/index.ts',
+	resolve: {
+		extensions: ['.ts', '.js'],
+	},
 	module: {
 		rules: [
 			{
@@ -28,5 +31,5 @@ module.exports = {
 	mode: 'development',
 	watchOptions: {
 		poll: 1000,
-	}
+	},
 };

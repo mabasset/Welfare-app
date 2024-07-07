@@ -18,7 +18,4 @@ WORKDIR /home/app
 COPY package.json tsconfig.json webpack.config.js ./
 RUN npm install
 
-COPY entrypoint.sh /home/app/entrypoint.sh
-RUN chmod +x /home/app/entrypoint.sh
-
-ENTRYPOINT ["/home/app/entrypoint.sh"]
+CMD npm run build & nginx -g 'daemon off;'

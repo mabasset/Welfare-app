@@ -9,8 +9,8 @@ export default class extends Controller {
 	}
 
 	public override async renderView(): Promise<void> {
-		const data = await this.model.getUserData("me");
-		const view = new RootView(data);
+		const user = await this.model.getUserData("me");
+		const view = new RootView(user);
 		view.render();
 	}
 }

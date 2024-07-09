@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const rootController = new RootController(model);
 
 	const router = new Router();
-	router.addRoute('/', rootController.renderView.bind(rootController) )
+	router.addRoute('/', rootController.renderView.bind(rootController));
 	
 	router.start();
 });

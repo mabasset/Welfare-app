@@ -6,5 +6,5 @@ export default abstract class {
 		protected model: Model
 	) { }
 
-	public abstract renderView() : void
+	public abstract renderView(params?: { [key: string]: string }) : void
 }

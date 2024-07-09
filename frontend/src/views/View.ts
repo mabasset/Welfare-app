@@ -1,7 +1,9 @@
 export default abstract class {
 
+	protected markup : string;
+
 	constructor (
-		private parentElement : HTMLElement,
+		protected parentElement : HTMLElement,
 	) { }
 
 	protected generateNotAllowedMarkup() : string {
@@ -10,10 +12,7 @@ export default abstract class {
 		`;
 	}
 
-	protected abstract generateMarkup() : string
-
 	public render() : void {
-		const markup = this.generateMarkup();
-		this.parentElement.innerHTML =  markup;
+		this.parentElement.innerHTML = this.markup;
 	}
 }

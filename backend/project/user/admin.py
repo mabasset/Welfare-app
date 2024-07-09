@@ -2,25 +2,27 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
 
-
 class AdminConfig(UserAdmin):
-	list_display = ('email', 'first_name', 'last_name', 'age', 'childrens', 'elderly_parents', 'is_staff')
-	list_filter = ('is_staff', 'is_superuser', 'is_active')
-	fieldsets = (
-		(None, {'fields': ('email', 'password')}),
-		('Personal info', {'fields': ('first_name', 'last_name', 'age', 'childrens', 'elderly_parents')}),
-		('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
-		('Important dates', {'fields': ('last_login',)}),
-	)
-	search_fields = ('email', 'first_name', 'last_name')
-	ordering = ('email',)
-	filter_horizontal = ()
-	add_fieldsets = (
-		(None, {
-			'classes': ('wide',),
-			'fields': ('email', 'first_name', 'last_name', 'password1', 'password2',
-						'age', 'childrens', 'elderly_parents'),
-		}),
-	)
+    list_display = ('id', 'email', 'first_name', 'last_name', 'date_joined')
+    list_display_links = ('email',)
+    list_filter = ('is_staff', 'is_superuser', 'is_active')
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'childs', 'elderly_parents', 'residence', 'home')}),
+        ('Work info', {'fields': ('worksite',)}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Important dates', {'fields': ('last_login',)}),
+    )
+    search_fields = ('id', 'email', 'first_name', 'last_name')
+    ordering = ('id',)
+    filter_horizontal = ()
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2',
+                       'date_of_birth', 'childs', 'elderly_parents', 'residence', 'home'),
+        }),
+    )
 
 admin.site.register(User, AdminConfig)
+# admin.site.register(Worksite)

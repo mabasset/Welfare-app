@@ -1,0 +1,58 @@
+[
+    {
+        "model": "user.Worksite",
+        "pk": 1,
+        "fields": {
+            "address": "Piazza Monte Grappa 4 00195 Roma (RM)",
+            "department": "Leonardo Spa"
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 2,
+        "fields": {
+            "address": "Località Paduni 03012 Anagni (FR)",
+            "department": "Divisione Elicotteri"
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 3,
+        "fields": {
+            "address": "Via Giovanni Agusta 03100 Frosinone (FR)",
+            "department": null
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 4,
+        "fields": {
+            "address": "Via dell'Industria 4 00040 Pomezia (RM)",
+            "department": "Divisione Elettronica"
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 5,
+        "fields": {
+            "address": "Strada Statale 148 Pontina Km 62 04100 Latina",
+            "department": null
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 6,
+        "fields": {
+            "address": "Via Laurentina 760 00143 Roma (RM)",
+            "department": "Divisione Cyber Security"
+        }
+    },
+    {
+        "model": "user.Worksite",
+        "pk": 7,
+        "fields": {
+            "address": "Via Tiburtina 965 00156 Roma (RM)",
+            "department": "Spazio"
+        }
+    }
+]

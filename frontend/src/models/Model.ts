@@ -39,10 +39,8 @@ export default class {
 	public async getUserData(): Promise<user> {
 		const url: string = `${this.baseUrl}user/get_data`;
 		const response = await this.sendRequest(url);
-		console.log(response);
-		const data = await response.json();
-		console.log(data);
-		const user : user = { isLogged: false };
+		const json = await response.json();
+		const user : user = { isLogged: json.is_authenticated };
 		return user;
 	}
 }

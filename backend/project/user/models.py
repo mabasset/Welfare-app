@@ -40,6 +40,7 @@ class UserManager(BaseUserManager):
 		return self.create_user(email, password, **other_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
+
 	MARITAL_STATUS_CHOICES = [
         ('celibate', 'Celibate'),
         ('nubile', 'Nubile'),

@@ -1,7 +1,7 @@
 import Controller from "./Controller";
 import Model from "../models/Model";
 import HomeView from "../views/HomeView";
-import WelcomeView from "../views/profilingViews/WelcomeView";
+import WelcomeView from "../views/profiling/WelcomeView";
 
 export default class extends Controller {
 

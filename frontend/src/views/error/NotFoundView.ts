@@ -1,4 +1,4 @@
-import AView from "./AView";
+import AView from "../AView";
 
 export default class extends AView {
 	constructor () {

@@ -1,19 +1,12 @@
 export default abstract class {
 
-	protected parentElement: HTMLElement;
 	protected markup: string;
 
-	constructor() {
-		this.parentElement = document.body;
-	}
+	constructor() {}
 
-	protected generateUnauthorizedMarkup() : string {
-		return `
-			<h1>401 Unauthorized<401>
-		`;
-	}
-
-	public render() : void {
-		this.parentElement.innerHTML = this.markup;
+	public render() {
+		const body = document.body;
+		body.className = "d-flex flex-column min-vh-100";
+		body.innerHTML = this.markup;
 	}
 }

@@ -1,4 +1,4 @@
-import NotFoundView from "./views/NotFoundView";
+import NotFoundView from "./views/error/NotFoundView";
 
 export default class {
 	private routes: { [key: string]: Function };

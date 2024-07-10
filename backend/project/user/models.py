@@ -2,12 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 # by adding permissionMixin we hook the user to the django's permission framework 
 
+
 class Worksite(models.Model):
 	address = models.TextField(blank=True)
 	department = models.CharField(max_length=70, null=True, blank=True)
 
 	def __str__(self):
 		return self.address
+
+class Interest(models.Model):
+	category = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.category
 
 class UserManager(BaseUserManager):
 	
@@ -33,15 +40,21 @@ class UserManager(BaseUserManager):
 		return self.create_user(email, password, **other_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
+	MARITAL_STATUS_CHOICES = [
+        ('celibate', 'Celibate'),
+        ('nubile', 'Nubile'),
+    ]
 	email = models.EmailField(unique=True)
 	first_name = models.CharField(max_length=30)
 	last_name = models.CharField(max_length=30)
 	date_of_birth = models.DateField(null=True, blank=True)
+	marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS_CHOICES, null=True)
 	childs = models.BooleanField(default=False)
 	elderly_parents = models.BooleanField(default=False)
 	residence = models.TextField(blank=True)
 	home = models.TextField(blank=True)
 	worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, null=True, blank=True)
+	interests = models.ManyToManyField(Interest, blank=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
 	is_active = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)

@@ -2,7 +2,7 @@ import { ip, port } from "../config"
 
 export default class {
 
-	private baseUrl = `https://${ip}:${port}`;
+	private baseUrl = `https://${ip}:${port}/api/`;
 	
 	constructor() {
 
@@ -37,9 +37,11 @@ export default class {
 	}
 
 	public async getUserData(): Promise<user> {
-		const url: string = `${this.baseUrl}/user/getData`;
-		//const response : Response = await this.sendRequest(url);
-		//const data = await response.json();
+		const url: string = `${this.baseUrl}user/get_data`;
+		const response = await this.sendRequest(url);
+		console.log(response);
+		const data = await response.json();
+		console.log(data);
 		const user : user = { isLogged: false };
 		return user;
 	}

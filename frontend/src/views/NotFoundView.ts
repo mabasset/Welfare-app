@@ -1,9 +1,8 @@
-import View from "./View";
+import AView from "./AView";
 
-export default class extends View {
+export default class extends AView {
 	constructor () {
-		const parentElement = document.querySelector("body");
-		super(parentElement);
+		super();
 		this.markup = this.generateMarkup();
 	}
 

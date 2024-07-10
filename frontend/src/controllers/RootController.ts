@@ -1,6 +1,7 @@
 import Controller from "./Controller";
 import Model from "../models/Model";
-import RootView from "../views/RootView";
+import HomeView from "../views/HomeView";
+import WelcomeView from "../views/profilingViews/WelcomeView";
 
 export default class extends Controller {
 
@@ -9,8 +10,9 @@ export default class extends Controller {
 	}
 
 	public override async renderView(): Promise<void> {
-		const user = await this.model.getUserData("me");
-		const view = new RootView(user);
+		const user = await this.model.getUserData();
+		const view = user.isLogged ?
+			new HomeView(user) : new WelcomeView();
 		view.render();
 	}
 }

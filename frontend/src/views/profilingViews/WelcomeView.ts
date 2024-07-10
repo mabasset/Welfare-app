@@ -1,21 +1,13 @@
-import View from "./View";
+import AProfilingView from "./AProfilingView";
 
-export default class extends View {
-
-	constructor (user: user) {
-		const parentElement = document.querySelector("body");
-		super(parentElement);
-		this.markup = user.isLogged ?
-			this.generateHomeMarkup() : this.generateWelcomeMarkup();
+export default class extends AProfilingView {
+	
+	constructor () {
+		super();
+		this.markup = this.generateMarkup();
 	}
 
-	private generateHomeMarkup() : string {
-		return `
-			<h1>HomePage<h1>
-		`;
-	}
-
-	private generateWelcomeMarkup() : string {
+	private generateMarkup() : string {
 		return `
 			<main class="container vh-100 d-flex flex-column align-items-center justify-content-md-center text-white row-gap-4 mt-md-0 mt-5">
 				<span class="tekne display-3 text-center mt-md-0 mt-5">

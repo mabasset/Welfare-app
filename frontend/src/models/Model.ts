@@ -36,8 +36,8 @@ export default class {
 		return await fetch(url, options);
 	}
 
-	public async getUserData(username: string): Promise<user> {
-		const url: string = `${this.baseUrl}/user/getData/${username}`;
+	public async getUserData(): Promise<user> {
+		const url: string = `${this.baseUrl}/user/getData`;
 		//const response : Response = await this.sendRequest(url);
 		//const data = await response.json();
 		const user : user = { isLogged: false };

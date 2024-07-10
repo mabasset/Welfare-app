@@ -3,10 +3,30 @@
 	src: url(/static/public/fonts/TekneLDO-Medium.otf);
 }
 
-body {
+.bg-wf-primary {
 	min-height: 100vh;
 	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
-}	
+}
+
+.bg-wf-physical {
+	min-height: 100vh;
+	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+}
+
+.bg-wf-economic {
+	min-height: 100vh;
+	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+}
+
+.bg-wf-psychological {
+	min-height: 100vh;
+	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+}
+
+.bg-wf-family {
+	min-height: 100vh;
+	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+}
 
 .tekne {
 	font-family: TekneLDO;

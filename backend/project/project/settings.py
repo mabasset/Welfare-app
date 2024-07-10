@@ -102,12 +102,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
 
-USE_I18N = True
+# enables internationalization features. This means Django is prepared to handle applications that need to support multiple languages and locales
+# USE_I18N = True
+USE_I18N = False
 
+# Django will display numbers and dates using the format of the current locale
 USE_L10N = True
 
+# Django will use timezone-aware datetimes internally
 USE_TZ = True
 
 
@@ -123,7 +127,3 @@ STATIC_ROOT = BASE_DIR.parent / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.User'
-# AUTHENTICATION_BACKENDS = (
-# 	'django.contrib.auth.backends.RemoteUserBackend',
-# 	'django.contrib.auth.backends.ModelBackend',
-# )

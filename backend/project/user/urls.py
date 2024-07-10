@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import check_session
+from .views import get_data
 
 urlpatterns = [
-    path('is_authenticated/', check_session, name='check_session'),
+    path('get_data/', get_data, name='get_data'),
 ]

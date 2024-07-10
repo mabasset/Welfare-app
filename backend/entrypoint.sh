@@ -2,8 +2,10 @@
 
 python3 manage.py makemigrations --no-input
 python3 manage.py migrate --no-input
-python3 manage.py collectstatic --no-input
 python3 manage.py loaddata user/fixtures/worksites.json
+python3 manage.py loaddata user/fixtures/interests.json
+
+python3 manage.py collectstatic --no-input
 
 if [ "$DJANGO_SUPERUSER_EMAIL" ]
 then

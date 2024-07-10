@@ -8,10 +8,11 @@ class AdminConfig(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'childs', 'elderly_parents', 'residence', 'home')}),
-        ('Work info', {'fields': ('worksite',)}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'marital_status', 'childs', 'elderly_parents')}),
+        ('Location info', {'fields': ('residence', 'home', 'worksite')}),
+		('Interests', {'fields': ('interests',)}),
         ('Important dates', {'fields': ('last_login',)}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )
     search_fields = ('id', 'email', 'first_name', 'last_name')
     ordering = ('id',)
@@ -20,7 +21,7 @@ class AdminConfig(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'first_name', 'last_name', 'password1', 'password2',
-                       'date_of_birth', 'childs', 'elderly_parents', 'residence', 'home'),
+                       'date_of_birth', 'marital_status', 'childs', 'elderly_parents', 'residence', 'home'),
         }),
     )
 

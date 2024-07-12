@@ -14,5 +14,10 @@ export default class extends Controller {
 		const view = user.isLogged ?
 			new UnauthorizedView() : new LoginView();
 		view.render();
+		view.addEventHandler(this.handleSubmit.bind(this));
+	}
+
+	public async handleSubmit(): Promise<void> {
+		
 	}
 }

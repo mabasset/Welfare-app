@@ -12,3 +12,6 @@ def get_data(request):
 		return JsonResponse({'user_data': user_data, 'is_authenticated': True})
 	else:
 		return JsonResponse({'is_authenticated': False})
+
+# def signup(request):
+# def login(request):

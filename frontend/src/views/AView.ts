@@ -9,4 +9,6 @@ export default abstract class {
 		body.className = "d-flex flex-column min-vh-100";
 		body.innerHTML = this.markup;
 	}
+
+	public addEventHandler(handler : Function) : void {}
 }

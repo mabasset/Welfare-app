@@ -9,7 +9,7 @@ class AdminConfig(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'marital_status', 'childs', 'elderly_parents')}),
-        ('Location info', {'fields': ('residence', 'home', 'worksite')}),
+        ('Location info', {'fields': ('residence', 'domicile', 'worksite')}),
 		('Interests', {'fields': ('interests',)}),
         ('Important dates', {'fields': ('last_login',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
@@ -21,7 +21,7 @@ class AdminConfig(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'first_name', 'last_name', 'password1', 'password2',
-                       'date_of_birth', 'marital_status', 'childs', 'elderly_parents', 'residence', 'home'),
+                       'date_of_birth', 'marital_status', 'childs', 'elderly_parents', 'residence', 'domicile'),
         }),
     )
 

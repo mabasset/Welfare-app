@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	childs = models.BooleanField(default=False)
 	elderly_parents = models.BooleanField(default=False)
 	residence = models.TextField(blank=True)
-	home = models.TextField(blank=True)
+	domicile = models.TextField(blank=True)
 	worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, null=True, blank=True)
 	interests = models.ManyToManyField(Interest, blank=True)
 	date_joined = models.DateTimeField(auto_now_add=True)

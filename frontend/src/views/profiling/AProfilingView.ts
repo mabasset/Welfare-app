@@ -83,4 +83,6 @@ export default abstract class extends AView {
 		super.render();
 		this.setBodyBackground();
 	}
+
+	
 }

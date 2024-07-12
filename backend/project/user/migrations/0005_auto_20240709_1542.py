@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='user',
-            name='marital_status',
+            name='is_married',
             field=models.CharField(choices=[('celibate', 'Celibate'), ('nubile', 'Nubile')], max_length=10, null=True),
         ),
         migrations.AddField(

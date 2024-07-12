@@ -41,15 +41,15 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-	MARITAL_STATUS_CHOICES = [
+	is_married_CHOICES = [
         ('celibate', 'Celibate'),
         ('nubile', 'Nubile'),
     ]
 	email = models.EmailField(unique=True)
-	first_name = models.CharField(max_length=30)
-	last_name = models.CharField(max_length=30)
-	date_of_birth = models.DateField(null=True, blank=True)
-	marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS_CHOICES, null=True)
+	name = models.CharField(max_length=30)
+	surname = models.CharField(max_length=30)
+	birthday = models.DateField(null=True, blank=True)
+	is_married = models.CharField(max_length=10, choices=is_married_CHOICES, null=True)
 	childs = models.BooleanField(default=False)
 	elderly_parents = models.BooleanField(default=False)
 	residence = models.TextField(blank=True)

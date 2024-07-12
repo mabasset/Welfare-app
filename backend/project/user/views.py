@@ -6,8 +6,8 @@ def get_data(request):
 		user = request.user
 		user_data = {
 			"email": user.email,
-			"first_name": user.first_name,
-			"last_name": user.last_name,
+			"name": user.name,
+			"surname": user.surname,
 		}
 		return JsonResponse({'user_data': user_data, 'is_authenticated': True})
 	else:

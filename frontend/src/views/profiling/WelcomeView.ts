@@ -9,10 +9,12 @@ export default class extends AProfilingView {
 
 	protected override generateMarkup() : string {
 		return `
-			<main class="container vh-100 d-flex flex-column align-items-center justify-content-center text-white row-gap-4">
-				<span class="tekne display-3 text-center mt-md-0 mt-5">
+			<header class="text-center mt-5">
+				<div class="tekne display-3">
 					Il Benessere a 365 gradi
-				</span>
+				</div>
+			</header>
+			<main class="container d-flex flex-column align-items-center justify-content-center text-white row-gap-4 flex-grow-1">
 				<span class="my-3 mb-lg-5 text-center fs-3">
 					<span class="text-uppercase">
 						Per il corpo, per la mente
@@ -38,7 +40,7 @@ export default class extends AProfilingView {
 				<a href="/signup" type="button" class="tekne mt-lg-5 btn btn-light border border-secondary border-2 rounded-0 fs-4 fw-semibold px-5 py-2" style="color: #34436c;" data-link>
 					Registrati ora
 				</a>
-				<div class="text-center w-100 mb-md-0 mb-5 pb-md-0 pb-5">
+				<div class="text-center w-100>
 					<span class="fs-5">
 						Sei già un membro? Vai al
 						<a href="/login" class="link-body-emphasis text-decoration-none text-decoration-underline text-white" data-link>

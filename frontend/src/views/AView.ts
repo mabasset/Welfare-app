@@ -6,9 +6,7 @@ export default abstract class {
 
 	public render() {
 		const body = document.body;
-		body.className = "d-flex flex-column min-vh-100";
+		body.className = "d-flex flex-column justify-content-between min-vh-100";
 		body.innerHTML = this.markup;
 	}
-
-	public addEventHandler(handler : Function) : void {}
 }

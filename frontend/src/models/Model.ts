@@ -40,7 +40,34 @@ export default class {
 		const url: string = `${this.baseUrl}user/get_data`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
-		const user : user = { isLogged: json.is_authenticated };
-		return user;
+		let { is_authenticated: isLogged, name, surname, birthday, is_married: isMarried, childrens, elderly_parents: elderlyParents }
+			: { is_authenticated: boolean; name: string; surname: string, birthday: string, is_married: string, childrens: string, elderly_parents: string } = json;
+		if (isLogged)
+			this.clearSessionStorage();
+		else {
+			name = this.getFromSessionStorage("name");
+			surname = this.getFromSessionStorage("surname");
+			birthday = this.getFromSessionStorage("birthday");
+			isMarried = this.getFromSessionStorage("isMarried");
+			childrens = this.getFromSessionStorage("childrens");
+			elderlyParents = this.getFromSessionStorage("elderlyParents");
+		}
+		return { isLogged, name, surname, birthday, isMarried, childrens, elderlyParents };
+	}
+
+	public setToSessionStorage(key: string, value: string): void {
+		sessionStorage.setItem(key, value);
+	}
+
+	public getFromSessionStorage(key: string): string | null {
+		return sessionStorage.getItem(key);
+	}
+
+	public removeFromSessionStorage(key: string): void {
+		sessionStorage.removeItem(key);
+	}
+
+	public clearSessionStorage(): void {
+		sessionStorage.clear();
 	}
 }

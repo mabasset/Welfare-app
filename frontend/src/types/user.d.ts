@@ -1,4 +1,16 @@
 type user = {
 	isLogged: boolean,
 	name?: string,
+	surname?: string,
+	age?: number, 
+	maritalStatus?: string,
+	children?: boolean,
+	elderlyParents?: boolean,
+	residence?: string,
+	domicile?: string,
+	workLocation?: string,
+	sport?: string,
+	culture?: string,
+	leisure?: string,
+	prevention?: string,
 }

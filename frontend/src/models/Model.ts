@@ -2,7 +2,7 @@ import { ip, port } from "../config"
 
 export default class {
 
-	private baseUrl = `https://${ip}:${port}/api/`;
+	protected baseUrl = `https://${ip}:${port}/api/`;
 	
 	constructor() {
 
@@ -23,7 +23,7 @@ export default class {
 		return cookieValue;
 	}
 
-	private async sendRequest(url: string, method: string = "GET", body: string = ""): Promise<Response> {
+	protected async sendRequest(url: string, method: string = "GET", body: string = ""): Promise<Response> {
 		const headers: HeadersInit = method === "POST" ? {
 			"X-CSRFToken": this.getCookie("csrftoken")
 		} : {};

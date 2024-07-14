@@ -1,20 +1,18 @@
-import Controller from "./Controller";
-import Model from "../models/Model";
-import UnauthorizedView from "../views/error/UnauthorizedView";
+import ProfilingModel from "src/models/ProfilingModel";
 import LoginView from "../views/profiling/LoginView";
 
-export default class extends Controller {
+export default class {
 
-	constructor(model: Model) {
-		super(model);
+	private view : LoginView;
+
+	constructor(private model: ProfilingModel) {
+		this.view = new LoginView();
 	}
 
-	public override async renderView(): Promise<void> {
+	public async renderView(): Promise<void> {
 		const user = await this.model.getUserData();
-		const view = user.isLogged ?
-			new UnauthorizedView() : new LoginView();
-		view.render();
-		// view.addEventHandler(this.handleSubmit.bind(this));
+		if (user.isLogged)
+			return this.view.renderErrorMarkup(401);
 	}
 
 	public async handleSubmit(): Promise<void> {

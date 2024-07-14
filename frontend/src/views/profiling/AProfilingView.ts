@@ -6,16 +6,12 @@ export default abstract class extends AView {
 		super();
 	}
 
-	protected setBodyBackground() : void {
-		document.body.classList.add("bg-wf-primary");
-	}
-
 	protected generateHeaderMarkup() : string {
 		return `
 			<header class="text-center">
 				<div class="d-flex justify-content-center">
 					<div class="col-3 col-lg-2 col-xl-1 mt-md-4 mt-1">
-						<img src="/static/public/images/smile2.svg" alt="smile" class="img-fluid">
+						<img src="/static/public/images/smile.svg" alt="smile" class="img-fluid">
 					</div>
 				</div>
 				<a href="/" class="link-body-emphasis text-decoration-none text-white fw-normal fs-3" data-link>
@@ -81,10 +77,13 @@ export default abstract class extends AView {
 		`
 	}
 
-	protected abstract generateMarkup(): string
+	protected generateMarkup(): string {
+		return`
+		`
+	}
 
-	public override render() : void {
+	public override render(user?: user, markupIndex?: number) : void {
 		super.render();
-		this.setBodyBackground();
+		this.parentElement.classList.add("bg-wf-primary");
 	}	
 }

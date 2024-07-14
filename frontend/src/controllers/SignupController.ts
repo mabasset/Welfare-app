@@ -1,27 +1,33 @@
-import Controller from "./Controller";
-import Model from "../models/Model";
-import UnauthorizedView from "../views/error/UnauthorizedView";
+import ProfilingModel from "src/models/ProfilingModel";
 import SignupView from "../views/profiling/SignupView";
 
-export default class extends Controller {
+export default class {
 
-	constructor(model: Model) {
-		super(model);
+	private view : SignupView;
+	private sessionCookiePrefix = "s_";
+
+	constructor(private model: ProfilingModel) {
+		this.view = new SignupView();
 	}
 
-	public override async renderView(): Promise<void> {
-		const user = await this.model.getUserData();
-		const view = user.isLogged ?
-			new UnauthorizedView() : new SignupView(user);
-		view.render();
-		if (view instanceof SignupView)
-			view.addEventHandler(this.handleSubmit.bind(this));
+	public async renderView(): Promise<void> {
+		let user = await this.model.getUserData();
+		if (user.isLogged)
+			return this.view.renderErrorMarkup(401);
+		user = this.model.getUserDataFromCookies(this.sessionCookiePrefix);
+		const markupIndexCookie = this.model.getFromSessionStorage("signupViewSection") || "0";
+		const markupIndex = Number(markupIndexCookie);
+		this.view.render(user, markupIndex);
+		this.view.addNextSectionHandler(this.handleSubmit.bind(this));
 	}
 
 	public async handleSubmit(formData: FormData): Promise<void> {
-		for (const [key, value] of formData.entries()) {
+		const markupIndexCookie = this.model.getFromSessionStorage("signupViewSection") || "0";
+		const markupIndex = Number(markupIndexCookie) + 1;
+		this.model.setToSessionStorage("signupViewSection", String(markupIndex));
+		for (const [key, value] of formData.entries())
 			if (typeof value === 'string')
-				this.model.setToSessionStorage(key, value);
-		}
+				this.model.setCookie(this.sessionCookiePrefix + key, value);
+		this.renderView();
 	}
 }

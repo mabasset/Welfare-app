@@ -1,18 +1,21 @@
-import Controller from "./Controller";
 import Model from "../models/Model";
-import HomeView from "../views/HomeView";
-import WelcomeView from "../views/profiling/WelcomeView";
+import RootView from "../views/RootView";
 
-export default class extends Controller {
+export default class {
 
-	constructor(model: Model) {
-		super(model);
+	private view: RootView;
+
+	constructor(private model: Model) {
+		this.view = new RootView();
 	}
 
-	public override async renderView(): Promise<void> {
+	public async renderView(): Promise<void> {
 		const user = await this.model.getUserData();
-		const view = user.isLogged ?
-			new HomeView(user) : new WelcomeView();
-		view.render();
+		if (location.pathname !== "/")
+			this.view.renderErrorMarkup(404);
+		else if (user.isLogged)
+			this.view.renderHomeMarkup(user);
+		else
+			this.view.renderWelcomeMarkup();
 	}
 }

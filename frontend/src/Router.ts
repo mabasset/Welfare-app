@@ -1,5 +1,3 @@
-import NotFoundView from "./views/error/NotFoundView";
-
 export default class {
 	private routes: { [key: string]: Function };
 
@@ -11,7 +9,7 @@ export default class {
 		this.routes[path] = renderView;
 	}
 
-	private matchRoute(pathname: string) : Function | null {
+	private matchRoute(pathname: string) : Function {
 		for (const route in this.routes) {
 			const paramNames : string[] = [];
 			const regexPath = route.replace(/:([^\/]+)/g, (_, key) => {
@@ -27,17 +25,12 @@ export default class {
 			}, {});
 			return this.routes[route].bind(null, params);
 		}
-		return null;
+		return this.routes["/"];
 	}
 
-	private renderNotFoundView() : void {
-		const view = new NotFoundView();
-		view.render();
-	}
 
 	private callRenderingFunction() : void {
-		const renderingFunction = this.matchRoute(location.pathname)
-			|| this.renderNotFoundView;
+		const renderingFunction = this.matchRoute(location.pathname);
 		renderingFunction();
 	}
 

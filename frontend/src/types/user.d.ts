@@ -1,16 +1,3 @@
 type user = {
-	isLogged: boolean,
-	name?: string,
-	surname?: string,
-	birthday?: string, 
-	isMarried?: string,
-	childrens?: string,
-	elderlyParents?: string,
-	residence?: string,
-	domicile?: string,
-	workLocation?: string,
-	sport?: string,
-	culture?: string,
-	leisure?: string,
-	prevention?: string,
+	[key: string]: string | boolean;
 }

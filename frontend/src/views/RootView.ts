@@ -1,16 +1,21 @@
-import AProfilingView from "./AProfilingView";
+import AProfilingView from "./profiling/AProfilingView";
 
 export default class extends AProfilingView {
-	
+
 	constructor () {
 		super();
-		this.markup = this.generateMarkup();
 	}
 
-	protected override generateMarkup() : string {
+	private generateHomeMarkup(user: user) : string {
+		return `
+			<h1>Home</h1>
+		`
+	}
+
+	private generateWelcomeMarkup() : string {
 		return `
 			<header class="text-center mt-5">
-				<div class="tekne display-3">
+				<div class="tekne display-3 text-white">
 					Il Benessere a 365 gradi
 				</div>
 			</header>
@@ -28,7 +33,7 @@ export default class extends AProfilingView {
 				</span>
 				<div class="container row justify-content-center">
 					<div class="col-4 col-lg-3 col-xl-2">
-						<img src="/static/public/images/smile2.svg" alt="smile" class="img-fluid">
+						<img src="/static/public/images/smile.svg" alt="smile" class="img-fluid">
 					</div>
 				</div>
 				<span class="fw-normal display-6">
@@ -51,5 +56,15 @@ export default class extends AProfilingView {
 			</main>
 			${this.generateFooterMarkup()}
 		`;
+	}
+
+	public renderHomeMarkup(user: user): void {
+		this.markup = this.generateHomeMarkup(user);
+		this.parentElement.innerHTML = this.markup;
+	}
+
+	public renderWelcomeMarkup(): void {
+		this.markup = this.generateWelcomeMarkup();
+		super.render();
 	}
 }

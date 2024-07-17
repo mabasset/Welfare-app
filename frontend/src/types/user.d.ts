@@ -1,3 +1,3 @@
 type user = {
-	[key: string]: string | boolean;
+	[key: string]: string | boolean | number;
 }

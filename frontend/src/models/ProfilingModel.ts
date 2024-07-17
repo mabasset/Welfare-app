@@ -37,4 +37,20 @@ export default class extends Model {
 		});
 		return user;
 	}
+
+	public getSignupMarkupIndex(): number {
+		const markupIndexCookie = this.getFromSessionStorage("signupViewSection") || "0";
+		return Number(markupIndexCookie);
+	}
+
+	public async getWorksites(): Promise<Map<number, string>> {
+		const url: string = `${this.baseUrl}user/get_worksites`;
+		const response = await this.sendRequest(url);
+		const json = await response.json();
+		const worksitesMap = new Map<number, string>();
+		for (let key in json)
+			if (json.hasOwnProperty(key))
+				worksitesMap.set(parseInt(key), json[key]);
+		return worksitesMap;
+	}
 }

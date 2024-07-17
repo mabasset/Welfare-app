@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from .models import User, Worksite
 
 
 def get_data(request):
@@ -13,5 +14,7 @@ def get_data(request):
 	else:
 		return JsonResponse({'is_authenticated': False})
 
-# def signup(request):
-# def login(request):
+def get_worksites(request):
+	worksites = Worksite.objects.all()
+	worksites_dict = {worksite.id: str(worksite) for worksite in worksites}
+	return JsonResponse(worksites_dict)

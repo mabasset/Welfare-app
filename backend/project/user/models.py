@@ -4,11 +4,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class Worksite(models.Model):
-	address = models.TextField(blank=True)
 	department = models.CharField(max_length=70, null=True, blank=True)
+	address = models.TextField(blank=True)
 
 	def __str__(self):
-		return self.address
+		return f"{self.department} - {self.address}" if self.department else self.address
 
 class Interest(models.Model):
 	category = models.CharField(max_length=20)

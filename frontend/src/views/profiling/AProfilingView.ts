@@ -14,11 +14,10 @@ export default abstract class extends AView {
 						<img src="/static/public/images/smile.svg" alt="smile" class="img-fluid">
 					</div>
 				</div>
-				<a href="/" class="link-body-emphasis text-decoration-none text-white fw-normal fs-3" data-link>
-					<span class="fw-bold">
-						Welfare
+				<a href="/" class="link-body-emphasis text-decoration-none text-white fs-3" data-link>
+					<span class="display-6">
+						<span class="fw-semibold">Welfare</span> is on
 					</span>
-					is on
 				</a>
 			</header>
 		`
@@ -28,7 +27,7 @@ export default abstract class extends AView {
 		return `
 			${this.generateHeaderMarkup()}
 			<main class="container d-flex justify-content-center my-3">
-				<div class="card col-lg-10 col-md-11">
+				<div class="card col-lg-10 col-md-11 col-12">
 					${this.generateMarkup()}
 				</div>
 			</main>
@@ -82,7 +81,7 @@ export default abstract class extends AView {
 		`
 	}
 
-	public override render(user?: user, markupIndex?: number) : void {
+	public override render(user?: user, markupIndex?: number, worksites?: Map<number, string>) : void {
 		super.render();
 		this.parentElement.classList.add("bg-wf-primary");
 	}	

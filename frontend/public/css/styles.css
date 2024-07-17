@@ -4,28 +4,27 @@
 }
 
 .bg-wf-primary {
-	min-height: 100vh;
 	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
 }
 
 .bg-wf-physical {
-	min-height: 100vh;
-	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+	min-height: 25vh;
+	background-image: linear-gradient(to right bottom, #542376, #cd6690);
 }
 
 .bg-wf-economic {
-	min-height: 100vh;
-	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+	min-height: 25vh;
+	background-image: linear-gradient(to right bottom, #e27248, #dcbe29);
 }
 
 .bg-wf-psychological {
-	min-height: 100vh;
-	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+	min-height: 25vh;
+	background-image: linear-gradient(to right bottom, #006b30, #4fbbb7);
 }
 
 .bg-wf-family {
-	min-height: 100vh;
-	background-image: linear-gradient(to left bottom, #2a2f57 5%, #0c8b97 48%, #0c8b97 51%, #2a2f57 94%);
+	min-height: 25vh;
+	background-image: linear-gradient(to right bottom, #bcad3a, #f4f755);
 }
 
 .tekne {

@@ -40,7 +40,7 @@ export default class {
 			const link = (event.target as HTMLElement).closest("[data-link]") as HTMLAnchorElement;
 			if (!link) return;
 			event.preventDefault();
-			history.pushState(null, null, link.href);
+			history.pushState(null, "", link.href);
 			this.callRenderingFunction();
 		});
 		this.callRenderingFunction();

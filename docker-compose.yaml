@@ -6,7 +6,7 @@ services:
   frontend:
     container_name: frontend
     volumes:
-      - ./frontend/src/:/home/app/src
+      - ./frontend/src:/home/app/src
       - ./frontend/public:/home/app/static/public
       - static_files:/home/app/static
     build:

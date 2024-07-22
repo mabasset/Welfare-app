@@ -1,0 +1,88 @@
+import AView from "../AView";
+
+export default abstract class extends AView {
+
+	constructor() {
+		super();
+	}
+
+	protected generateHeaderMarkup() : string {
+		return `
+			<header class="text-center">
+				<div class="d-flex justify-content-center">
+					<div class="col-3 col-lg-2 col-xl-1 mt-md-4 mt-1">
+						<img src="/static/public/images/smile.svg" alt="smile" class="img-fluid">
+					</div>
+				</div>
+				<a href="/" class="link-body-emphasis text-decoration-none text-white fs-3" data-link>
+					<span class="display-6">
+						<span class="fw-semibold">Welfare</span> is on
+					</span>
+				</a>
+			</header>
+		`
+	}
+
+	protected generateLayoutMarkup() : string {
+		return `
+			${this.generateHeaderMarkup()}
+			<main class="container d-flex justify-content-center my-3">
+				<div class="card col-lg-10 col-md-11 col-12">
+					${this.generateMarkup()}
+				</div>
+			</main>
+			${this.generateFooterMarkup()}
+		`
+	}
+
+	protected generateFooterMarkup() : string {
+		return `
+			<footer class="mb-4 lg:mb-5">
+				<nav class="mt-3">
+					<ul class="flex flex-wrap justify-center border-0">
+					<li class="py-0 px-2">
+						<a href="#" class="text-white no-underline hover:underline">
+						Privacy Policy
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a href="#" class="text-white no-underline hover:underline">
+						Cookie Policy
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a href="#" class="text-white no-underline hover:underline">
+						Preference Cookie
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a href="#" class="text-white no-underline hover:underline">
+						Nota legale
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a href="#" class="text-white no-underline hover:underline">
+						Sitemap
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a href="#" class="text-white no-underline hover:underline">
+						CERT
+						</a>
+					</li>
+					</ul>
+				</nav>
+			</footer>
+		`
+	}
+
+	protected generateMarkup(): string {
+		return`
+		`
+	}
+
+	public override render(user?: user, markupIndex?: number, worksites?: Map<number, string>) : void {
+		super.render();
+		this.parentElement.classList.add("bg-wf-primary");
+	}	
+}

@@ -1,6 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(welcome.css);
+
 @font-face {
 	font-family: TekneLDO;
 	src: url(/static/public/fonts/TekneLDO-Medium.otf);
+}
+
+.tekne {
+	font-family: TekneLDO;
 }
 
 .bg-wf-primary {
@@ -25,8 +35,4 @@
 .bg-wf-family {
 	min-height: 25vh;
 	background-image: linear-gradient(to right bottom, #bcad3a, #f4f755);
-}
-
-.tekne {
-	font-family: TekneLDO;
 }

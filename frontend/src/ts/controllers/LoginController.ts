@@ -1,4 +1,4 @@
-import ProfilingModel from "src/models/ProfilingModel";
+import ProfilingModel from "../models/ProfilingModel";
 import LoginView from "../views/profiling/LoginView";
 
 export default class {

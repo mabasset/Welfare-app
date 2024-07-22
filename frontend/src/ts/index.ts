@@ -1,5 +1,4 @@
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/index.css';
 
 import Model from './models/Model';
 import ProfilingModel from './models/ProfilingModel';

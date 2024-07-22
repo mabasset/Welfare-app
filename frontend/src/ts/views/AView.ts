@@ -8,7 +8,7 @@ export default abstract class {
 	}
 
 	public render() {
-		this.parentElement.className = "d-flex flex-column justify-content-between min-vh-100";
+		this.parentElement.className = "flex flex-col justify-between min-h-screen";
 		this.parentElement.innerHTML = this.markup;
 	}
 

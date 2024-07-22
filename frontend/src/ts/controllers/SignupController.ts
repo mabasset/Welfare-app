@@ -1,4 +1,4 @@
-import ProfilingModel from "src/models/ProfilingModel";
+import ProfilingModel from "../models/ProfilingModel";
 import SignupView from "../views/profiling/SignupView";
 
 export default class {
@@ -16,7 +16,7 @@ export default class {
 			return this.view.renderErrorMarkup(401);
 		user = this.model.getUserDataFromCookies(this.sessionCookiePrefix);
 		const markupIndex = this.model.getSignupMarkupIndex();
-		let worksites: Map<number, string>;
+		let worksites: Map<number, string> = new Map();
 		if (markupIndex === 1)
 			worksites = await this.model.getWorksites();
 		this.view.render(user, markupIndex, worksites);

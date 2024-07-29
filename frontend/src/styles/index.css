@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url(welcome.css);
-
 @font-face {
 	font-family: TekneLDO;
 	src: url(/static/public/fonts/TekneLDO-Medium.otf);
@@ -18,21 +16,26 @@
 }
 
 .bg-wf-physical {
-	min-height: 25vh;
 	background-image: linear-gradient(to right bottom, #542376, #cd6690);
 }
 
 .bg-wf-economic {
-	min-height: 25vh;
-	background-image: linear-gradient(to right bottom, #e27248, #dcbe29);
+	background-image: linear-gradient(to right bottom, #e17247, #ffbf00);
 }
 
 .bg-wf-psychological {
-	min-height: 25vh;
 	background-image: linear-gradient(to right bottom, #006b30, #4fbbb7);
 }
 
 .bg-wf-family {
-	min-height: 25vh;
-	background-image: linear-gradient(to right bottom, #bcad3a, #f4f755);
+	background-image: linear-gradient(to right bottom, #d09b00, #ffea00);
+}
+
+select {
+	appearance: none; /* Removes default arrow */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E') no-repeat;
+	background-position: calc(100% - 1rem) center;
+	background-size: 12px 12px;
 }

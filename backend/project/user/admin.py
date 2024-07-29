@@ -8,7 +8,7 @@ class AdminConfig(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('name', 'surname', 'birthday', 'is_married', 'childs', 'elderly_parents')}),
+        ('Personal info', {'fields': ('name', 'surname', 'birthday', 'marital_status', 'childs', 'elderly_parents')}),
         ('Location info', {'fields': ('residence', 'domicile', 'worksite')}),
 		('Interests', {'fields': ('interests',)}),
         ('Important dates', {'fields': ('last_login',)}),
@@ -21,7 +21,7 @@ class AdminConfig(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'name', 'surname', 'password1', 'password2',
-                       'birthday', 'is_married', 'childs', 'elderly_parents', 'residence', 'domicile'),
+                       'birthday', 'marital_status', 'childs', 'elderly_parents', 'residence', 'domicile'),
         }),
     )
 

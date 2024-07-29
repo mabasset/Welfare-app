@@ -5,7 +5,19 @@ module.exports = {
 		'./static/bundle.js',
 	],
 	theme: {
-		extend: {},
+		extend: {
+			height: {
+				'100': '25rem',
+				'104': '26rem',
+				'108': '27rem',
+				'112': '28rem',
+				'116': '29rem',
+				'120': '30rem',
+			},
+		},
+		
 	},
-	plugins: [],
+	plugins: [
+		require('tailwindcss-textshadow')
+	],
 }

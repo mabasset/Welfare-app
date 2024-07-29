@@ -53,8 +53,8 @@ export default class {
 		const url: string = `${this.baseUrl}user/get_data`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
-		const { is_authenticated: isLogged, name, surname, birthday, is_married: isMarried, childrens, elderly_parents: elderlyParents } = json;
-		return { isLogged, name, surname, birthday, isMarried, childrens, elderlyParents };
+		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;
+		return { isLogged, name, surname, birthday, maritalStatus, childrens, elderlyParents };
 	}
 
 	public setToSessionStorage(key: string, value: string): void {

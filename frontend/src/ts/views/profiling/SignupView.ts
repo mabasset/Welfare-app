@@ -1,8 +1,8 @@
 import AProfilingView from "./AProfilingView";
 
-enum markupSection {
+enum markupEnum {
 	PersonalData,
-	Location,
+	Localization,
 	Welfare,
 }
 
@@ -20,14 +20,14 @@ export default class extends AProfilingView {
 		let markup;
 
 		switch (this.markupIndex) {
-			case markupSection.PersonalData:
+			case markupEnum.PersonalData:
 				markup = this.generatePersonalDataMarkup();
 				break;
-			case markupSection.Location:
-				markup = this.generateLocationMarkup();
+			case markupEnum.Localization:
+				markup = this.generateLocalizationMarkup();
 				break;
-			case markupSection.Welfare:
-				markup = this.generateWelfareMarkup();
+			case markupEnum.Welfare:
+				markup = this.generateWelfarePillarsMarkup();
 				break;
 			default:
 				break;
@@ -37,176 +37,197 @@ export default class extends AProfilingView {
 
 	private generatePersonalDataMarkup(): string {
 		return `
-			<form class="needs-validation" novalidate>
-				<div class="card-header tekne fs-5 display-6 p-md-3 p-3 text-center">
-					Dati personali
-				</div>
-				<div class="card-body d-flex flex-column justify-content-center py-md-5 px-md-5 row-gap-md-5 row-gap-2">
-					<div class="row row-gap-md-5 row-gap-2">
-						<div class="col-md-6">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="name" id="name" value="${this.user.name || ''}" placeholder="" required>
-								<label for="name">Nome</label>
-							</div>
+			<form class="min-h-96 bg-white sm:rounded-lg p-4 sm:p-8 w-full flex flex-col">
+				<div class="flex-grow flex items-center pt-2 sm:pt-4">
+					<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-5 sm:gap-10 w-full">
+						<div class="col-span-6 sm:col-span-3 relative">
+							${this.generateLabelFor("name", true)}
+							<input id="name" name="name" value="${this.user.name || ''}" type="text" pattern="[^\\d]+" minlength="2" maxlength="50" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-md-6">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="surname" id="surname" value="${this.user.surname || ''}" placeholder="" required>
-								<label for="surname">Cognome</label>
-							</div>
+						<div class="col-span-6 sm:col-span-3 relative">
+							${this.generateLabelFor("surname", true)}
+							<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" pattern="[^\\d]+" minlength="2" maxlength="50" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-md-6">
-							<div class="form-floating">
-								<input type="date" class="form-control" name="birthday" id="birthday" value="${this.user.birthday || ''}" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required>
-								<label for="birthday">Data di nascita</label>
-							</div>
+						<div class="col-span-6 sm:col-span-3 relative">
+							${this.generateLabelFor("birthday", true)}
+							<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-md-6">
-							<div class="form-floating">
-								<select class="form-select" name="interest" id="interest" aria-label="What's your interest">
-									<option value="0" ${this.user.interest === "0" ? 'selected' : ''}>Sport</option>
-									<option value="1" ${this.user.interest === "1" ? 'selected' : ''}>Lettura</option>
-									<option value="2" ${this.user.interest === "2" ? 'selected' : ''}>Relax</option>
-									<option value="3" ${this.user.interest === "3" ? 'selected' : ''}>Relax</option>
-									<option value="4" ${this.user.interest === "4" ? 'selected' : ''}>Altro...</option>
-								</select>
-								<label for="interest">Interessi</label>
-							</div>
+						<div class="col-span-3 relative">
+							${this.generateLabelFor("interest", false)}
+							<select id="interest" name="interest" class="truncate text-sm w-full pl-3 pr-10 h-10 outline-none border rounded border-slate-400 focus:ring-1 focus:ring-slate-500">
+								<option value="null" class="hidden"></option>
+								<option value="0" ${this.user.interest === "0" ? 'selected' : ''}>Sport</option>
+								<option value="1" ${this.user.interest === "1" ? 'selected' : ''}>Reading</option>
+								<option value="2" ${this.user.interest === "2" ? 'selected' : ''}>Relax</option>
+								<option value="3" ${this.user.interest === "3" ? 'selected' : ''}>Prevention</option>
+								<option value="4" ${this.user.interest === "4" ? 'selected' : ''}>Other...</option>
+							</select>
 						</div>
-						<div class="col-md-4">
-							<div class="form-floating">
-								<select class="form-select" name="isMarried" id="marital-status" aria-label="What's your marital status">
-									<option value="0" ${this.user.isMarried === "0" ? 'selected' : ''}>Celibe</option>
-									<option value="1" ${this.user.isMarried === "1" ? 'selected' : ''}>Nubile</option>
-								</select>
-								<label for="marital-status">Stato civile</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("marital-status", false)}
+							<select id="marital-status" name="maritalStatus" class="truncate text-sm w-full pl-3 pr-10 h-10 outline-none border rounded border-slate-400 focus:ring-1 focus:ring-slate-500">
+								<option value="null" class="hidden"></option>
+								<option value="Single" ${this.user.maritalStatus === "Single" ? 'selected' : ''}>Single</option>
+								<option value="Married" ${this.user.maritalStatus === "Married" ? 'selected' : ''}>Married</option>
+							</select>
 						</div>
-						<div class="col-md-4 col-6 pe-md-3 pe-1">
-							<div class="form-floating">
-								<select class="form-select" name="childrens" id="childrens" aria-label="Have any childrens">
-									<option value="0" ${this.user.childrens === "0" ? 'selected' : ''}>No</option>
-									<option value="1" ${this.user.childrens === "1" ? 'selected' : ''}>Si</option>
-								</select>
-								<label for="childrens">Figli</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("childrens", false)}
+							<select id="childrens" name="childrens" class="truncate text-sm w-full pl-3 pr-10 h-10 outline-none border rounded border-slate-400 focus:ring-1 focus:ring-slate-500">
+								<option value="null" class="hidden"></option>
+								<option value="0" ${this.user.childrens === "0" ? 'selected' : ''}>No</option>
+								<option value="1" ${this.user.childrens === "1" ? 'selected' : ''}>Yes</option>
+							</select>
 						</div>
-						<div class="col-md-4 col-6 ps-md-3 ps-1">
-							<div class="form-floating">
-								<select class="form-select" name="elderlyParents" id="elderly-parents" aria-label="Have elderly parents">
-									<option value="0" ${this.user.elderlyParents === "0" ? 'selected' : ''}>No</option>
-									<option value="1" ${this.user.elderlyParents === "1" ? 'selected' : ''}>Si</option>
-								</select>
-								<label for="elderly-parents">Genitori anziani</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("elderly-parents", false)}
+							<select id="elderly-parents" name="elderlyParents" class="truncate text-sm w-full pl-3 pr-10 h-10 outline-none border rounded border-slate-400 focus:ring-1 focus:ring-slate-500">
+								<option value="null" class="hidden"></option>
+								<option value="0" ${this.user.elderlyParents === "0" ? 'selected' : ''}>No</option>
+								<option value="1" ${this.user.elderlyParents === "1" ? 'selected' : ''}>Yes</option>
+							</select>
 						</div>
 					</div>
 				</div>
-				${this.generateCardFooterMarkup()}
+				${this.generateProfilingFooterMarkup()}
 			</form>
 		`
 	}
 
-	private generateLocationMarkup(): string {
+	private generateLocalizationMarkup(): string {
+		console.log(this.user.worksite)
 		return `
-			<form>
-				<div class="card-header tekne fs-5 display-6 p-md-3 p-3 text-center">
-					Localizzazione
-				</div>
-				<div class="card-body d-flex flex-column justify-content-center py-md-5 px-md-5 row-gap-md-5 row-gap-2">
-					<div class="row row-gap-md-5 row-gap-2 justify-content-center">
-						<div class="col-md-8 col-12">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="street" id="street" value="${this.user.street || ''}" placeholder="" required>
-								<label for="street">Indirizzo</label>
-							</div>
+			<form class="min-h-96 bg-white sm:rounded-lg p-4 sm:p-8 w-full flex flex-col">
+				<div class="flex-grow flex items-center pt-2 sm:pt-4">
+					<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-5 sm:gap-10 w-full">
+						<div class="col-span-6 relative">
+							${this.generateLabelFor("worksite", true)}
+							<button type="button" id="worksite" class="truncate bg-white text-start text-sm absolute w-full outline-none border rounded px-3 h-10 ${this.user.worksite ? "border-green-600 ring-green-600" : "border-red-600 ring-red-600"}">
+								${this.user.worksite ? this.worksites.get(Number(this.user.worksite)) : ''}
+							</button>
+							<input id="worksite-input" name="worksite" value="${this.user.worksite || ''}" tabindex="-1" type="text" class="outline-none w-full h-10" required>
+							<ul id="worksite-dropdown-body" class="ps-2 pe-3 pb-2 mt-px hidden absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden">
+								<li class="sticky top-0 bg-white pt-2 w-full">
+									<input id="worksite-search-bar" placeholder="Search" type="search" class="text-sm block min-h-[auto] w-full rounded border bg-transparent p-2 outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100">
+								</li>
+								${this.generateWorksitesListMarkup()}
+							</ul>
 						</div>
-						<div class="col-md-4 col-6 pe-md-3 pe-1">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="houseNumber" id="houseNumber" value="${this.user.houseNumber || ''}" placeholder="">
-								<label for="houseNumber">N. civico</label>
-							</div>
+						<div class="col-span-6 sm:col-span-4 relative">
+							${this.generateLabelFor("street", true)}
+							<input id="street" name="street" value="${this.user.street || ''}" type="text" maxlength="50" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-md-3 col-6 ps-md-3 ps-1">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="postalCode" id="postalCode" value="${this.user.postalCode || ''}" placeholder="" required>
-								<label for="postalCode">CAP</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("house-number", false)}
+							<input id="house-number" name="houseNumber" value="${this.user.houseNumber || ''}" type="text" maxlength="20"
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 border-slate-400 focus:ring-slate-500">
 						</div>
-						<div class="col-md-5 col-6 pe-md-3 pe-1">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="city" id="city" value="${this.user.city || ''}" placeholder="" required>
-								<label for="city">Città</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("postal-code", true)}
+							<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" maxlength="10" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-md-4 col-6 ps-md-3 ps-1">
-							<div class="form-floating">
-								<input type="text" class="form-control" name="country" id="country" value="${this.user.country || ''}" placeholder="" required>
-								<label for="country">Paese</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("city", true)}
+							<input id="city" name="city" value="${this.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" maxlength="57" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
-						<div class="col-12">
-							<div class="form-floating">
-								<input type="search" class="form-control" id="worksite" value="${this.worksites.get(Number(this.user.worksite)) || ''}" placeholder="" autocomplete="off" required>
-								<input type="hidden" id="hiddenWorksite" name="worksite" value="${this.user.worksite || ''}">
-								<div id="worksites-list" class="d-none w-100 position-absolute list-group z-1 overflow-auto" style="max-height: 140px;">
-									${this.generateWorksitesListMarkup()}
-								</div>
-								<label for="worksite">Sede lavorativa</label>
-							</div>
+						<div class="col-span-3 sm:col-span-2 relative">
+							${this.generateLabelFor("country", true)}
+							<input id="country" name="country" value="${this.user.country || ''}" type="text" pattern="[A-Za-z\\s]+" maxlength="56" required
+								class="truncate text-sm w-full outline-none border rounded px-3 h-10 focus:ring-1 invalid:border-red-600 invalid:ring-red-600 valid:border-green-600 valid:ring-green-600">
 						</div>
 					</div>
 				</div>
-				${this.generateCardFooterMarkup()}
+				${this.generateProfilingFooterMarkup()}
 			</form>
 		`
 	}
 
-	private generateWelfareMarkup(): string {
+	private generateWelfarePillarsMarkup(): string {
 		return `
-			<form>
-				<div class="card-header tekne fs-5 display-6 p-md-3 p-3 text-center">
-					Opzioni Welfare
+			<form class="min-h-96 bg-white sm:rounded-lg p-4 sm:p-8 w-full flex flex-col">
+				<div class="text-md text-center text-slate-500 pb-3">
+					Choose your areas of interest
 				</div>
-				<div class="card-body d-flex flex-column justify-content-center py-md-5 px-md-5 row-gap-md-5 row-gap-4">
-					<div class="row g-md-3 row-gap-2 row-cols-1 row-cols-md-4">
-						<div class="col">
-							<div class="bg-wf-physical w-100">Benessere Fisico</div>
-						</div>
-						<div class="col">
-							<div class="bg-wf-economic w-100">Benessere Economico</div>
-						</div>
-						<div class="col">
-							<div class="bg-wf-psychological w-100">Benessere Psicologico</div>
-						</div>
-						<div class="col">
-							<div class="bg-wf-family w-100">Benessere Familiare</div>
-						</div>
+				<div class="flex-grow flex pb-3 sm:pb-6">
+					<div class="grid grid-rows-2 md:grid-rows-1 grid-cols-4 gap-3 w-full text-white text-shadow-lg">
+						${["physical", "economic", "psychological", "family"].reduce(
+							(finalString, pillarName) => finalString += this.generatePillarMarkup(pillarName), ""
+						)}
 					</div>
 				</div>
-				${this.generateCardFooterMarkup()}
+				${this.generateProfilingFooterMarkup()}
 			</form>
 		`
 	}
 
-	private generateCardFooterMarkup(): string {
+	private generatePillarMarkup(pillarName: string): string {
+		let keywords : Array<string>;
+		switch (pillarName) {
+			case "physical":
+				keywords = ["Movement", "Nutrition", "Health"];
+				break;
+			case "economic":
+				keywords = ["Services", "Conventions", "Answers"];
+				break;
+			case "psychological":
+				keywords = ["Listening", "Closeness", "Growth"];
+				break;
+			case "family":
+				keywords = ["Assistance", "Care", "Support"];
+				break;
+			default:
+				break;
+		}
+		const markup = `
+			<label role="button" class="col-span-2 md:col-span-1 bg-wf-${pillarName} h-full rounded shadow-lg outline-4 outline-slate-800 has-[:checked]:outline">
+				<input type="checkbox" name="${pillarName}" class="hidden"/>
+				<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
+					<section class="text-xs uppercase hidden sm:block pb-3">
+						Leonardo's Welfare is
+					</section>
+					<section class="tekne text-md sm:text-xl flex flex-col items-center">
+						<span>${pillarName.charAt(0).toUpperCase() + pillarName.slice(1)}</span>
+						<span>Wellbeing</span>
+					</section>
+					<section class="hidden sm:block">
+						<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+						</svg>
+					</section>
+					<section class="hidden sm:flex flex-col items-center">
+						${keywords.reduce((finalString, keyword) => finalString += `<span>${keyword}</span>`, "")}
+					</section>
+				</div>
+			</label>
+		`
+		return markup;
+	}
+
+	private generateProfilingFooterMarkup(): string {
 		return `
-			<div class="card-footer tekne fs-6 text-secondary px-md-5 px-3 py-md-2 py-1">
-				<div class="d-flex w-100 justify-content-between align-items-center">
-					<div class="col text-start">
-						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" id="backwardsArrow" role="button" class="${this.markupIndex === 0 ? 'd-none' : ''} bi bi-arrow-left" viewBox="0 0 16 16">
+			<div class="flex justify-between items-center w-full">
+				<div class="w-1/3 flex">
+					<button type="button" id="backwards-btn" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-2 sm:ms-3">
+						<svg xmlns="http://www.w3.org/2000/svg" height="40" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
 						</svg>
-					</div>
-					<div class="col text-center">
-						${this.markupIndex + 1} / 5
-					</div>
-					<label class="col text-end">
-						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" role="button" fill="currentColor" class="${this.markupIndex === 3 ? 'd-none' : ''}bi bi-arrow-right" viewBox="0 0 16 16">
+					</button>
+				</div>
+				<div class="w-1/3 text-center select-none tekne text-md">
+					${this.markupIndex + 1} / 4
+				</div>
+				<div class="w-1/3 flex justify-end">
+					<button type="submit" class="${this.markupIndex === 3 ? 'hidden' : ''} me-2 sm:me-3">
+						<svg xmlns="http://www.w3.org/2000/svg" height="40" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
 						</svg>
-						<input type="submit" class="d-none" />
-					</label>
+					</button>
 				</div>
 			</div>
 		`
@@ -218,11 +239,12 @@ export default class extends AProfilingView {
 		this.worksites = worksites;
 		this.markup = this.generateLayoutMarkup();
 		super.render();
-		this.addWorksitesOptionsHandler();
+		if (this.markupIndex === markupEnum.Localization)
+			this.addWorksitesOptionsHandler();
 	}
 	
 	public addPreviousSectionHandler(handler: Function): void {
-		const backwardsArrow = document.getElementById("backwardsArrow");
+		const backwardsArrow = document.getElementById("backwards-btn");
 		if (!backwardsArrow)
 			return;
 		backwardsArrow.addEventListener('click', () => handler());
@@ -232,7 +254,6 @@ export default class extends AProfilingView {
 		const form = document.querySelector('form') as HTMLFormElement;
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
-			form.classList.add('was-validated')
 			if (!form.checkValidity())
 				return;
 			const formData = new FormData(form);
@@ -241,31 +262,41 @@ export default class extends AProfilingView {
 	}
 
 	private addWorksitesOptionsHandler(): void {
-		const searchBarInput = document.getElementById('worksite') as HTMLInputElement;
-		const searchBarHiddenInput = document.getElementById('hiddenWorksite') as HTMLInputElement;
-		const worsitesOptionsContainer = document.getElementById('worksites-list');
-		
-		if (!searchBarInput || !searchBarHiddenInput || !worsitesOptionsContainer)
-			return;
-		const worksiteOptions = worsitesOptionsContainer.querySelectorAll("[data-searchbar-option]") as NodeListOf<HTMLButtonElement>;
+		const input = document.getElementById("worksite-input") as HTMLInputElement;
+		const dropdownBtn = document.getElementById("worksite");
+		const dropdownBody = document.getElementById("worksite-dropdown-body");
+		const dropdownSearchbar = document.getElementById("worksite-search-bar") as HTMLInputElement;
+		const worksiteOptions = dropdownBody.querySelectorAll("[data-worksite-option]") as NodeListOf<HTMLButtonElement>;
 
-		["focus", "blur"].forEach(event => 
-			searchBarInput.addEventListener(event, () =>
-				worsitesOptionsContainer.classList.toggle('d-none'))
-		);
-	
-		searchBarInput.addEventListener('input', () => {
-        	let inputValue = searchBarInput.value.toLowerCase();
+		['keypress', 'keydown', 'paste'].forEach(inputEvent => {
+			input.addEventListener(inputEvent, event => event.preventDefault());
+		});
+
+		dropdownBtn.addEventListener("focus", () => {
+			dropdownBody.classList.remove("hidden");
+			dropdownSearchbar.focus();
+			dropdownBtn.classList.add("ring-1");
+		});
+
+		dropdownSearchbar.addEventListener("blur", () => {
+			dropdownBody.classList.add("hidden");
+			dropdownBtn.classList.remove("ring-1");
+		});
+
+		dropdownSearchbar.addEventListener("input", () => {
+			let inputValue = dropdownSearchbar.value.toLowerCase();
 			worksiteOptions.forEach(option => {
-				const optionContent = option.textContent ? option.textContent.toLowerCase() : '';
+				const optionContent = option.textContent.toLowerCase();
 				option.style.display = optionContent.includes(inputValue) ? '' : 'none';
 			});
 		});
 
 		worksiteOptions.forEach(option => {
 			option.addEventListener("mouseover", () => {
-				searchBarInput.value = option.innerText;
-				searchBarHiddenInput.value = option.value;
+				input.value = option.value;
+				dropdownBtn.innerHTML = option.innerHTML;
+				dropdownBtn.classList.remove("border-red-600", "ring-red-600");
+				dropdownBtn.classList.add("border-green-600", "ring-green-600");
 			});
 		});
 	}
@@ -274,7 +305,7 @@ export default class extends AProfilingView {
 		let html = ``;
 		for (const [key, value] of this.worksites) {
 			html += `
-				<button type="button" value="${key}" class="list-group-item list-group-item-action" data-searchbar-option>${value}</button>
+				<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100  text-left" data-worksite-option>${value}</li>
 			`
 		};
 		return html;

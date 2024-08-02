@@ -15,7 +15,6 @@ module.exports = {
 				'120': '30rem',
 			},
 		},
-		
 	},
 	plugins: [
 		require('tailwindcss-textshadow')

@@ -18,3 +18,5 @@ def get_worksites(request):
 	worksites = Worksite.objects.all()
 	worksites_dict = {worksite.id: str(worksite) for worksite in worksites}
 	return JsonResponse(worksites_dict)
+
+# def signup(request):

@@ -20,7 +20,7 @@
 }
 
 .bg-wf-economic {
-	background-image: linear-gradient(to right bottom, #e17247, #ffbf00);
+	background-image: linear-gradient(to right bottom, #dc501d, #ffaa00);
 }
 
 .bg-wf-psychological {
@@ -28,7 +28,7 @@
 }
 
 .bg-wf-family {
-	background-image: linear-gradient(to right bottom, #d09b00, #ffea00);
+	background-image: linear-gradient(to right bottom, #d09c02, #ffe600);
 }
 
 select {

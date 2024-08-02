@@ -18,18 +18,18 @@ export default class extends AProfilingView {
 			</header>
 			<main class="flex flex-col items-center justify-center text-white gap-4 flex-grow">
 				<div class="tekne text-center text-3xl sm:text-4xl md:text-5xl">
-					Il Benessere a 365 gradi
+					Welfare at 365 degree
 				</div>
 				<p class="my-6 md:my-9 text-center text-xl sm:text-2xl md:text-3xl">
 					<span class="uppercase">
-						Per il corpo, per la mente
+						For the Body, For the Mind
 					</span><br> 
 					<span class="inline-flex items-center">
 						<svg xmlns="http://www.w3.org/2000/svg" width="46" fill="currentColor" class="inline pt-1 bi bi-arrow-right" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
 						</svg>
 						<span class="whitespace-nowrap ms-3">
-							tutti i giorni.
+							Every Day.
 						</span>
 					</span>
 				</p>
@@ -42,11 +42,11 @@ export default class extends AProfilingView {
 					</div>
 				</div>
 				<a href="/signup" type="button" class="tekne md:text-xl ms-1 md:mt-5 px-5 py-2 text-teal-950 bg-slate-50 border-gray-300 font-semibold" data-link>
-					Registrati ora
+					Register Now
 				</a>
 				<div class="text-center w-full">
 					<span class="text-base sm:text-lg md:text-xl">
-						Sei già un membro? Vai al
+						Already a member? Go to
 						<a href="/login" class="link-body-emphasis underline text-white hover:text-black" data-link>
 							Login
 						</a>

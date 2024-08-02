@@ -10,7 +10,7 @@ export default class extends Model {
 		super();
 	}
 
-	public async userSignup(): Promise<void> {
+	public async userSignup(formData: FormData): Promise<void> {
 		const url: string = `${this.baseUrl}user/signup`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
@@ -39,8 +39,10 @@ export default class extends Model {
 	}
 
 	public getSignupMarkupIndex(): number {
-		const markupIndexCookie = this.getFromSessionStorage("signupViewSection") || "0";
-		return Number(markupIndexCookie);
+		let markupIndexCookie = Number(this.getFromSessionStorage("signupViewSection"));
+		if (!markupIndexCookie || markupIndexCookie > 3)
+			markupIndexCookie = 0;
+		return markupIndexCookie;
 	}
 
 	public async getWorksites(): Promise<Map<number, string>> {

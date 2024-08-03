@@ -8,8 +8,8 @@ export default class {
 
 	}
 	
-	public setCookie(key: string, value: string): void {
-		document.cookie = `${key}=${value}`;
+	public setCookie(key: string, value: string, prefix?: string): void {
+		document.cookie = `${prefix + key}=${value}`;
 	}
 
 	protected getCookie(key: string): string | null {

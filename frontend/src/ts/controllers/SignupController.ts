@@ -4,7 +4,6 @@ import SignupView from "../views/profiling/SignupView";
 export default class {
 
 	private view : SignupView;
-	private sessionCookiePrefix = "s_";
 
 	constructor(private model: ProfilingModel) {
 		this.view = new SignupView();
@@ -14,11 +13,11 @@ export default class {
 		let user = await this.model.getUserData();
 		if (user.isLogged)
 			return this.view.renderErrorMarkup(401);
-		user = this.model.getUserDataFromCookies(this.sessionCookiePrefix);
-		const markupIndex = this.model.getSignupMarkupIndex();
+		user = this.model.getUserDataFromCookies();
+		const markupIndex = this.model.getSignupViewSectionMarkupIndex();
 		let worksites: Map<number, string> = new Map();
 		if (markupIndex === 1)
-			worksites = await this.model.getWorksites();
+			worksites = await this.model.getWorksiteOptions();
 		this.view.render(user, markupIndex, worksites);
 		this.view.addBackwordButtonClickHandler(this.backwordsButtonClickHandler.bind(this));
 		this.view.addForwardButtonClickHandler(this.forwardButtonClickHandler.bind(this));
@@ -27,17 +26,13 @@ export default class {
 	}
 
 	private async backwordsButtonClickHandler(): Promise<void> {
-		const markupIndex = this.model.getSignupMarkupIndex() - 1;
-		this.model.setToSessionStorage("signupViewSection", String(markupIndex));
+		this.model.modifySignupViewSectionMarkupIndex(-1);
 		this.renderView();
 	}
 
 	private async forwardButtonClickHandler(formData: FormData): Promise<void> {
-		const markupIndex = this.model.getSignupMarkupIndex() + 1;
-		this.model.setToSessionStorage("signupViewSection", String(markupIndex));
-		for (const [key, value] of formData.entries())
-			if (value && typeof value === 'string')
-				this.model.setCookie(this.sessionCookiePrefix + key, value);
+		this.model.modifySignupViewSectionMarkupIndex(1);
+		this.model.saveFormDataAsSessionCookies(formData);
 		this.renderView();
 	}
 

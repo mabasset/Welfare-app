@@ -15,6 +15,22 @@ export default class extends AProfilingView {
 		this.markupGeneratorFunctions.push(this.generateFinalMarkup.bind(this));
 	}
 
+	public override render(user: user, markupIndex: number, worksites: Map<number, string>): void {
+		const secondMarkupIndex = 1;
+		const finalMarkupIndex = 3;
+
+		this.user = user;
+		this.markupIndex = markupIndex;
+		this.worksites = worksites;
+		this.markup = this.generateLayoutMarkup();
+		super.render();
+		this.handleInputsValidation();
+		if (markupIndex === secondMarkupIndex)
+			this.handleWorksiteInput();
+		if (markupIndex === finalMarkupIndex)
+			this.handlePasswordInputTypeToggler();
+	}
+
 	protected override generateMarkup(): string {
 		const functionToCall = this.markupGeneratorFunctions[this.markupIndex];
 		const markup = functionToCall();
@@ -137,49 +153,6 @@ export default class extends AProfilingView {
 		return html;
 	}
 
-	private generatePillarMarkup(pillarName: string): string {
-		let keywords : Array<string>;
-		switch (pillarName) {
-			case "physical":
-				keywords = ["Movement", "Nutrition", "Health"];
-				break;
-			case "economic":
-				keywords = ["Services", "Conventions", "Answers"];
-				break;
-			case "psychological":
-				keywords = ["Listening", "Closeness", "Growth"];
-				break;
-			case "family":
-				keywords = ["Assistance", "Care", "Support"];
-				break;
-			default:
-				break;
-		}
-		const markup = `
-			<label role="button" class="col-span-2 md:col-span-1 bg-wf-${pillarName} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
-				<input type="checkbox" name="${pillarName}" class="appearance-none hidden" ${this.user[pillarName as keyof user] === "on" ? "checked" : ""}/>
-				<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
-					<section class="text-xs uppercase hidden sm:block pb-3">
-						Leonardo's Welfare is
-					</section>
-					<section class="tekne text-md sm:text-xl flex flex-col items-center">
-						<span>${pillarName.charAt(0).toUpperCase() + pillarName.slice(1)}</span>
-						<span>Wellbeing</span>
-					</section>
-					<section class="hidden sm:block">
-						<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-							<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
-						</svg>
-					</section>
-					<section class="hidden sm:flex flex-col items-center">
-						${keywords.reduce((finalString, keyword) => finalString += `<span>${keyword}</span>`, "")}
-					</section>
-				</div>
-			</label>
-		`
-		return markup;
-	}
-
 	private generateThirdMarkup(): string {
 		const html = `
 			<div class="text-md text-center text-slate-500 pb-3">
@@ -264,6 +237,59 @@ export default class extends AProfilingView {
 		return html;
 	}
 
+	private generatePillarMarkup(pillarName: string): string {
+		let keywords : Array<string>;
+		switch (pillarName) {
+			case "physical":
+				keywords = ["Movement", "Nutrition", "Health"];
+				break;
+			case "economic":
+				keywords = ["Services", "Conventions", "Answers"];
+				break;
+			case "psychological":
+				keywords = ["Listening", "Closeness", "Growth"];
+				break;
+			case "family":
+				keywords = ["Assistance", "Care", "Support"];
+				break;
+			default:
+				break;
+		}
+		const markup = `
+			<label role="button" class="col-span-2 md:col-span-1 bg-wf-${pillarName} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
+				<input type="checkbox" name="${pillarName}" class="appearance-none hidden" ${this.user[pillarName as keyof user] === "on" ? "checked" : ""}/>
+				<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
+					<section class="text-xs uppercase hidden sm:block pb-3">
+						Leonardo's Welfare is
+					</section>
+					<section class="tekne text-md sm:text-xl flex flex-col items-center">
+						<span>${pillarName.charAt(0).toUpperCase() + pillarName.slice(1)}</span>
+						<span>Wellbeing</span>
+					</section>
+					<section class="hidden sm:block">
+						<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+						</svg>
+					</section>
+					<section class="hidden sm:flex flex-col items-center">
+						${keywords.reduce((finalString, keyword) => finalString += `<span>${keyword}</span>`, "")}
+					</section>
+				</div>
+			</label>
+		`
+		return markup;
+	}
+
+	private generateWorksitesListMarkup(): string {
+		let html = ``;
+		for (const [key, value] of this.worksites) {
+			html += `
+				<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-worksite-option>${value}</li>
+			`
+		};
+		return html;
+	}
+
 	private generateProfilingFooterMarkup(): string {
 		const html = `
 			<div class="grid grid-rows-1 grid-cols-4 w-full">
@@ -292,22 +318,6 @@ export default class extends AProfilingView {
 			</div>
 		`
 		return html;
-	}
-
-	public override render(user: user, markupIndex: number, worksites: Map<number, string>): void {
-		const secondMarkupIndex = 1;
-		const finalMarkupIndex = 3;
-
-		this.user = user;
-		this.markupIndex = markupIndex;
-		this.worksites = worksites;
-		this.markup = this.generateLayoutMarkup();
-		super.render();
-		this.handleInputsValidation();
-		if (markupIndex === secondMarkupIndex)
-			this.handleWorksiteInput();
-		if (markupIndex === finalMarkupIndex)
-			this.handlePasswordInputTypeToggler();
 	}
 
 	private	handleInputsValidation() {
@@ -353,16 +363,6 @@ export default class extends AProfilingView {
 			const formData = new FormData(form);
 			handler(formData);
 		});
-	}
-		
-	private generateWorksitesListMarkup(): string {
-		let html = ``;
-		for (const [key, value] of this.worksites) {
-			html += `
-				<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-worksite-option>${value}</li>
-			`
-		};
-		return html;
 	}
 
 	private handleWorksiteInput(): void {

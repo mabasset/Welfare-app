@@ -1,6 +1,7 @@
 import Model from "./Model";
 
 export default class extends Model {
+	private sessionCookiePrefix = "s_";
 
 	public state : {
 		user: user
@@ -24,28 +25,39 @@ export default class extends Model {
 		const user : user = { isLogged: json.is_authenticated };
 	}
 
-	public getUserDataFromCookies(prefix: string): user {
+	public getUserDataFromCookies(): user {
 		let user: user = {};
 
 		const cookies = document.cookie.split(";");
 		cookies.forEach(cookie => {
 			cookie = cookie.trim();
-			if (cookie.startsWith(prefix)) {
+			if (cookie.startsWith(this.sessionCookiePrefix)) {
 				const [key, value] = cookie.split('=');
-				user[key.slice(prefix.length)] = value;
+				user[key.slice(this.sessionCookiePrefix.length)] = value;
 			}
 		});
 		return user;
 	}
 
-	public getSignupMarkupIndex(): number {
+	
+	public getSignupViewSectionMarkupIndex(): number {
 		let markupIndexCookie = Number(this.getFromSessionStorage("signupViewSection"));
-		if (!markupIndexCookie || markupIndexCookie > 3)
+		if (!markupIndexCookie || markupIndexCookie < 0 || markupIndexCookie > 3)
 			markupIndexCookie = 0;
 		return markupIndexCookie;
 	}
 
-	public async getWorksites(): Promise<Map<number, string>> {
+	public modifySignupViewSectionMarkupIndex(offset: number) {
+		const markupIndex = this.getSignupViewSectionMarkupIndex() + offset;
+		this.setToSessionStorage("signupViewSection", String(markupIndex));
+	}
+
+	public saveFormDataAsSessionCookies(formData: FormData) {
+		for (const [key, value] of formData.entries())
+			this.setCookie(key, String(value), this.sessionCookiePrefix);
+	}
+	
+	public async getWorksiteOptions(): Promise<Map<number, string>> {
 		const url: string = `${this.baseUrl}user/get_worksites`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();

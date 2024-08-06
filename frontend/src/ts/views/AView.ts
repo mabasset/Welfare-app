@@ -12,6 +12,20 @@ export default abstract class {
 		this.parentElement.innerHTML = this.markup;
 	}
 
+	public renderErrorMarkup(errorCode: number): void {
+		switch (errorCode) {
+			case 401:
+				this.markup = this.generateUnauthorizedMarkup();
+				break;
+			case 404:
+				this.markup = this.generateNotFoundMarkup();
+				break;
+			default:
+				break;
+		}
+		this.render();
+	}
+
 	protected generateNotFoundMarkup() : string {
 		return `
 			<h1>404 not found<h1>
@@ -24,17 +38,23 @@ export default abstract class {
 		`;
 	}
 
-	public renderErrorMarkup(errorCode: number): void {
-		switch (errorCode) {
-			case 401:
-				this.markup = this.generateUnauthorizedMarkup();
-				break;
-			case 404:
-				this.markup = this.generateNotFoundMarkup();
-				break;
-			default:
-				break;
-		}
-		this.parentElement.innerHTML = this.markup;
+	protected handleModal(): void {
+		const openBtn = document.querySelector("[data-open-modal]");
+		const closeBtn = document.querySelector("[data-close-modal]");
+		const modal = document.querySelector("[data-modal]") as HTMLDialogElement;
+
+		openBtn.addEventListener("click", () => modal.showModal());
+		closeBtn.addEventListener("click", () => modal.close());
+		modal.addEventListener("click", event => {
+			const modalDimensions = modal.getBoundingClientRect()
+			if (
+				event.clientX < modalDimensions.left ||
+				event.clientX > modalDimensions.right ||
+				event.clientY < modalDimensions.top ||
+				event.clientY > modalDimensions.bottom
+			) {
+				modal.close()
+			}
+		})
 	}
 }

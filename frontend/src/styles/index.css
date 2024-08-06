@@ -39,3 +39,7 @@ select {
 	background-position: calc(100% - 1rem) center;
 	background-size: 12px 12px;
 }
+
+dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.5);
+}

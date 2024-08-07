@@ -14,5 +14,16 @@ export default class {
 		if (user.isLogged)
 			return this.view.renderErrorMarkup(401);
 		this.view.render();
+		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
+	}
+
+	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {
+		const formData = new FormData(form);
+		for(const [key, value] of formData.entries())
+			console.log(key, ":", value);
+		if (form.id === "login-form")
+			await this.model.login(formData);
+		else
+			await this.model.retrievePassword(formData);
 	}
 }

@@ -45,7 +45,7 @@ export default abstract class {
 
 		openBtn.addEventListener("click", () => modal.showModal());
 		closeBtn.addEventListener("click", () => modal.close());
-		modal.addEventListener("click", event => {
+		modal.addEventListener("mousedown", event => {
 			const modalDimensions = modal.getBoundingClientRect()
 			if (
 				event.clientX < modalDimensions.left ||

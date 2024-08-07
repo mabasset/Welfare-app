@@ -269,4 +269,16 @@ export default abstract class extends AView {
 			});
 		});
 	}
+
+	public addFormSubmitionHandler(handler: Function): void {
+		const forms = document.querySelectorAll("form");
+		forms.forEach(form => {
+			form.addEventListener("submit", event => {
+				event.preventDefault();
+				if (!this.formCheckValidity(form))
+					return ;
+				handler(form);
+			});
+		});
+	}
 }

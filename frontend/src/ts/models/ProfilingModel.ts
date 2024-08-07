@@ -13,19 +13,25 @@ export default class extends Model {
 		super();
 	}
 
-	public async userSignup(formData: FormData): Promise<void> {
-		const url: string = `${this.userAppUrl}signup/`;
-		const response = await this.sendRequest(url, "POST", formData);
-		const json = await response.json();
-		console.log(json)
-		const user : user = { isLogged: json.is_authenticated };
+	public async signup(formData: FormData): Promise<void> {
+		console.log("signup");
+		// const url: string = `${this.userAppUrl}signup/`;
+		// const response = await this.sendRequest(url, "POST", formData);
+		// const json = await response.json();
+		// console.log(json)
+		// const user : user = { isLogged: json.is_authenticated };
 	}
 
-	public async userLogin(): Promise<void> {
-		const url: string = `${this.userAppUrl}login/`;
-		const response = await this.sendRequest(url);
-		const json = await response.json();
-		const user : user = { isLogged: json.is_authenticated };
+	public async login(formData: FormData): Promise<void> {
+		console.log("login");
+		//const url: string = `${this.baseUrl}user/login`;
+		//const response = await this.sendRequest(url);
+		//const json = await response.json();
+		//const user : user = { isLogged: json.is_authenticated };
+	}
+
+	public async retrievePassword(formData: FormData): Promise<void> {
+		console.log("retrieve password");
 	}
 
 	public getUserDataFromCookies(): user {

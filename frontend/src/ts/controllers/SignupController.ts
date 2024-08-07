@@ -36,9 +36,10 @@ export default class {
 		this.renderView();
 	}
 
-	private async formSubmitionHandler(formData: FormData): Promise<void> {
+	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {
+		const formData = new FormData(form);
 		for(const [key, value] of formData.entries())
 			console.log(key, ":", value);
-		await this.model.userSignup(formData);
+		await this.model.signup(formData);
 	}
 }

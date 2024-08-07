@@ -177,7 +177,7 @@ export default class extends AProfilingView {
 				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-2 sm:gap-5 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("email", true)}
-						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" custommaxlength="100"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
@@ -344,17 +344,6 @@ export default class extends AProfilingView {
 		button.addEventListener('click', () => {
 			if (!this.formCheckValidity(form))
 				return;
-			const formData = new FormData(form);
-			handler(formData);
-		});
-	}
-
-	public addFormSubmitionHandler(handler: Function): void {
-		const form = document.querySelector("form");
-		form.addEventListener("submit", event => {
-			event.preventDefault();
-			if (!this.formCheckValidity(form))
-				return ;
 			const formData = new FormData(form);
 			handler(formData);
 		});

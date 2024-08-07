@@ -1,8 +1,9 @@
 import Model from "./Model";
+import { endpointGetWorksites, endpointSignup, endpointLogin, endpointRetrievePassword } from "../config"
+
 
 export default class extends Model {
 
-	private userAppUrl = this.baseApiUrl + 'user/';
 	private sessionCookiePrefix = "s_";
 
 	public state : {
@@ -15,7 +16,8 @@ export default class extends Model {
 
 	public async signup(formData: FormData): Promise<void> {
 		console.log("signup");
-		// const url: string = `${this.userAppUrl}signup/`;
+		const url: string = `${this.userAppUrl + endpointSignup}`;
+		console.log(url)
 		// const response = await this.sendRequest(url, "POST", formData);
 		// const json = await response.json();
 		// console.log(json)
@@ -24,7 +26,8 @@ export default class extends Model {
 
 	public async login(formData: FormData): Promise<void> {
 		console.log("login");
-		//const url: string = `${this.baseUrl}user/login`;
+		const url: string = `${this.userAppUrl + endpointLogin}`;
+		console.log(url)
 		//const response = await this.sendRequest(url);
 		//const json = await response.json();
 		//const user : user = { isLogged: json.is_authenticated };
@@ -32,6 +35,8 @@ export default class extends Model {
 
 	public async retrievePassword(formData: FormData): Promise<void> {
 		console.log("retrieve password");
+		const url: string = `${this.userAppUrl + endpointRetrievePassword}`;
+		console.log(url)
 	}
 
 	public getUserDataFromCookies(): user {
@@ -67,7 +72,7 @@ export default class extends Model {
 	}
 	
 	public async getWorksiteOptions(): Promise<Map<number, string>> {
-		const url: string = `${this.userAppUrl}get_worksites`;
+		const url: string = `${this.userAppUrl + endpointGetWorksites}`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const worksitesMap = new Map<number, string>();

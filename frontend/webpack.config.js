@@ -28,7 +28,12 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin({
 			'process.env': {
-				PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH) || 6,
+				ENDPOINT_USER_GET_DATA: JSON.stringify(process.env.ENDPOINT_USER_GET_DATA) || 'get_data/',
+				ENDPOINT_USER_GET_WORKSITES: JSON.stringify(process.env.ENDPOINT_USER_GET_WORKSITES) || 'get_worksites/',
+				ENDPOINT_USER_SIGNUP: JSON.stringify(process.env.ENDPOINT_USER_SIGNUP) || 'signup/',
+				ENDPOINT_USER_LOGIN: JSON.stringify(process.env.ENDPOINT_USER_LOGIN) || 'login/',
+				ENDPOINT_USER_RETRIEVE_PASSWORD: JSON.stringify(process.env.ENDPOINT_USER_RETRIEVE_PASSWORD) || 'retrieve_password/',
+				PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH) || 8,
 				PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH) || 128,
 				PASSWORD_MIN_AMOUNT_LOWER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_LOWER) || 1,
 				PASSWORD_MIN_AMOUNT_UPPER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_UPPER) || 1,

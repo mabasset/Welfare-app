@@ -1,11 +1,11 @@
-import { ip, port } from "../config"
+import { ip, port, endpointGetData } from "../config";
 
 export default class {
 
 	protected baseApiUrl = `https://${ip}:${port}/api/`;
+	protected userAppUrl = this.baseApiUrl + 'user/';
 	
 	constructor() {
-
 	}
 	
 	public setCookie(key: string, value: string, prefix?: string): void {
@@ -52,7 +52,7 @@ export default class {
 	}
 
 	public async getUserData(): Promise<user> {
-		const url: string = `${this.baseApiUrl}user/get_data/`;
+		const url: string = `${this.userAppUrl + endpointGetData}`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;

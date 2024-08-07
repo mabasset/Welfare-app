@@ -8,10 +8,7 @@ class AdminConfig(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('name', 'surname', 'birthday', 'marital_status', 'childs', 'elderly_parents')}),
-        ('Location info', {'fields': ('residence', 'domicile', 'worksite')}),
-		('Interests', {'fields': ('interests',)}),
-        ('Important dates', {'fields': ('last_login',)}),
+        ('Required personal info', {'fields': ('name', 'surname')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )
     search_fields = ('id', 'email', 'name', 'surname')
@@ -20,10 +17,8 @@ class AdminConfig(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'name', 'surname', 'password1', 'password2',
-                       'birthday', 'marital_status', 'childs', 'elderly_parents', 'residence', 'domicile'),
+            'fields': ('email', 'name', 'surname', 'password1', 'password2'),
         }),
     )
 
 admin.site.register(User, AdminConfig)
-# admin.site.register(Worksite)

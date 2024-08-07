@@ -1,6 +1,8 @@
 import Model from "./Model";
 
 export default class extends Model {
+
+	private userAppUrl = this.baseApiUrl + 'user/';
 	private sessionCookiePrefix = "s_";
 
 	public state : {
@@ -12,14 +14,15 @@ export default class extends Model {
 	}
 
 	public async userSignup(formData: FormData): Promise<void> {
-		const url: string = `${this.baseUrl}user/signup`;
-		const response = await this.sendRequest(url);
+		const url: string = `${this.userAppUrl}signup/`;
+		const response = await this.sendRequest(url, "POST", formData);
 		const json = await response.json();
+		console.log(json)
 		const user : user = { isLogged: json.is_authenticated };
 	}
 
 	public async userLogin(): Promise<void> {
-		const url: string = `${this.baseUrl}user/login`;
+		const url: string = `${this.userAppUrl}login/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const user : user = { isLogged: json.is_authenticated };
@@ -58,7 +61,7 @@ export default class extends Model {
 	}
 	
 	public async getWorksiteOptions(): Promise<Map<number, string>> {
-		const url: string = `${this.baseUrl}user/get_worksites`;
+		const url: string = `${this.userAppUrl}get_worksites`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const worksitesMap = new Map<number, string>();

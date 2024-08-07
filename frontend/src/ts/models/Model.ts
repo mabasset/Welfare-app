@@ -2,7 +2,7 @@ import { ip, port } from "../config"
 
 export default class {
 
-	protected baseUrl = `https://${ip}:${port}/api/`;
+	protected baseApiUrl = `https://${ip}:${port}/api/`;
 	
 	constructor() {
 
@@ -36,7 +36,9 @@ export default class {
 		console.log(document.cookie)
 	}
 
-	protected async sendRequest(url: string, method: string = "GET", body: string = ""): Promise<Response> {
+	protected async sendRequest(url: string, method?: string, body?: FormData | string): Promise<Response> {
+		if (!method)
+			method = "GET";
 		const headers: HeadersInit = method === "POST" ? {
 			"X-CSRFToken": this.getCookie("csrftoken")
 		} : {};
@@ -50,7 +52,7 @@ export default class {
 	}
 
 	public async getUserData(): Promise<user> {
-		const url: string = `${this.baseUrl}user/get_data`;
+		const url: string = `${this.baseApiUrl}user/get_data/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;

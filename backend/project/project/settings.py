@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -23,41 +24,42 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'django_password_validators',
 	'user'
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
@@ -67,33 +69,51 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('DATABASE_HOST'), # For local development, use 'localhost' or '127.0.0.1'
-        'PORT': os.getenv('DATABASE_PORT'), # Default PostgreSQL port is usually '5432' 
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'HOST': os.getenv('DATABASE_HOST'), # For local development, use 'localhost' or '127.0.0.1'
+		'PORT': os.getenv('DATABASE_PORT'), # Default PostgreSQL port is usually '5432' 
+		'NAME': os.getenv('DATABASE_NAME'),
+		'USER': os.getenv('DATABASE_USER'),
+		'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+	}
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
+PASSWORD_HASHERS = [
+	'django.contrib.auth.hashers.Argon2PasswordHasher',
+	'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+	'django.contrib.auth.hashers.BCryptPasswordHasher',
+	'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+	'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+]
+
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+		'OPTIONS': {
+			'min_length': int(os.getenv('PASSWORD_MIN_LENGTH', 8)),
+		}
+	},
+	{
+		'NAME': 'user.validators.MaxLengthValidator',
+		'OPTIONS': {
+			'max_length': int(os.getenv('PASSWORD_MAX_LENGTH', 128)),
+		}
+	},
+	{
+		'NAME': 'django_password_validators.password_character_requirements.password_validation.PasswordCharacterValidator',
+		'OPTIONS': {
+			 'min_length_lower': int(os.getenv('PASSWORD_MIN_AMOUNT_LOWER', 1)),
+			 'min_length_upper': int(os.getenv('PASSWORD_MIN_AMOUNT_UPPER', 1)),
+			 'min_length_digit': int(os.getenv('PASSWORD_MIN_AMOUNT_DIGIT', 1)),
+			 'min_length_special': int(os.getenv('PASSWORD_MIN_AMOUNT_SPECIAL', 1)),
+			 'special_characters': os.getenv('PASSWORD_SPECIAL_CHARACTERS', '_*-+!?,.;:')
+		 }
+	},
 ]
 
 

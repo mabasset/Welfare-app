@@ -154,17 +154,6 @@ export default abstract class extends AView {
 					`${labelText} is invalid`
 			},
 			{
-				attribute: "uppercase",
-				isValid: (input: HTMLInputElement): boolean => {
-					const amount = Number(input.getAttribute("uppercase"));
-					return input.value.match(/[A-Z]/g)?.length >= amount;
-				},
-				generateErrorMessage: (input: HTMLInputElement, labelText: string): string => {
-					const amount = Number(input.getAttribute("uppercase"));
-					return `${labelText} must contain at least ${amount} uppercase letter${amount > 1 ? 's' : ''}`;
-				}
-			},
-			{
 				attribute: "lowercase",
 				isValid: (input: HTMLInputElement): boolean => {
 					const amount = Number(input.getAttribute("lowercase"));
@@ -173,6 +162,17 @@ export default abstract class extends AView {
 				generateErrorMessage: (input: HTMLInputElement, labelText: string): string => {
 					const amount = Number(input.getAttribute("lowercase"));
 					return `${labelText} must contain at least ${amount} lowercase letter${amount > 1 ? 's' : ''}`;
+				}
+			},
+			{
+				attribute: "uppercase",
+				isValid: (input: HTMLInputElement): boolean => {
+					const amount = Number(input.getAttribute("uppercase"));
+					return input.value.match(/[A-Z]/g)?.length >= amount;
+				},
+				generateErrorMessage: (input: HTMLInputElement, labelText: string): string => {
+					const amount = Number(input.getAttribute("uppercase"));
+					return `${labelText} must contain at least ${amount} uppercase letter${amount > 1 ? 's' : ''}`;
 				}
 			},
 			{

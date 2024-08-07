@@ -1,4 +1,6 @@
 import AProfilingView from "./AProfilingView";
+import { passwordMinLength, passwordMaxLength, passwordMinAmountLower, passwordMinAmountUpper,
+		passwordMinAmountDigit, passwordMinAmountSpecial, passwordSpecialCharacters } from "../../config"
 
 export default class extends AProfilingView {
 
@@ -188,7 +190,13 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("password", true)}
-						<input id="password" name="password" type="password" required minlength="8" custommaxlength="25" uppercase="1" lowercase="1" digit="1" special="1 _*-+!?,.;:"
+						<input id="password" name="password" type="password" required
+							minlength=${passwordMinLength}
+							custommaxlength=${passwordMaxLength}
+							lowercase=${passwordMinAmountLower}
+							uppercase=${passwordMinAmountUpper}
+							digit=${passwordMinAmountDigit}
+							special="${passwordMinAmountSpecial} ${passwordSpecialCharacters}"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<button type="button" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="password">
 							<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="hidden bi bi-eye" viewBox="0 0 16 16">

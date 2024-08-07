@@ -13,9 +13,6 @@ export default class {
 		const user = await this.model.getUserData();
 		if (user.isLogged)
 			return this.view.renderErrorMarkup(401);
-	}
-
-	public async handleSubmit(): Promise<void> {
-		
+		this.view.render();
 	}
 }

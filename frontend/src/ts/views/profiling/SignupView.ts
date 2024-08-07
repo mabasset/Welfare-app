@@ -6,15 +6,15 @@ export default class extends AProfilingView {
 
 	private user: user;
 	private markupIndex: number;
-	private markupGeneratorFunctions = new Array<Function>;
+	private markupGenerationFunctions = new Array<Function>;
 	private worksites: Map<number, string>;
 	
 	constructor() {
 		super();
-		this.markupGeneratorFunctions.push(this.generateFirstMarkup.bind(this));
-		this.markupGeneratorFunctions.push(this.generateSecondMarkup.bind(this));
-		this.markupGeneratorFunctions.push(this.generateThirdMarkup.bind(this));
-		this.markupGeneratorFunctions.push(this.generateFinalMarkup.bind(this));
+		this.markupGenerationFunctions.push(this.generateFirstMarkup);
+		this.markupGenerationFunctions.push(this.generateSecondMarkup);
+		this.markupGenerationFunctions.push(this.generateThirdMarkup);
+		this.markupGenerationFunctions.push(this.generateFinalMarkup);
 	}
 
 	public override render(user: user, markupIndex: number, worksites: Map<number, string>): void {
@@ -24,7 +24,7 @@ export default class extends AProfilingView {
 		this.user = user;
 		this.markupIndex = markupIndex;
 		this.worksites = worksites;
-		this.markup = this.generateLayoutMarkup();
+		this.markup = this.generateMarkup();
 		super.render();
 		this.handleInputsValidation();
 		if (markupIndex === secondMarkupIndex)
@@ -33,10 +33,15 @@ export default class extends AProfilingView {
 			this.handlePasswordInputTypeToggler();
 	}
 
-	protected override generateMarkup(): string {
-		const functionToCall = this.markupGeneratorFunctions[this.markupIndex];
-		const markup = functionToCall();
-		return markup;
+	protected override generateMainMarkup(): string {
+		const html = `
+			<main class="w-full max-w-screen-md mx-auto my-6 sm:my-10">
+				<form class="min-h-96 bg-white sm:rounded-lg p-4 sm:p-8 w-full flex flex-col" novalidate>
+					${this.markupGenerationFunctions[this.markupIndex].call(this)}
+				</form>
+			</main>
+		`
+		return html;
 	}
 
 	private generateFirstMarkup(): string {
@@ -45,19 +50,19 @@ export default class extends AProfilingView {
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-2 sm:gap-5 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("name", true)}
-						<input id="name" name="name" value="${this.user.name || ''}" type="text" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
+						<input id="name" name="name" value="${this.user.name || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("surname", true)}
-						<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
+						<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("birthday", true)}
-						<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required
+						<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" autocomplete="bday" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
@@ -118,33 +123,27 @@ export default class extends AProfilingView {
 						</ul>
 						<input id="hidden-worksite" name="worksite" value="${this.user.worksite || ''}" type="hidden">
 					</div>
-					<div class="col-span-6 sm:col-span-4 relative" data-input-group>
+					<div class="col-span-6 relative" data-input-group>
 						${this.generateLabelFor("street", true)}
-						<input id="street" name="street" value="${this.user.street || ''}" type="text" custommaxlength="50" required
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
-					</div>
-					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
-						${this.generateLabelFor("house-number", false)}
-						<input id="house-number" name="houseNumber" value="${this.user.houseNumber || ''}" type="text" custommaxlength="20"
+						<input id="street" name="street" value="${this.user.street || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("postal-code", true)}
-						<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" custommaxlength="10" required autocomplete="on"
+						<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("city", true)}
-						<input id="city" name="city" value="${this.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="57" required
+						<input id="city" name="city" value="${this.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
-					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
+					<div class="col-span-6 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("country", true)}
-						<input id="country" name="country" value="${this.user.country || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
+						<input id="country" name="country" value="${this.user.country || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
@@ -178,13 +177,13 @@ export default class extends AProfilingView {
 				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-2 sm:gap-5 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("email", true)}
-						<input id="email" name="email" value="${this.user.email || ''}" type="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$"
+						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-email", true)}
-						<input id="confirm-email" type="email" required match="#email"
+						<input id="confirm-email" type="email" autocomplete="email" required match="#email"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<section class="text-xs text-rose-600 p-1"></section>
 					</div>
@@ -213,7 +212,7 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-password", true)}
-						<input id="confirm-password" type="password" required match="#password"
+						<input id="confirm-password" type="password" autocomplete="new-password" required match="#password"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
 						<button type="button" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="confirm-password">
 							<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="hidden bi bi-eye" viewBox="0 0 16 16">
@@ -230,7 +229,9 @@ export default class extends AProfilingView {
 					</div>
 				</div>
 				<div class="flex flex-col ms-1 mb-2" data-input-group>
-					<label for="policy" class="font-medium">Declaration of Consent*</label>
+					<div>
+						<label for="policy" class="font-medium">Declaration of Consent*</label>
+					</div>
 					<div class="flex items-center text-slate-600">
 						<input type="checkbox" id="policy" class="shrink-0 h-5 sm:h-4 w-5 sm:w-4 me-3 sm:me-2 mt-0.5" required>
 						<label for="policy">
@@ -312,8 +313,8 @@ export default class extends AProfilingView {
 					<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
 						${this.markupIndex + 1} / 4
 					</span>
-					<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} sm:me-1 bg-rose-600 hover:bg-rose-800 shadow-md h-full rounded-md w-32 h-full mb-2 me-1 sm:me-0">
-						<span class="text-white uppercase font-semibold text-sm sm:text-base text-shadow-md">Register<span>
+					<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} h-full sm:me-1 w-32 h-full mb-2 me-1 sm:me-0 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Register<span>
 					</button>
 				</div>
 				<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
@@ -326,20 +327,6 @@ export default class extends AProfilingView {
 			</div>
 		`
 		return html;
-	}
-
-	private	handleInputsValidation() {
-		const inputs = document.querySelectorAll("input");
-		inputs.forEach(input => {
-			["input", "blur"].forEach(eventType => {
-				input.addEventListener(eventType, () => {
-					const inputGroup = input.closest("[data-input-group]");
-					if (!inputGroup)
-						return;
-					this.inputGroupCheckValidity(inputGroup);
-				});
-			});
-		});
 	}
 	
 	public addBackwordButtonClickHandler(handler: Function): void {
@@ -394,24 +381,6 @@ export default class extends AProfilingView {
 			option.addEventListener("mouseover", () => {
 				hiddenInput.value = option.value;
 				searchInput.value = option.innerText;
-			});
-		});
-	}
-
-	private handlePasswordInputTypeToggler(): void {
-		const buttons = document.querySelectorAll("[data-type-toggler]") as NodeListOf<HTMLElement>;
-
-		buttons.forEach((button) => {
-			const inputId = button.dataset.typeToggler;
-			const input = document.getElementById(inputId) as HTMLInputElement;
-			const eyeSvg = button.querySelector(".bi-eye");
-			const eyeSlashSvg = button.querySelector(".bi-eye-slash");
-
-			button.addEventListener("click", () => {
-				const inputType = input.type;
-				input.type = inputType === "password" ? "text" : "password";
-				eyeSvg.classList.toggle("hidden");
-				eyeSlashSvg.classList.toggle("hidden");
 			});
 		});
 	}

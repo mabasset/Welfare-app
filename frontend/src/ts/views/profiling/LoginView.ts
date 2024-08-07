@@ -4,52 +4,81 @@ export default class extends AProfilingView {
 	
 	constructor() {
 		super();
-		this.markup = this.generateLayoutMarkup();
+	}
+
+	public override render(): void {
+		this.markup = this.generateMarkup();
+		super.render();
+		this.handlePasswordInputTypeToggler();
+		this.handleModal();
+		this.handleInputsValidation();
 	}
 
 	protected override generateMarkup(): string {
-		return `
-			<div class="card-header tekne fs-4 p-md-3 p-2">
-				Login
-			</div>
-			<div class="card-body py-md-0 py-2">
-				<div class="row h-100 row-gap-2 justify-content-around">
-					<div class="col-5 d-md-block d-none">
-						<img src="" />
+		let	html = `
+			<dialog data-modal class="w-full sm:max-w-xs rounded-lg">
+				<div class="flex flex-col">
+					<div class="px-3 pt-3">
+						<button data-close-modal>close</button>
 					</div>
-					<div class="col-md-5">
-						<div class="d-flex flex-column h-100 justify-content-around">
-							<div class="d-flex flex-column row-gap-3">
-								<label for="email" class="display-6 fs-5 fw-normal text-start">
-									Indirizzo E-mail
-								</label>
-								<input id="email" type="text" placeholder="Inserisci la tua mail" class="border-0 border-bottom" />
-							</div>
-							<div class="d-flex flex-column row-gap-3">
-								<label for="password" class="display-6 fs-5 fw-normal text-start">
-									Password
-								</label>
-								<input id="password" type="text" placeholder="Inserisci la tua password" class="border-0 border-bottom" />
-							</div>
-							<div>
-								<a href="/" type="button" class="tekne mt-md-0 mt-4 mb-md-2 btn btn-light border border-secondary border-2 rounded-0 fs-4 px-5 py-1" style="color: #34436c;" data-link>
-									Submit
-								</a>
-							</div>
-						</div>
-					</div>
+					<form class="flex flex-col items-center py-4 px-7">
+						<h2 class="mb-1.5 text-2xl font-semibold">Retrieve Password</h2>
+						<p class="text-base text-center leading-5">
+							Please enter the email address you provided at registration and press 'Send'. You will receive an email with instructions to follow.
+						</p>
+						<button type="submit" class="mt-12 mb-4 flex w-full justify-center rounded-md bg-rose-600 px-3 py-1.5 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+							<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Send<span>
+						</button>
+					</form>
 				</div>
-			</div>
-			<div class="card-footer p-md-4 p-3">
-			</div>
+			</dialog>
 		`
+		html += super.generateMarkup();
+		return html;
 	}
 
-	public addEventHandler(handler : Function) {
-		document.addEventListener('click', (event) : void => {
-			const input = (event.target as HTMLElement).closest("[data-link]") as HTMLAnchorElement;
-			if (!input) return;
-			handler();
-		})
+	//<main class="w-full max-w-screen-md mx-auto my-6 sm:my-10">
+	protected override generateMainMarkup(): string {
+		const html = `
+			<main class="w-full mx-auto sm:max-w-lg p-6 sm:p-12 bg-white rounded">
+				<h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Log in to your account</h2>
+				<form class="mt-6">
+					<div class="relative" data-input-group>
+						<label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" custommaxlength="50"
+							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
+						<section class="text-xs text-rose-600 p-1"></section>
+					</div>
+					<div data-input-group>
+						<div class="flex items-center justify-between">
+							<label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+							<div class="text-sm">
+			  					<a role="button" class="font-semibold text-rose-600 hover:text-rose-800" data-open-modal>Forgot password?</a>
+							</div>
+						</div>
+						<div class="relative">
+							<input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" custommaxlength="25" uppercase="1" lowercase="1" digit="1" special="1 _*-+!?,.;:"
+								class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+							<button type="button" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="password">
+								<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="hidden bi bi-eye" viewBox="0 0 16 16">
+									<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+									<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+									<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+									<path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+									<path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+								</svg>
+							</button>
+							<section class="text-xs text-rose-600 p-1"></section>
+						</div>
+					</div>
+					<button type="submit" class="mt-4 flex w-full justify-center rounded-md bg-rose-600 px-3 py-1.5 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Enter<span>
+					</button>
+				<form>
+			</main>
+		`
+		return html;
 	}
 }

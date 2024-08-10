@@ -1,6 +1,5 @@
 import '../styles/index.css';
 
-import Model from './models/Model';
 import ProfilingModel from './models/ProfilingModel';
 import RootController from './controllers/RootController';
 import SignupController from './controllers/SignupController';
@@ -9,10 +8,9 @@ import Router from './Router';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-	const model = new Model();
 	const profilingModel = new ProfilingModel();
 
-	const rootController = new RootController(model);
+	const rootController = new RootController(profilingModel);
 	const signupController = new SignupController(profilingModel);
 	const loginController = new LoginController(profilingModel);
 

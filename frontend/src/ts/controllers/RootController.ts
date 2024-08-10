@@ -1,11 +1,11 @@
-import Model from "../models/Model";
+import ProfilingModel from "../models/ProfilingModel";
 import RootView from "../views/RootView";
 
 export default class {
 
 	private view: RootView;
 
-	constructor(private model: Model) {
+	constructor(private model: ProfilingModel) {
 		this.view = new RootView();
 	}
 

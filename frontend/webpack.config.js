@@ -27,20 +27,28 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			'process.env': {
-				ENDPOINT_USER_GET_DATA: JSON.stringify(process.env.ENDPOINT_USER_GET_DATA) || 'get_data/',
-				ENDPOINT_USER_GET_WORKSITES: JSON.stringify(process.env.ENDPOINT_USER_GET_WORKSITES) || 'get_worksites/',
-				ENDPOINT_USER_SIGNUP: JSON.stringify(process.env.ENDPOINT_USER_SIGNUP) || 'signup/',
-				ENDPOINT_USER_LOGIN: JSON.stringify(process.env.ENDPOINT_USER_LOGIN) || 'login/',
-				ENDPOINT_USER_RETRIEVE_PASSWORD: JSON.stringify(process.env.ENDPOINT_USER_RETRIEVE_PASSWORD) || 'retrieve_password/',
-				PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH) || 8,
-				PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH) || 128,
-				PASSWORD_MIN_AMOUNT_LOWER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_LOWER) || 1,
-				PASSWORD_MIN_AMOUNT_UPPER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_UPPER) || 1,
-				PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT) || 1,
-				PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL) || 1,
-				PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS) || '_*-+!?,.;:',
+			HOST: JSON.stringify(process.env.HOST),
+			PORT: JSON.stringify(process.env.FRONTEND_PORT),
+			LOCATION_BACKEND: JSON.stringify(process.env.LOCATION_BACKEND),
+			API: {
+				user: {
+					location: JSON.stringify(process.env.LOCATION_USER_APP),
+					endpoints: {
+						getData: JSON.stringify(process.env.ENDPOINT_USER_GET_DATA),
+						getWorksites: JSON.stringify(process.env.ENDPOINT_USER_GET_WORKSITES),
+						signup: JSON.stringify(process.env.ENDPOINT_USER_SIGNUP),
+						login: JSON.stringify(process.env.ENDPOINT_USER_LOGIN),
+						retrievePassword: JSON.stringify(process.env.ENDPOINT_USER_RETRIEVE_PASSWORD),
+					}
+				},
 			},
+			PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH) || 8,
+			PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH) || 128,
+			PASSWORD_MIN_AMOUNT_LOWER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_LOWER) || 1,
+			PASSWORD_MIN_AMOUNT_UPPER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_UPPER) || 1,
+			PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT) || 1,
+			PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL) || 1,
+			PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS) || '_*-+!?,.;:',
 		}),
 	],
 	output: {

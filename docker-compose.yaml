@@ -9,11 +9,11 @@ services:
       - ./frontend/src:/home/app/src
       - ./frontend/public:/home/app/static/public
       - static_files:/home/app/static
+    env_file: .env
     build:
       context: ./frontend/
     ports:
-      - 443:443
-    env_file: .env
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
     restart: always
     depends_on:
       - backend
@@ -22,11 +22,11 @@ services:
 
   backend:
     container_name: backend
+    env_file: .env
     build:
       context: ./backend/
     expose:
-      - 8000
-    env_file: .env
+      - ${BACKEND_PORT}
     restart: always
     depends_on:
       - db
@@ -40,12 +40,9 @@ services:
   db:
     image: postgres:15
     container_name: postgresql
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file: .env
     ports:
-      - 5432:5432
+      - ${DATABASE_PORT}:${DATABASE_PORT}
     restart: always
     networks:
       - back_db

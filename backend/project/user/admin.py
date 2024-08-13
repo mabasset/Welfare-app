@@ -8,8 +8,13 @@ class AdminConfig(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Required personal info', {'fields': ('name', 'surname')}),
+        ('Required Personal info', {'fields': ('name', 'surname', 'birthday')}),
+        # ('Other Personal info', {'fields': ('interest', 'childrens', 'elderly_parents')}),
+        ('Residence', {'fields': ('street', 'postal_code', 'city', 'country')}),
+        ('Work Location', {'fields': ('worksite',)}),
+        ('Areas of interest', {'fields': ('physical','economic','psychological','family')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Important dates', {'fields': ('last_login',)}),
     )
     search_fields = ('id', 'email', 'name', 'surname')
     ordering = ('id',)

@@ -49,6 +49,7 @@ module.exports = {
 			PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT) || 1,
 			PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL) || 1,
 			PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS) || '_*-+!?,.;:',
+			SESSION_COOKIES_PREFIX: JSON.stringify(process.env.SESSION_COOKIES_PREFIX),
 		}),
 	],
 	output: {

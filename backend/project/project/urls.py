@@ -19,6 +19,6 @@ from user import urls
 import os
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path(os.getenv('LOCATION_USER_APP')+'/', include('user.urls')),
+    path(os.getenv('LOCATION_BACKEND')+'/admin/', admin.site.urls),
+    path(os.getenv('LOCATION_BACKEND')+'/'+os.getenv('LOCATION_USER_APP')+'/', include('user.urls')),
 ]

@@ -20,3 +20,4 @@ declare const PASSWORD_MIN_AMOUNT_UPPER: string;
 declare const PASSWORD_MIN_AMOUNT_DIGIT: string;
 declare const PASSWORD_MIN_AMOUNT_SPECIAL: string;
 declare const PASSWORD_SPECIAL_CHARACTERS: string;
+declare const SESSION_COOKIES_PREFIX: string;

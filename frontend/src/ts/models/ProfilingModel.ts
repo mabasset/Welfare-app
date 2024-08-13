@@ -2,7 +2,6 @@ import Model from "./AModel";
 
 export default class extends Model {
 
-	private sessionCookiePrefix = "s_";
 	private	endpoints = API.user.endpoints;
 
 	constructor() {
@@ -19,25 +18,23 @@ export default class extends Model {
 	}
 
 	public async signup(formData: FormData): Promise<void> {
-		console.log("signup");
-		// const url: string = `${this.userAppUrl + endpointSignup}`;
-		// const response = await this.sendRequest(url, "POST", formData);
-		// const json = await response.json();
-		// console.log(json)
-		// const user : user = { isLogged: json.is_authenticated };
+		const url: string = `${this.baseUrl + this.endpoints.signup}/`;
+		const response = await this.sendRequest(url, "POST", formData);
+		const json = await response.json();
+		const user : user = { isLogged: json.is_authenticated };
 	}
 
 	public async login(formData: FormData): Promise<void> {
 		console.log("login");
-		// const url: string = `${this.userAppUrl + endpointLogin}`;
-		//const response = await this.sendRequest(url);
-		//const json = await response.json();
-		//const user : user = { isLogged: json.is_authenticated };
+		const url: string = `${this.baseUrl + this.endpoints.login}/`;
+		const response = await this.sendRequest(url);
+		const json = await response.json();
+		const user : user = { isLogged: json.is_authenticated };
 	}
 
 	public async retrievePassword(formData: FormData): Promise<void> {
 		console.log("retrieve password");
-		// const url: string = `${this.userAppUrl + endpointRetrievePassword}`;
+		const url: string = `${this.baseUrl + this.endpoints.retrievePassword}/`;
 	}
 
 	public async getWorksiteOptions(): Promise<Map<number, string>> {
@@ -57,9 +54,9 @@ export default class extends Model {
 		const cookies = document.cookie.split(";");
 		cookies.forEach(cookie => {
 			cookie = cookie.trim();
-			if (cookie.startsWith(this.sessionCookiePrefix)) {
+			if (cookie.startsWith(SESSION_COOKIES_PREFIX)) {
 				const [key, value] = cookie.split('=');
-				user[key.slice(this.sessionCookiePrefix.length)] = value;
+				user[key.slice(SESSION_COOKIES_PREFIX.length)] = value;
 			}
 		});
 		return user;
@@ -79,7 +76,7 @@ export default class extends Model {
 
 	public saveFormDataAsSessionCookies(formData: FormData) {
 		for (const [key, value] of formData.entries())
-			this.setCookie(key, String(value), this.sessionCookiePrefix);
+			this.setCookie(key, String(value), SESSION_COOKIES_PREFIX);
 	}
 
 	private clearSessionCookies(user: user) {

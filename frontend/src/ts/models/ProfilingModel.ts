@@ -13,6 +13,9 @@ export default class extends Model {
 	public async getUserData(): Promise<user> {
 		const url: string = `${this.baseUrl + this.endpoints.getData}/`;
 		const response = await this.sendRequest(url);
+		if (!response.ok) {
+			throw new Error("Something went wrong", {cause: new Error("Original cause of the error")});
+		}
 		const json = await response.json();
 		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;
 		return { isLogged, name, surname, birthday, maritalStatus, childrens, elderlyParents };

@@ -11,6 +11,11 @@ module.exports = {
 		rules: [
 			{
 				test: /\.ts$/,
+				use: 'babel-loader',
+				exclude: /node_modules/
+			},
+			{
+				test: /\.ts$/,
 				loader: 'ts-loader',
 				options: {
 					configFile: path.resolve(__dirname, './tsconfig.json'),
@@ -59,4 +64,5 @@ module.exports = {
 	watchOptions: {
 		poll: 1000,
 	},
+	devtool: 'source-map',
 };

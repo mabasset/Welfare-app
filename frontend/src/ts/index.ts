@@ -6,6 +6,9 @@ import SignupController from './controllers/SignupController';
 import LoginController from './controllers/LoginController';
 import Router from './Router';
 
+//["offline", "online"].forEach(event => 
+//	window.addEventListener(event, () => window.location.reload()));
+
 document.addEventListener('DOMContentLoaded', () => {
 
 	const profilingModel = new ProfilingModel();

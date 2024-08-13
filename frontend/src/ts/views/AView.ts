@@ -1,7 +1,7 @@
 export default abstract class {
 
 	protected parentElement: HTMLElement;
-	protected markup: string;
+	protected markup = "";
 
 	constructor() {
 		this.parentElement = document.body;
@@ -10,6 +10,10 @@ export default abstract class {
 	public render() {
 		this.parentElement.className = "flex flex-col justify-between min-h-screen";
 		this.parentElement.innerHTML = this.markup;
+	}
+
+	public renderAlert() {
+		
 	}
 
 	public renderErrorMarkup(errorCode: number): void {
@@ -43,9 +47,9 @@ export default abstract class {
 		const closeBtn = document.querySelector("[data-close-modal]");
 		const modal = document.querySelector("[data-modal]") as HTMLDialogElement;
 
-		openBtn.addEventListener("click", () => modal.showModal());
-		closeBtn.addEventListener("click", () => modal.close());
-		modal.addEventListener("mousedown", event => {
+		openBtn?.addEventListener("click", () => modal.showModal());
+		closeBtn?.addEventListener("click", () => modal.close());
+		modal?.addEventListener("mousedown", event => {
 			const modalDimensions = modal.getBoundingClientRect()
 			if (
 				event.clientX < modalDimensions.left ||

@@ -1,21 +1,16 @@
-import ProfilingModel from "../models/ProfilingModel";
+import UserModel from "../models/UserModel";
 import RootView from "../views/RootView";
+import AController from "./AController";
 
-export default class {
+export default class extends AController<UserModel, RootView> {
 
-	private view: RootView;
-
-	constructor(private model: ProfilingModel) {
-		this.view = new RootView();
+	constructor(model: UserModel) {
+		const view = new RootView();
+		super(model, view);
 	}
 
-	public async renderView(): Promise<void> {
-		const user = await this.model.getUserData();
-		if (location.pathname !== "/")
-			this.view.renderErrorMarkup(404);
-		else if (user.isLogged)
-			this.view.renderHomeMarkup(user);
-		else
-			this.view.renderWelcomeMarkup();
+	public override async renderView(user: user): Promise<void> {
+		if (user.isLogged)
+			
 	}
 }

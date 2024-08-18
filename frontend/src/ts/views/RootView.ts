@@ -1,6 +1,6 @@
-import AProfilingView from "./profiling/AProfilingView";
+import AView from "./AView";
 
-export default class extends AProfilingView {
+export default class extends AView {
 
 	constructor () {
 		super();
@@ -53,16 +53,15 @@ export default class extends AProfilingView {
 					</span>
 				</div>
 			</main>
-			${this.generateFooterMarkup()}
 		`;
 	}
 
-	public renderHomeMarkup(user: user): void {
+	public renderHomeMarkup(user: user) {
 		this.markup = this.generateHomeMarkup(user);
 		this.parentElement.innerHTML = this.markup;
 	}
 
-	public renderWelcomeMarkup(): void {
+	public renderWelcomeMarkup() {
 		this.markup = this.generateWelcomeMarkup();
 		super.render();
 	}

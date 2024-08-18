@@ -1,207 +1,201 @@
 import AProfilingView from "./AProfilingView";
+import { getOffsetDate } from "../../helpers";
 
 export default class extends AProfilingView {
-	private user: user = {};
-	private markupIndex = 0;
-	private markupGenerationFunctions = new Array<Function>;
-	private worksites = new Map<number, string>;
+	private	markupIndex = 0;
+	private	worksites = new Map<number, string>();
 
-	
 	constructor() {
 		super();
-		this.markupGenerationFunctions.push(this.generateFirstMarkup);
-		this.markupGenerationFunctions.push(this.generateSecondMarkup);
-		this.markupGenerationFunctions.push(this.generateThirdMarkup);
-		this.markupGenerationFunctions.push(this.generateFinalMarkup);
 	}
 
-	public override render(user: user, markupIndex: number, worksites: Map<number, string>): void {
-		const secondMarkupIndex = 1;
-		const finalMarkupIndex = 3;
-
-		this.user = user;
-		this.markupIndex = markupIndex;
-		this.worksites = worksites;
-		this.markup = this.generateMarkup();
-		super.render();
-		this.handleInputsValidation();
-		if (markupIndex === secondMarkupIndex)
-			this.handleWorksiteInput();
-		if (markupIndex === finalMarkupIndex)
-			this.handlePasswordInputTypeToggler();
-	}
-
-	protected override generateMainMarkup(): string {
-		const html = `
-			<main class="w-full max-w-screen-md mx-auto my-6 sm:my-10">
-				<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
-					${this.markupGenerationFunctions[this.markupIndex].call(this)}
-				</form>
-			</main>
-		`
-		return html;
-	}
-
-	private generateFirstMarkup(): string {
-		const html = `
+	protected override renderMainMarkup() {
+		const	generatePersonalDataMarkup = () => `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4 text-sm">
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("name", true)}
-						<input id="name" name="name" value="${this.user.name || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<input id="name" name="name" value="${this.data.user.name || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
+							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("surname", true)}
-						<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<input id="surname" name="surname" value="${this.data.user.surname || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
+							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("birthday", true)}
-						<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" autocomplete="bday" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<input id="birthday" name="birthday" value="${this.data.user.birthday || ''}" type="date" autocomplete="bday" min="${getOffsetDate(100)}" max="${getOffsetDate(15)}" required
+							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-3 relative">
 						${this.generateLabelFor("interest", false)}
-						<select id="interest" name="interest" class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<select id="interest" name="interest" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.user.interest === "0" ? 'selected' : ''}>Sport</option>
-							<option value="1" ${this.user.interest === "1" ? 'selected' : ''}>Reading</option>
-							<option value="2" ${this.user.interest === "2" ? 'selected' : ''}>Relax</option>
-							<option value="3" ${this.user.interest === "3" ? 'selected' : ''}>Prevention</option>
-							<option value="4" ${this.user.interest === "4" ? 'selected' : ''}>Other...</option>
+							<option value="0" ${this.data.user.interest === "0" ? 'selected' : ''}>Sport</option>
+							<option value="1" ${this.data.user.interest === "1" ? 'selected' : ''}>Reading</option>
+							<option value="2" ${this.data.user.interest === "2" ? 'selected' : ''}>Relax</option>
+							<option value="3" ${this.data.user.interest === "3" ? 'selected' : ''}>Prevention</option>
+							<option value="4" ${this.data.user.interest === "4" ? 'selected' : ''}>Other...</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("marital-status", false)}
-						<select id="marital-status" name="maritalStatus" class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<select id="marital-status" name="maritalStatus" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="Single" ${this.user.maritalStatus === "Single" ? 'selected' : ''}>Single</option>
-							<option value="Married" ${this.user.maritalStatus === "Married" ? 'selected' : ''}>Married</option>
+							<option value="Single" ${this.data.user.maritalStatus === "Single" ? 'selected' : ''}>Single</option>
+							<option value="Married" ${this.data.user.maritalStatus === "Married" ? 'selected' : ''}>Married</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("childrens", false)}
-						<select id="childrens" name="childrens" class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<select id="childrens" name="childrens" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.user.childrens === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.user.childrens === "1" ? 'selected' : ''}>Yes</option>
+							<option value="0" ${this.data.user.childrens === "0" ? 'selected' : ''}>No</option>
+							<option value="1" ${this.data.user.childrens === "1" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("elderly-parents", false)}
-						<select id="elderly-parents" name="elderlyParents" class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<select id="elderly-parents" name="elderlyParents" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.user.elderlyParents === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.user.elderlyParents === "1" ? 'selected' : ''}>Yes</option>
+							<option value="0" ${this.data.user.elderlyParents === "0" ? 'selected' : ''}>No</option>
+							<option value="1" ${this.data.user.elderlyParents === "1" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 				</div>
 			</div>
-			${this.generateProfilingFooterMarkup()}
 		`;
-		return html;
-	}
-
-	private generateSecondMarkup(): string {
-		const html = `
-			<div class="flex-grow flex items-center pt-2 sm:pt-4">
-				<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
-					<div class="col-span-6 relative" data-input-group>
-						${this.generateLabelFor("worksite", true)}
-						<input id="worksite" value="${this.user.worksite ? this.worksites.get(Number(this.user.worksite)) : ''}" type="search" autocomplete="off" required
-							match="[data-worksite-option]"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section></section>
-						<ul id="worksite-dropdown-body" class="hidden ps-2 pe-3 pb-2 mt-px absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden">
-							${this.generateWorksitesListMarkup()}
-						</ul>
-						<input id="hidden-worksite" name="worksite" value="${this.user.worksite || ''}" type="hidden">
-					</div>
-					<div class="col-span-6 relative" data-input-group>
-						${this.generateLabelFor("street", true)}
-						<input id="street" name="street" value="${this.user.street || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section></section>
-					</div>
-					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
-						${this.generateLabelFor("postal-code", true)}
-						<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section></section>
-					</div>
-					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
-						${this.generateLabelFor("city", true)}
-						<input id="city" name="city" value="${this.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section></section>
-					</div>
-					<div class="col-span-6 sm:col-span-2 relative" data-input-group>
-						${this.generateLabelFor("country", true)}
-						<input id="country" name="country" value="${this.user.country || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section></section>
+		const	generateLocalizationMarkup = () => {
+			const generateWorksitesListMarkup = () => {
+				if (this.worksites.size === 0)
+					return ``;
+				return `
+					<ul id="worksite-dropdown-body" class="hidden ps-2 pe-3 pb-2 mt-px absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden">
+						${Array.from(this.worksites.entries()).map(([key, value]) => `<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-worksite-option>${value}</li>`).join()}
+					</ul>
+				`;
+			};
+			return `
+				<div class="flex-grow flex items-center pt-2 sm:pt-4">
+					<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
+						<div class="col-span-6 relative" data-input-group>
+							${this.generateLabelFor("worksite", true)}
+							<input id="worksite" value="${this.data.user.worksite && this.worksites.get(Number(this.data.user.worksite)) ? this.worksites.get(Number(this.data.user.worksite)) : ''}" type="search" autocomplete="off" required
+								match="[data-worksite-option]"
+								class="${this.inputClasslist}">
+							<section></section>
+							${generateWorksitesListMarkup()}
+							<input id="hidden-worksite" name="worksite" value="${this.data.user.worksite || ''}" type="hidden">
+						</div>
+						<div class="col-span-6 relative" data-input-group>
+							${this.generateLabelFor("street", true)}
+							<input id="street" name="street" value="${this.data.user.street || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
+								class="${this.inputClasslist}">
+							<section></section>
+						</div>
+						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
+							${this.generateLabelFor("postal-code", true)}
+							<input id="postal-code" name="postalCode" value="${this.data.user.postalCode || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
+								class="${this.inputClasslist}">
+							<section></section>
+						</div>
+						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
+							${this.generateLabelFor("city", true)}
+							<input id="city" name="city" value="${this.data.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
+								class="${this.inputClasslist}">
+							<section></section>
+						</div>
+						<div class="col-span-6 sm:col-span-2 relative" data-input-group>
+							${this.generateLabelFor("country", true)}
+							<input id="country" name="country" value="${this.data.user.country || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
+								class="${this.inputClasslist}">
+							<section></section>
+						</div>
 					</div>
 				</div>
-			</div>
-			${this.generateProfilingFooterMarkup()}
-		`
-		return html;
-	}
-
-	private generateThirdMarkup(): string {
-		const html = `
-			<div class="text-md text-center text-slate-500 pb-3">
-				Choose your areas of interest
-			</div>
-			<div class="flex-grow flex pb-3 sm:pb-6">
-				<div class="grid grid-rows-2 md:grid-rows-1 grid-cols-4 gap-4 w-full text-white text-shadow-lg">
-					${["physical", "economic", "psychological", "family"].reduce(
-						(finalString, pillarName) => finalString += this.generatePillarMarkup(pillarName), ""
-					)}
+			`;
+		};
+		const	generateAreasOfInterestMarkup = () => {
+			const areasOfInterest = new Map([
+				["physical", ["Movement", "Nutrition", "Health"]],
+				["economic", ["Services", "Conventions", "Answers"]],
+				["psychological", ["Listening", "Closeness", "Growth"]],
+				["family", ["Assistance", "Care", "Support"]]
+			]);
+			const generatePillarsMarkup = () => {
+				let pillarsMarkup = ``;
+				for (const [key, value] of areasOfInterest.entries()) {
+					pillarsMarkup += `
+						<label role="button" class="col-span-2 md:col-span-1 bg-wf-${key} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
+							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.data.user[key as keyof user] === "on" ? "checked" : ""}/>
+							<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
+								<section class="text-xs uppercase hidden sm:block pb-3">
+									Leonardo's Welfare is
+								</section>
+								<section class="tekne text-md sm:text-xl flex flex-col items-center">
+									<span>${key.charAt(0).toUpperCase() + key.slice(1)}</span>
+									<span>Wellbeing</span>
+								</section>
+								<section class="hidden sm:block">
+									<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+									</svg>
+								</section>
+								<section class="hidden sm:flex flex-col items-center">
+									${value.reduce((keywordGroup, keyword) => keywordGroup += `<span>${keyword}</span>`, "")}
+								</section>
+							</div>
+						</label>
+					`;
+				}
+			}
+			return `
+				<div class="text-md text-center text-slate-500 pb-3">
+					Choose your areas of interest
 				</div>
-			</div>
-			${this.generateProfilingFooterMarkup()}
-		`
-		return html;
-	}
-
-	private generateFinalMarkup(): string {
-		const html = `
+				<div class="flex-grow flex pb-3 sm:pb-6">
+					<div class="grid grid-rows-2 md:grid-rows-1 grid-cols-4 gap-4 w-full text-white text-shadow-lg">
+						${generatePillarsMarkup()}
+					</div>
+				</div>
+			`
+		};
+		const	generateRegistrationMarkup = () => `
 			<div class="flex-grow flex flex-col justify-center">
 				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-3 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("email", true)}
 						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" custommaxlength="100"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
+							class="${this.inputClasslist}" autocomplete="on">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-email", true)}
-						<input id="confirm-email" type="email" required match="#email" autocomplete="off"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+						<input id="confirm-email" type="email" autocomplete="email" required match="#email" autocomplete="off"
+							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("password", true)}
-						<input id="password" name="password" type="password" required
+						<input id="password" name="password" type="password" autocomplete="new-password" required
 							minlength=${PASSWORD_MIN_LENGTH}
 							custommaxlength=${PASSWORD_MAX_LENGTH}
 							lowercase=${PASSWORD_MIN_AMOUNT_LOWER}
 							uppercase=${PASSWORD_MIN_AMOUNT_UPPER}
 							digit=${PASSWORD_MIN_AMOUNT_DIGIT}
 							special="${PASSWORD_MIN_AMOUNT_SPECIAL} ${PASSWORD_SPECIAL_CHARACTERS}"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+							class="${this.inputClasslist}">
 						${this.generatePasswordTogglerMarkup()}
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-password", true)}
 						<input id="confirm-password" type="password" autocomplete="new-password" required match="#password"
-							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
+							class="${this.inputClasslist}">
 						${this.generatePasswordTogglerMarkup()}
 						<section></section>
 					</div>
@@ -221,71 +215,12 @@ export default class extends AProfilingView {
 					<section></section>
 				</div>
 			</div>
-			${this.generateProfilingFooterMarkup()}
-		`
-		return html;
-	}
-
-	private generatePillarMarkup(pillarName: string): string {
-		let keywords : Array<string>;
-		switch (pillarName) {
-			case "physical":
-				keywords = ["Movement", "Nutrition", "Health"];
-				break;
-			case "economic":
-				keywords = ["Services", "Conventions", "Answers"];
-				break;
-			case "psychological":
-				keywords = ["Listening", "Closeness", "Growth"];
-				break;
-			case "family":
-				keywords = ["Assistance", "Care", "Support"];
-				break;
-			default:
-				keywords = [];
-				break;
-		}
-		const markup = `
-			<label role="button" class="col-span-2 md:col-span-1 bg-wf-${pillarName} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
-				<input type="checkbox" name="${pillarName}" class="appearance-none hidden" ${this.user[pillarName as keyof user] === "on" ? "checked" : ""}/>
-				<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
-					<section class="text-xs uppercase hidden sm:block pb-3">
-						Leonardo's Welfare is
-					</section>
-					<section class="tekne text-md sm:text-xl flex flex-col items-center">
-						<span>${pillarName.charAt(0).toUpperCase() + pillarName.slice(1)}</span>
-						<span>Wellbeing</span>
-					</section>
-					<section class="hidden sm:block">
-						<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-							<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
-						</svg>
-					</section>
-					<section class="hidden sm:flex flex-col items-center">
-						${keywords.reduce((finalString, keyword) => finalString += `<span>${keyword}</span>`, "")}
-					</section>
-				</div>
-			</label>
-		`
-		return markup;
-	}
-
-	private generateWorksitesListMarkup(): string {
-		let html = ``;
-		for (const [key, value] of this.worksites) {
-			html += `
-				<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-worksite-option>${value}</li>
-			`
-		};
-		return html;
-	}
-
-	private generateProfilingFooterMarkup(): string {
-		const html = `
+		`;
+		const	generateMainMarkupFooter = () => `
 			<div class="grid grid-rows-1 grid-cols-4 w-full">
 				<div class="col-span-1 flex justify-start">
 					<button type="button" id="backward-btn" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-10 bi bi-arrow-left" viewBox="0 0 16 16">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-left" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
 						</svg>
 					</button>
@@ -300,37 +235,63 @@ export default class extends AProfilingView {
 				</div>
 				<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
 					<button type="button" id="forward-btn" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-10 bi bi-arrow-right" viewBox="0 0 16 16">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-right" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
 						</svg>
 					</button>
 				</div>
 			</div>
-		`
-		return html;
+		`;
+		const main = document.querySelector("main");
+		if (!main)
+			return ;
+		const	markupGeneratorFunctions = [
+			generatePersonalDataMarkup, generateLocalizationMarkup, generateAreasOfInterestMarkup, generateRegistrationMarkup
+		];
+		main.innerHTML = `
+			<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
+				${markupGeneratorFunctions[this.markupIndex].call(this)}
+				${generateMainMarkupFooter()}
+			</form>
+		`;
+	}
+
+	protected override	addEventListeners() {
+		this.handleInputsValidation();
+		this.handleWorksiteInput();
+		this.handlePasswordInputTypeToggler();
+		this.handleBackwardButtonClick();
+		this.handleForwardButtonClick();
+		this.addFormSubmitionHandler(this.registrationFormSubmitionHandler);
 	}
 	
-	public addBackwordButtonClickHandler(handler: Function): void {
+	private handleBackwardButtonClick() {
 		const button = document.getElementById("backward-btn");
 		if (!button)
-			return;
-		button.addEventListener('click', () => handler());
+			return ;
+		button.addEventListener('click', () => {
+			if (this.markupIndex > 0)
+				this.markupIndex -= 1;
+			this.renderMainMarkup();
+		});
 	}
 	
-	public addForwardButtonClickHandler(handler: Function): void {
+	private	handleForwardButtonClick() {
 		const button = document.getElementById("forward-btn");
 		if (!button)
 			return;
-		const form = document.querySelector('form') as HTMLFormElement;
 		button.addEventListener('click', () => {
-			if (!this.formCheckValidity(form))
+			const form = document.querySelector('form');
+			if (!form || !this.formCheckValidity(form))
 				return;
+			if (this.markupIndex < 3)
+				this.markupIndex += 1;
 			const formData = new FormData(form);
-			handler(formData);
+			this.saveFormDataInSessionStorage(formData);
 		});
 	}
 
-	private handleWorksiteInput(): void {
+	private handleWorksiteInput() {
 		const searchInput = document.getElementById("worksite") as HTMLInputElement;
 		const hiddenInput = document.getElementById("hidden-worksite") as HTMLInputElement;
 		const dropdownBody = document.getElementById("worksite-dropdown-body");
@@ -355,16 +316,5 @@ export default class extends AProfilingView {
 				searchInput.value = option.innerText;
 			});
 		});
-	}
-	
-	private getOffsetDate(offset: number) : string {
-		const today = new Date();
-	
-		const yyyy = today.getFullYear();
-		const mm = today.getMonth() + 1;
-		const dd = today.getDate();
-		const date = `${yyyy - offset}-${mm < 10 ? ('0' + mm) : mm}-${dd < 10 ? ('0' + dd) : dd}`;
-	
-		return date;
 	}
 }

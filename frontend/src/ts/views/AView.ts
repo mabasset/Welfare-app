@@ -1,7 +1,6 @@
 export default abstract class {
 
-	protected parentElement: HTMLElement;
-	protected markup = "";
+	protected	parentElement: HTMLElement;
 
 	constructor() {
 		this.parentElement = document.body;
@@ -9,40 +8,49 @@ export default abstract class {
 
 	public render() {
 		this.parentElement.className = "flex flex-col justify-between min-h-screen";
-		this.parentElement.innerHTML = this.markup;
+		this.parentElement.innerHTML = this.generateMarkup();
 	}
 
-	public renderAlert() {
-		
-	}
+	protected abstract	generateMarkup(): string;
 
-	public renderErrorMarkup(errorCode: number): void {
+	public renderErrorPage(errorCode: number) {
+		let	markup = "";
 		switch (errorCode) {
 			case 401:
-				this.markup = this.generateUnauthorizedMarkup();
+				markup = this.generateUnauthorizedMarkup();
 				break;
 			case 404:
-				this.markup = this.generateNotFoundMarkup();
+				markup = this.generateNotFoundMarkup();
+				break;
+			case 503:
+				markup = this.generateServiceUnavailableMarkup();
 				break;
 			default:
 				break;
 		}
-		this.render();
+		this.parentElement.className = "flex flex-col justify-between min-h-screen";
+		this.parentElement.innerHTML = markup;
 	}
 
-	protected generateNotFoundMarkup() : string {
+	private generateNotFoundMarkup() {
 		return `
 			<h1>404 not found<h1>
 		`;
 	}
 
-	protected generateUnauthorizedMarkup() : string {
+	private generateUnauthorizedMarkup() {
 		return `
 			<h1>401 Unauthorized<h1>
 		`;
 	}
 
-	protected handleModal(): void {
+	private generateServiceUnavailableMarkup() {
+		return `
+			<h1>503 Service Unavailable<h1>
+		`;
+	}
+
+	protected handleModal() {
 		const openBtn = document.querySelector("[data-open-modal]");
 		const closeBtn = document.querySelector("[data-close-modal]");
 		const modal = document.querySelector("[data-modal]") as HTMLDialogElement;

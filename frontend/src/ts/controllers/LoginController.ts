@@ -1,4 +1,4 @@
-import ProfilingModel from "../models/ProfilingModel";
+import ProfilingModel from "../models/UserModel";
 import LoginView from "../views/profiling/LoginView";
 
 export default class {
@@ -12,7 +12,7 @@ export default class {
 	public async renderView(): Promise<void> {
 		const user = await this.model.getUserData();
 		if (user.isLogged)
-			return this.view.renderErrorMarkup(401);
+			return this.view.renderErrorPage(401);
 		this.view.render();
 		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
 	}

@@ -2,19 +2,27 @@ import AView from "../AView";
 
 export default abstract class extends AView {
 
+	protected inputClasslist = "truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring";
+
 	constructor() {
 		super();
 	}
 
-	public override render(user?: user, markupIndex?: number, worksites?: Map<number, string>) : void {
-		super.render();
+	protected abstract	renderMainMarkup(): void;
+	protected abstract	addEventListeners(): void;
+
+	public override render(data: any) {
+		super.render(data);
 		this.parentElement.classList.add("bg-wf-primary", "py-6", "sm:py-10",  "sm:px-6",  "lg:px-8");
+		this.renderMainMarkup();
+		this.addEventListeners();
 	}
 
-	protected generateMarkup() : string {
+	protected generateMarkup(): string {
 		const html = `
 			${this.generateHeaderMarkup()}
-			${this.generateMainMarkup()}
+			<main>
+			</main>
 			${this.generateFooterMarkup()}
 		`
 		return html;
@@ -31,14 +39,6 @@ export default abstract class extends AView {
 				</div>
 			</header>
 		`
-	}
-
-	protected generateMainMarkup() : string {
-		const html = `
-			<main>
-			</main>
-		`
-		return html;
 	}
 
 	protected generateFooterMarkup() : string {
@@ -105,8 +105,7 @@ export default abstract class extends AView {
 		return labelElement;
 	}
 
-	protected inputGroupCheckValidity(inputGroup: Element): boolean {
-
+	protected	inputGroupCheckValidity(inputGroup: Element): boolean {
 		const	label = inputGroup.querySelector("label");
 		const	input = inputGroup.querySelector("input") as HTMLInputElement;
 		const	errorSection = inputGroup.querySelector("section");
@@ -256,7 +255,7 @@ export default abstract class extends AView {
 		 		errorSection!.innerHTML = `
 					<div class="p-1 flex items-center text-rose-600 text-sm font-medium">
 						<span class="me-2">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-exclamation-triangle h-4 w-4" viewBox="0 0 16 16">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-exclamation-triangle size-4" viewBox="0 0 16 16">
 								<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
 								<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
 							</svg>
@@ -275,7 +274,7 @@ export default abstract class extends AView {
 		return true;
 	}
 
-	protected formCheckValidity(form: HTMLFormElement): boolean {
+	protected	formCheckValidity(form: HTMLFormElement): boolean {
 		let isValid = true;
 		const inputGroups = form.querySelectorAll("[data-input-group]");
 
@@ -300,7 +299,7 @@ export default abstract class extends AView {
 		});
 	}
 
-	protected handlePasswordInputTypeToggler(): void {
+	protected	handlePasswordInputTypeToggler() {
 		const buttons = document.querySelectorAll("[data-type-toggler]") as NodeListOf<HTMLElement>;
 
 		buttons.forEach((button) => {
@@ -320,7 +319,7 @@ export default abstract class extends AView {
 		});
 	}
 
-	public addFormSubmitionHandler(handler: Function): void {
+	public	addFormSubmitionHandler(handler: Function) {
 		const forms = document.querySelectorAll("form");
 		forms.forEach(form => {
 			form.addEventListener("submit", event => {

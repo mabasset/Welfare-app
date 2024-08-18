@@ -18,7 +18,7 @@ export default abstract class {
 		return await fetch(url, options);
 	}
 
-	protected setCookie(key: string, value: string, prefix?: string): void {
+	protected setCookie(key: string, value: string, prefix?: string) {
 		document.cookie = `${prefix + key}=${value}`;
 	}
 
@@ -34,23 +34,23 @@ export default abstract class {
 		return null;
 	}
 
-	protected deleteCookie(key: string): void {
+	protected removeCookie(key: string) {
 		document.cookie = `${key}=;Max-Age=0`;
 	}
 
-	protected setToSessionStorage(key: string, value: string): void {
+	protected setToSessionStorage(key: string, value: string) {
 		sessionStorage.setItem(key, value);
 	}
 
-	protected getFromSessionStorage(key: string): string | null {
+	protected	getFromSessionStorage(key: string): string | null {
 		return sessionStorage.getItem(key);
 	}
 
-	protected removeFromSessionStorage(key: string): void {
+	protected removeFromSessionStorage(key: string) {
 		sessionStorage.removeItem(key);
 	}
 
-	protected clearSessionStorage(): void {
+	protected clearSessionStorage() {
 		sessionStorage.clear();
 	}
 }

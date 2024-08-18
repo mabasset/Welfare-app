@@ -2,7 +2,6 @@ import Model from "./AModel";
 
 export default class extends Model {
 
-	private sessionCookiePrefix = "s_";
 	private	endpoints = API.user.endpoints;
 
 	constructor() {
@@ -13,9 +12,8 @@ export default class extends Model {
 	public async getUserData(): Promise<user> {
 		const url: string = `${this.baseUrl + this.endpoints.getData}/`;
 		const response = await this.sendRequest(url);
-		if (!response.ok) {
-			throw new Error("Something went wrong", {cause: new Error("Original cause of the error")});
-		}
+		if (!response.ok)
+			throw new Error(undefined, {cause: response});
 		const json = await response.json();
 		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;
 		return { isLogged, name, surname, birthday, maritalStatus, childrens, elderlyParents };
@@ -48,45 +46,22 @@ export default class extends Model {
 		const response = await this.sendRequest(url);
 		const json = await response.json();
 		const worksitesMap = new Map<number, string>();
-		for (let key in json)
+		for (const key in json)
 			if (json.hasOwnProperty(key))
 				worksitesMap.set(parseInt(key), json[key]);
 		return worksitesMap;
 	}
 
-	public getUserDataFromCookies(): user {
-		let user: user = {};
-
-		const cookies = document.cookie.split(";");
-		cookies.forEach(cookie => {
-			cookie = cookie.trim();
-			if (cookie.startsWith(this.sessionCookiePrefix)) {
-				const [key, value] = cookie.split('=');
-				user[key.slice(this.sessionCookiePrefix.length)] = value;
+	public	getUserDataFromSessionStrorage(): user {
+		let	user: user = {};
+		for (let i = 0; i < sessionStorage.length; i++) {
+			const key = sessionStorage.key(i);
+			if (key !== null) {
+				const value = this.getFromSessionStorage(key);
+				if (value !== null)
+					user[key] = value;
 			}
-		});
+		}
 		return user;
-	}
-
-	public getSignupViewSectionMarkupIndex(): number {
-		let markupIndexCookie = Number(this.getFromSessionStorage("signupViewSection"));
-		if (!markupIndexCookie || markupIndexCookie < 0 || markupIndexCookie > 3)
-			markupIndexCookie = 0;
-		return markupIndexCookie;
-	}
-
-	public modifySignupViewSectionMarkupIndex(offset: number) {
-		const markupIndex = this.getSignupViewSectionMarkupIndex() + offset;
-		this.setToSessionStorage("signupViewSection", String(markupIndex));
-	}
-
-	public saveFormDataAsSessionCookies(formData: FormData) {
-		for (const [key, value] of formData.entries())
-			this.setCookie(key, String(value), this.sessionCookiePrefix);
-	}
-
-	private clearSessionCookies(user: user) {
-		for (const key in user)
-			this.deleteCookie(key);
 	}
 }

@@ -1,26 +1,25 @@
 import '../styles/index.css';
 
-import ProfilingModel from './models/ProfilingModel';
+import UserModel from './models/UserModel';
 import RootController from './controllers/RootController';
 import SignupController from './controllers/SignupController';
 import LoginController from './controllers/LoginController';
 import Router from './Router';
 
-//["offline", "online"].forEach(event => 
-//	window.addEventListener(event, () => window.location.reload()));
+["offline", "online"].forEach(event => 
+	window.addEventListener(event, () => window.location.reload()));
 
 document.addEventListener('DOMContentLoaded', () => {
 
-	const profilingModel = new ProfilingModel();
+	const userModel = new UserModel();
 
-	const rootController = new RootController(profilingModel);
-	const signupController = new SignupController(profilingModel);
-	const loginController = new LoginController(profilingModel);
+	const rootController = new RootController(userModel);
+	const signupController = new SignupController(userModel);
+	//const loginController = new LoginController(profilingModel);
 
-	const router = new Router();
-	router.addRoute('/', rootController.renderView.bind(rootController));
-	router.addRoute('/signup', signupController.renderView.bind(signupController));
-	router.addRoute('/login', loginController.renderView.bind(loginController));
+	const router = new Router(rootController, userModel);
+	//router.addRoute('/signup', signupController);
+	//router.addRoute('/login', loginController);
 	
 	router.start();
 });

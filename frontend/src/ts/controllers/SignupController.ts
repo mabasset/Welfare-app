@@ -1,48 +1,26 @@
-import ProfilingModel from "../models/ProfilingModel";
+import UserModel from "../models/UserModel";
 import SignupView from "../views/profiling/SignupView";
+import AController from "./AController";
 
-export default class {
+export default class extends AController<UserModel, SignupView> {
 
-	private view : SignupView;
-
-	constructor(private model: ProfilingModel) {
-		this.view = new SignupView();
+	constructor(model: UserModel) {
+		const view = new SignupView();
+		super(model, view);
 	}
 
 	public async renderView(): Promise<void> {
-		let user: user;
-		try {
-			user = await this.model.getUserData();
-		}
-		catch(error) {
-			return console.log(error);
-		}
-		if (user.isLogged)
-			return this.view.renderErrorMarkup(401);
-		user = this.model.getUserDataFromCookies();
-		const markupIndex = this.model.getSignupViewSectionMarkupIndex();
-		let worksites: Map<number, string> = new Map();
-		if (markupIndex === 1)
-			worksites = await this.model.getWorksiteOptions();
-		this.view.render(user, markupIndex, worksites);
-		this.view.addBackwordButtonClickHandler(this.backwordsButtonClickHandler.bind(this));
-		this.view.addForwardButtonClickHandler(this.forwardButtonClickHandler.bind(this));
-		if (markupIndex === 3)
-			this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
+		let	user = this.getUserData();
+		if (!user)
+			return ;
+		else if (user.isLogged)
+			return this.view.renderErrorPage(401);
+		const worksites = await this.model.getWorksiteOptions();
+		user = this.model.getUserDataFromSessionStrorage();
+		this.view.render({user, worksites});
 	}
 
-	private async backwordsButtonClickHandler(): Promise<void> {
-		this.model.modifySignupViewSectionMarkupIndex(-1);
-		this.renderView();
-	}
-
-	private async forwardButtonClickHandler(formData: FormData): Promise<void> {
-		this.model.modifySignupViewSectionMarkupIndex(1);
-		this.model.saveFormDataAsSessionCookies(formData);
-		this.renderView();
-	}
-
-	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {
+	private async registrationFormSubmitionHandler(form: HTMLFormElement): Promise<void> {
 		const formData = new FormData(form);
 		for(const [key, value] of formData.entries())
 			console.log(key, ":", value);

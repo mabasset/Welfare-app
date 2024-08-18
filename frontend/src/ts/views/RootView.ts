@@ -56,13 +56,7 @@ export default class extends AView {
 		`;
 	}
 
-	public renderHomeMarkup(user: user) {
-		this.markup = this.generateHomeMarkup(user);
-		this.parentElement.innerHTML = this.markup;
-	}
-
-	public renderWelcomeMarkup() {
-		this.markup = this.generateWelcomeMarkup();
-		super.render();
+	public override render(data: {user: user}) {
+		super.render(data);
 	}
 }

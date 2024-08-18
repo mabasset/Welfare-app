@@ -18,68 +18,6 @@ export default abstract class extends AView {
 		this.addEventListeners();
 	}
 
-	protected generateMarkup(): string {
-		const html = `
-			${this.generateHeaderMarkup()}
-			<main>
-			</main>
-			${this.generateFooterMarkup()}
-		`
-		return html;
-	}
-
-	protected generateHeaderMarkup() : string {
-		return `
-			<header class="sm:w-full sm:max-w-96 sm:mx-auto">
-				<img src="/static/public/images/smile.svg" alt="smile" class="w-auto mx-auto h-20">
-				<div class="text-center text-white">
-					<a href="/" class="tracking-tight leading-9 font-bold text-2xl mt-6 hover:text-black" data-link>
-						Welfare is on
-					</a>
-				</div>
-			</header>
-		`
-	}
-
-	protected generateFooterMarkup() : string {
-		return `
-			<footer class="text-sm sm:text-base">
-				<ul class="flex flex-wrap justify-center border-0">
-					<li class="py-0 px-2">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							Privacy Policy
-						</a>
-					</li>
-					<li class="py-0 px-2 border-l border-transparent">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							Cookie Policy
-						</a>
-					</li>
-					<li class="py-0 px-2 border-l border-transparent">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							Preference Cookie
-						</a>
-					</li>
-					<li class="py-0 px-2 border-l border-transparent">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							Legal Notes
-						</a>
-					</li>
-					<li class="py-0 px-2 border-l border-transparent">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							Sitemap
-						</a>
-					</li>
-					<li class="py-0 px-2 border-l border-transparent">
-						<a class="text-white hover:text-black no-underline hover:underline select-none">
-							CERT
-						</a>
-					</li>
-				</ul>
-			</footer>
-		`
-	}
-
 	protected	generatePasswordTogglerMarkup(): string {
 		const	html = `
 			<button type="button" tabindex="-1" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="password">

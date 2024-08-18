@@ -37,10 +37,10 @@ export default class {
 
 
 	private async callRenderingFunction()  {
-		const	controller = this.matchRoute();
+		const	controller = this.matchRoute() || this.rootController;
 		try {
 			const user = await this.userModel.getUserData();
-			controller.renderView(user);
+			await controller.renderView(user);
 		}
 		catch(error) {
 			if (error instanceof Error)
@@ -57,5 +57,6 @@ export default class {
 			history.pushState(null, "", link.href);
 			this.callRenderingFunction();
 		});
+		this.callRenderingFunction();
 	}
 }

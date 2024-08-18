@@ -11,6 +11,6 @@ export default abstract class <TModel extends AModel, TView extends AView> {
 	abstract renderView(user: user): Promise<void>;
 
 	public	renderErrorPage(error: Error) {
-		this.view.render(error);
+		this.view.renderError(error);
 	}
 }

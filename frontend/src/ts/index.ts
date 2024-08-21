@@ -1,25 +1,25 @@
 import '../styles/index.css';
 
-import ProfilingModel from './models/ProfilingModel';
+import UserModel from './models/UserModel';
 import RootController from './controllers/RootController';
 import SignupController from './controllers/SignupController';
-import LoginController from './controllers/LoginController';
-import Router from './Router';
+import RouterController from './controllers/RouterController';
 
-//["offline", "online"].forEach(event => 
-//	window.addEventListener(event, () => window.location.reload()));
+["offline", "online"].forEach(event => 
+	window.addEventListener(event, () => window.location.reload()));
 
 document.addEventListener('DOMContentLoaded', () => {
-	const profilingModel = new ProfilingModel();
 
-	const rootController = new RootController(profilingModel);
-	const signupController = new SignupController(profilingModel);
-	const loginController = new LoginController(profilingModel);
+	const userModel = new UserModel();
 
-	const router = new Router();
-	router.addRoute('/', rootController.renderView.bind(rootController));
-	router.addRoute('/signup', signupController.renderView.bind(signupController));
-	router.addRoute('/login', loginController.renderView.bind(loginController));
+	const rootController = new RootController(userModel);
+	const signupController = new SignupController(userModel);
+	//const loginController = new LoginController(userModel);
+
+	const routerController = new RouterController(userModel);
+	routerController.addRoute('/', rootController.renderView.bind(rootController));
+	routerController.addRoute('/signup', signupController.renderView.bind(signupController));
+	//router.addRoute('/login', loginController);
 	
-	router.start();
+	routerController.start();
 });

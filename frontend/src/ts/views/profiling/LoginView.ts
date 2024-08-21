@@ -6,21 +6,13 @@ export default class extends AProfilingView {
 		super();
 	}
 
-	public override render(): void {
-		this.markup = this.generateMarkup();
-		super.render();
-		this.handlePasswordInputTypeToggler();
-		this.handleModal();
-		this.handleInputsValidation();
-	}
-
 	protected override generateMarkup(): string {
 		let	html = `
 			<dialog data-modal class="max-w-max xs:max-w-xs m-2 xs:mt-10 xs:mx-auto rounded-[1.8rem]">
 				<div class="flex flex-col">
 					<div class="px-4 pt-4 flex justify-end">
 						<button data-close-modal>
-							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-lg h-8 w-8" viewBox="0 0 16 16">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-lg size-8" viewBox="0 0 16 16">
 								<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
 							</svg>
 						</button>
@@ -80,8 +72,13 @@ export default class extends AProfilingView {
 						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Enter<span>
 					</button>
 				</form>
-			</main>
-		`
-		return html;
+			</div>
+		`;
+	}
+
+	protected override addEventListeners() {
+		this.handlePasswordInputTypeToggler();
+		this.handleModal();
+		this.handleInputsValidation();
 	}
 }

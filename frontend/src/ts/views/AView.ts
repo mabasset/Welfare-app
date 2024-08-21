@@ -1,48 +1,72 @@
 export default abstract class {
 
-	protected parentElement: HTMLElement;
-	protected markup = "";
+	protected parentElement = document.body;
+	protected parentElementClassList = "flex flex-col justify-between min-h-screen";
+	protected parentElementBackgroundColor = "bg-wf-primary";
+	
+	constructor() {}
+	
+	protected abstract generateMarkup(): string;
 
-	constructor() {
-		this.parentElement = document.body;
+	render(...args: any) {
+		this.parentElement.className = this.parentElementClassList
+		this.parentElement.classList.add(this.parentElementBackgroundColor);
+		this.parentElement.innerHTML = this.generateMarkup();
 	}
 
-	public render() {
-		this.parentElement.className = "flex flex-col justify-between min-h-screen";
-		this.parentElement.innerHTML = this.markup;
-	}
-
-	public renderAlert() {
-		
-	}
-
-	public renderErrorMarkup(errorCode: number): void {
-		switch (errorCode) {
-			case 401:
-				this.markup = this.generateUnauthorizedMarkup();
-				break;
-			case 404:
-				this.markup = this.generateNotFoundMarkup();
-				break;
-			default:
-				break;
-		}
-		this.render();
-	}
-
-	protected generateNotFoundMarkup() : string {
+	protected	generateDefaultHeaderMarkup() {
 		return `
-			<h1>404 not found<h1>
-		`;
+			<header class="sm:w-full sm:max-w-96 sm:mx-auto">
+				<img src="/static/public/images/smile.svg" alt="smile" class="w-auto mx-auto h-20">
+				<div class="text-center text-white">
+					<a href="/" class="tracking-tight leading-9 font-bold text-2xl mt-6 hover:text-black" data-link>
+						Welfare is on
+					</a>
+				</div>
+			</header>
+		`
 	}
 
-	protected generateUnauthorizedMarkup() : string {
+	protected	generateDefaultFooterMarkup() {
 		return `
-			<h1>401 Unauthorized<h1>
-		`;
+			<footer class="text-sm sm:text-base mb-6 sm:mb-10">
+				<ul class="flex flex-wrap justify-center border-0">
+					<li class="py-0 px-2">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							Privacy Policy
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							Cookie Policy
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							Preference Cookie
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							Legal Notes
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							Sitemap
+						</a>
+					</li>
+					<li class="py-0 px-2 border-l border-transparent">
+						<a class="text-white hover:text-black no-underline hover:underline select-none">
+							CERT
+						</a>
+					</li>
+				</ul>
+			</footer>
+		`
 	}
 
-	protected handleModal(): void {
+	protected handleModal() {
 		const openBtn = document.querySelector("[data-open-modal]");
 		const closeBtn = document.querySelector("[data-close-modal]");
 		const modal = document.querySelector("[data-modal]") as HTMLDialogElement;

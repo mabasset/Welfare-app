@@ -1,3 +1,5 @@
+import { CustomError } from "../helpers";
+
 export default abstract class {
 
 	protected baseUrl = `https://${HOST}:${PORT}/${LOCATION_BACKEND}/`;
@@ -15,10 +17,13 @@ export default abstract class {
 		};
 		if ((method !== "GET" && method !== "HEAD") && body)
 			options.body = body;
-		return await fetch(url, options);
+		const response = await fetch(url, options);
+		if (!response.ok)
+			throw new CustomError(response.status);
+		return response;
 	}
 
-	protected setCookie(key: string, value: string, prefix?: string): void {
+	protected setCookie(key: string, value: string, prefix?: string) {
 		document.cookie = `${prefix + key}=${value}`;
 	}
 
@@ -34,23 +39,23 @@ export default abstract class {
 		return null;
 	}
 
-	protected deleteCookie(key: string): void {
+	protected removeCookie(key: string) {
 		document.cookie = `${key}=;Max-Age=0`;
 	}
 
-	protected setToSessionStorage(key: string, value: string): void {
+	protected setToSessionStorage(key: string, value: string) {
 		sessionStorage.setItem(key, value);
 	}
 
-	protected getFromSessionStorage(key: string): string | null {
+	protected	getFromSessionStorage(key: string): string | null {
 		return sessionStorage.getItem(key);
 	}
 
-	protected removeFromSessionStorage(key: string): void {
+	protected removeFromSessionStorage(key: string) {
 		sessionStorage.removeItem(key);
 	}
 
-	protected clearSessionStorage(): void {
+	protected clearSessionStorage() {
 		sessionStorage.clear();
 	}
 }

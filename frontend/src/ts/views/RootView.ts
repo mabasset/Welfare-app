@@ -1,12 +1,12 @@
-import AProfilingView from "./profiling/AProfilingView";
+import AView from "./AView";
 
-export default class extends AProfilingView {
+export default class extends AView {
 
 	constructor () {
 		super();
 	}
 
-	private generateHomeMarkup(user: user) : string {
+	private generateHomeMarkup(user: user) {
 		return `
 			<header class="flex flex-col h-screen">
 				<section class="w-full grow-0 flex justify-between items-center py-3 px-4 sm:px-7 text-slate-300 border-b-2">
@@ -90,10 +90,8 @@ export default class extends AProfilingView {
 		`
 	}
 
-	private generateWelcomeMarkup() : string {
+	protected override generateMarkup() {
 		return `
-			<header>
-			</header>
 			<main class="flex flex-col items-center justify-center text-white gap-4 flex-grow">
 				<div class="tekne text-center text-3xl sm:text-4xl md:text-5xl">
 					Welfare at 365 degree
@@ -131,17 +129,7 @@ export default class extends AProfilingView {
 					</span>
 				</div>
 			</main>
-			${this.generateFooterMarkup()}
+			${this.generateDefaultFooterMarkup()}
 		`;
-	}
-
-	public renderHomeMarkup(user: user): void {
-		this.markup = this.generateHomeMarkup(user);
-		this.parentElement.innerHTML = this.markup;
-	}
-
-	public renderWelcomeMarkup(): void {
-		this.markup = this.generateWelcomeMarkup();
-		super.render();
 	}
 }

@@ -80,17 +80,9 @@ export default abstract class extends AView {
 		`
 	}
 
-	protected generateLabelFor(inputId: string, isRequired: boolean): string {
-		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
-		const labelElement = `
-			<label for="${inputId}" class="absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white z-10">${labelText + (isRequired ? '*' : '')}</label>
-		`;
-		return labelElement;
-	}
-
-	protected generatePasswordVisibilityButton(toggler: string): string {
-		const html = `
-			<button type="button" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="${toggler}">
+	protected	generatePasswordTogglerMarkup(): string {
+		const	html = `
+			<button type="button" tabindex="-1" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="password">
 				<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="hidden bi bi-eye" viewBox="0 0 16 16">
 					<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
 					<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
@@ -101,16 +93,25 @@ export default abstract class extends AView {
 					<path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
 				</svg>
 			</button>
-		`;
+		`
 		return html;
+	}
+
+	protected	generateLabelFor(inputId: string, isRequired: boolean): string {
+		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
+		const labelElement = `
+			<label for="${inputId}" class="absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white z-10">${labelText + (isRequired ? '*' : '')}</label>
+		`;
+		return labelElement;
 	}
 
 	protected inputGroupCheckValidity(inputGroup: Element): boolean {
 
 		const	label = inputGroup.querySelector("label");
-		const	labelText = label.innerText.slice(-1) === "*" ? label.innerText.slice(0, -1) : label.innerText;
 		const	input = inputGroup.querySelector("input") as HTMLInputElement;
 		const	errorSection = inputGroup.querySelector("section");
+		const	labelText = label ? label.innerText.slice(-1) === "*" ?
+			label.innerText.slice(0, -1) : label.innerText : "This field"
 		const	validationOptions = [
 			{
 				attribute: "required",
@@ -168,7 +169,10 @@ export default abstract class extends AView {
 			{
 				attribute: "match",
 				isValid: (): boolean => {
-					const elements = document.querySelectorAll(input.getAttribute("match"));
+					const match = input.getAttribute("match");
+					if (!match)
+						return true;
+					const elements = document.querySelectorAll(match);
 					for (const element of elements) {
 						if(element instanceof HTMLLIElement && element.innerText === input.value)
 							return true;
@@ -184,7 +188,10 @@ export default abstract class extends AView {
 				attribute: "lowercase",
 				isValid: (): boolean => {
 					const amount = Number(input.getAttribute("lowercase"));
-					return input.value.match(/[a-z]/g)?.length >= amount;
+					const match = input.value.match(/[a-z]/g);
+					if (!match)
+						return false;
+					return match.length >= amount;
 				},
 				generateErrorMessage: (): string => {
 					const amount = Number(input.getAttribute("lowercase"));
@@ -195,7 +202,10 @@ export default abstract class extends AView {
 				attribute: "uppercase",
 				isValid: (): boolean => {
 					const amount = Number(input.getAttribute("uppercase"));
-					return input.value.match(/[A-Z]/g)?.length >= amount;
+					const match = input.value.match(/[A-Z]/g);
+					if (!match)
+						return false;
+					return match.length >= amount;
 				},
 				generateErrorMessage: (): string => {
 					const amount = Number(input.getAttribute("uppercase"));
@@ -206,7 +216,10 @@ export default abstract class extends AView {
 				attribute: "digit",
 				isValid: (): boolean => {
 					const amount = Number(input.getAttribute("digit"));
-					return input.value.match(/[0-9]/g)?.length >= amount;
+					const match = input.value.match(/[0-9]/g);
+					if (!match)
+						return false;
+					return match.length >= amount;
 				},
 				generateErrorMessage: (): string => {
 					const amount = Number(input.getAttribute("lowercase"));
@@ -216,8 +229,11 @@ export default abstract class extends AView {
 			{
 				attribute: "special",
 				isValid: (): boolean => {
-					const amount = Number(input.getAttribute("special").split(" ")[0]);
-					const params = input.getAttribute("special").split(" ")[1];
+					const special = input.getAttribute("special");
+					if (!special)
+						return true;
+					const amount = Number(special.split(" ")[0]);
+					const params = special.split(" ")[1];
 					let count = 0;
 					for(const char of input.value)
 						if(params.includes(char))
@@ -225,8 +241,11 @@ export default abstract class extends AView {
 					return count >= amount;
 				},
 				generateErrorMessage: (): string => {
-					const amount = Number(input.getAttribute("special").split(" ")[0]);
-					const params = input.getAttribute("special").split(" ")[1];
+					const special = input.getAttribute("special");
+					if (!special)
+						return "";
+					const amount = Number(special.split(" ")[0]);
+					const params = special.split(" ")[1];
 					return `${labelText} must contain at least ${amount} special character${amount > 1 ? 's' : ''} ${params}`;
 				}
 			}
@@ -234,12 +253,24 @@ export default abstract class extends AView {
 
 		for(const option of validationOptions) {
 		 	if(input.hasAttribute(option.attribute) && !option.isValid()) {
-		 		errorSection.innerText = option.generateErrorMessage();
+		 		errorSection!.innerHTML = `
+					<div class="p-1 flex items-center text-rose-600 text-xs font-medium">
+						<span class="me-2">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-exclamation-triangle h-4 w-4" viewBox="0 0 16 16">
+								<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+								<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+							</svg>
+						</span>
+						<span>
+							${option.generateErrorMessage()}
+						</span>
+					<div>
+				`
 		 		input.classList.add("!border-rose-400", "!ring-rose-200");
 				return false;
 		 	}
 		}
-		errorSection.textContent = "";
+		errorSection!.innerHTML = "";
 		input.classList.remove("!border-rose-400", "!ring-rose-200");
 		return true;
 	}
@@ -274,6 +305,8 @@ export default abstract class extends AView {
 
 		buttons.forEach((button) => {
 			const inputId = button.dataset.typeToggler;
+			if (!inputId)
+				return ;
 			const input = document.getElementById(inputId) as HTMLInputElement;
 			const eyeSvg = button.querySelector(".bi-eye");
 			const eyeSlashSvg = button.querySelector(".bi-eye-slash");
@@ -281,8 +314,8 @@ export default abstract class extends AView {
 			button.addEventListener("click", () => {
 				const inputType = input.type;
 				input.type = inputType === "password" ? "text" : "password";
-				eyeSvg.classList.toggle("hidden");
-				eyeSlashSvg.classList.toggle("hidden");
+				eyeSvg?.classList.toggle("hidden");
+				eyeSlashSvg?.classList.toggle("hidden");
 			});
 		});
 	}

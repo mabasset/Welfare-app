@@ -10,7 +10,13 @@ export default class {
 	}
 
 	public async renderView(): Promise<void> {
-		let user = await this.model.getUserData();
+		let user: user;
+		try {
+			user = await this.model.getUserData();
+		}
+		catch(error) {
+			return console.log(error);
+		}
 		if (user.isLogged)
 			return this.view.renderErrorMarkup(401);
 		user = this.model.getUserDataFromCookies();

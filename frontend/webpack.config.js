@@ -11,6 +11,11 @@ module.exports = {
 		rules: [
 			{
 				test: /\.ts$/,
+				use: 'babel-loader',
+				exclude: /node_modules/
+			},
+			{
+				test: /\.ts$/,
 				loader: 'ts-loader',
 				options: {
 					configFile: path.resolve(__dirname, './tsconfig.json'),
@@ -38,18 +43,45 @@ module.exports = {
 						getWorksites: JSON.stringify(process.env.ENDPOINT_USER_GET_WORKSITES),
 						signup: JSON.stringify(process.env.ENDPOINT_USER_SIGNUP),
 						login: JSON.stringify(process.env.ENDPOINT_USER_LOGIN),
-						retrievePassword: JSON.stringify(process.env.ENDPOINT_USER_RETRIEVE_PASSWORD),
+						forgotPassword: JSON.stringify(process.env.ENDPOINT_USER_FORGOT_PASSWORD),
 					}
 				},
 			},
-			PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH) || 8,
-			PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH) || 128,
-			PASSWORD_MIN_AMOUNT_LOWER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_LOWER) || 1,
-			PASSWORD_MIN_AMOUNT_UPPER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_UPPER) || 1,
-			PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT) || 1,
-			PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL) || 1,
-			PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS) || '_*-+!?,.;:',
+			ROUTE_RESET_PASSWORD: JSON.stringify(process.env.ROUTE_RESET_PASSWORD),
+			// Password validators
+			PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH),
+			PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH),
+			PASSWORD_MIN_AMOUNT_LOWER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_LOWER),
+			PASSWORD_MIN_AMOUNT_UPPER: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_UPPER),
+			PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT),
+			PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL),
+			PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS),
 			SESSION_COOKIES_PREFIX: JSON.stringify(process.env.SESSION_COOKIES_PREFIX),
+			// Email validators
+			EMAIL_MAX_LENGTH: JSON.stringify(process.env.EMAIL_MAX_LENGTH),
+			EMAIL_PATTERN: JSON.stringify(process.env.EMAIL_PATTERN),
+			// Name fields validators
+			NAME_MIN_LENGTH: JSON.stringify(process.env.NAME_MIN_LENGTH),
+			NAME_MAX_LENGTH: JSON.stringify(process.env.NAME_MAX_LENGTH),
+			NAME_PATTERN: JSON.stringify(process.env.NAME_PATTERN),
+			// Surname fields validators
+			SURNAME_MIN_LENGTH: JSON.stringify(process.env.SURNAME_MIN_LENGTH),
+			SURNAME_MAX_LENGTH: JSON.stringify(process.env.SURNAME_MAX_LENGTH),
+			SURNAME_PATTERN: JSON.stringify(process.env.SURNAME_PATTERN),
+			// Birthday fields validators
+			BIRTHDAY_MIN_OFFSET: JSON.stringify(process.env.BIRTHDAY_MIN_OFFSET),
+			BIRTHDAY_MAX_OFFSET: JSON.stringify(process.env.BIRTHDAY_MAX_OFFSET),
+			// Street address fields validators
+			STREET_MAX_LENGTH: JSON.stringify(process.env.STREET_MAX_LENGTH),
+			STREET_PATTERN: JSON.stringify(process.env.STREET_PATTERN),
+			// Postal code fields validators
+			POSTAL_CODE_MAX_LENGTH: JSON.stringify(process.env.POSTAL_CODE_MAX_LENGTH),
+			// City code fields validators
+			CITY_MAX_LENGTH: JSON.stringify(process.env.CITY_MAX_LENGTH),
+			CITY_PATTERN: JSON.stringify(process.env.CITY_PATTERN),
+			// Country code fields validators
+			COUNTRY_MAX_LENGTH: JSON.stringify(process.env.COUNTRY_MAX_LENGTH),
+			COUNTRY_PATTERN: JSON.stringify(process.env.COUNTRY_PATTERN),
 		}),
 	],
 	output: {
@@ -60,4 +92,5 @@ module.exports = {
 	watchOptions: {
 		poll: 1000,
 	},
+	devtool: 'source-map',
 };

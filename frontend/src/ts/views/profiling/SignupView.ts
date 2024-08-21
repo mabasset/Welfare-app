@@ -1,12 +1,12 @@
 import AProfilingView from "./AProfilingView";
 
 export default class extends AProfilingView {
-
-	private user: user;
-	private markupIndex: number;
+	private user: user = {};
+	private markupIndex = 0;
 	private markupGenerationFunctions = new Array<Function>;
-	private worksites: Map<number, string>;
+	private worksites = new Map<number, string>;
 	private pillars = ["physical", "economic", "psychological", "family"];
+
 	
 	constructor() {
 		super();
@@ -35,7 +35,7 @@ export default class extends AProfilingView {
 	protected override generateMainMarkup(): string {
 		const html = `
 			<main class="w-full max-w-screen-md mx-auto my-6 sm:my-10">
-				<form class="min-h-96 bg-white sm:rounded-lg p-4 sm:p-8 w-full flex flex-col" novalidate>
+				<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
 					${this.markupGenerationFunctions[this.markupIndex].call(this)}
 				</form>
 			</main>
@@ -46,24 +46,35 @@ export default class extends AProfilingView {
 	private generateFirstMarkup(): string {
 		const html = `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4 text-sm">
-				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-2 sm:gap-5 w-full">
+				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-4 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("name", true)}
-						<input id="name" name="name" value="${this.user.name || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
+						<input id="name" name="name" value="${this.user.name || ''}" type="text" autocomplete="given-name" autocomplete="on"
+							required
+							minlength=${NAME_MIN_LENGTH}
+							custommaxlength=${NAME_MAX_LENGTH}
+							pattern=${NAME_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("surname", true)}
-						<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
+						<input id="surname" name="surname" value="${this.user.surname || ''}" type="text" autocomplete="family-name"
+							required
+							minlength=${SURNAME_MIN_LENGTH}
+							custommaxlength=${SURNAME_MAX_LENGTH}
+							pattern=${SURNAME_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("birthday", true)}
-						<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" autocomplete="bday" min="${this.getOffsetDate(100)}" max="${this.getOffsetDate(15)}" required
+						<input id="birthday" name="birthday" value="${this.user.birthday || ''}" type="date" autocomplete="bday"
+							required
+							min="${this.getOffsetDate(Number(BIRTHDAY_MIN_OFFSET))}"
+							max="${this.getOffsetDate(Number(BIRTHDAY_MAX_OFFSET))}"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-3 relative">
 						${this.generateLabelFor("interest", false)}
@@ -110,13 +121,13 @@ export default class extends AProfilingView {
 	private generateSecondMarkup(): string {
 		const html = `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4">
-				<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-2 sm:gap-5 w-full">
+				<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-4 sm:gap-6 w-full">
 					<div class="col-span-6 relative" data-input-group>
 						${this.generateLabelFor("worksite", true)}
 						<input id="worksite" value="${this.user.worksite ? this.worksites.get(Number(this.user.worksite)) : ''}" type="search" autocomplete="off" required
 							match="[data-worksite-option]"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 						<ul id="worksite-dropdown-body" class="hidden ps-2 pe-3 pb-2 mt-px absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden">
 							${this.generateWorksitesListMarkup()}
 						</ul>
@@ -124,27 +135,38 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-6 relative" data-input-group>
 						${this.generateLabelFor("street", true)}
-						<input id="street" name="street" value="${this.user.street || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
+						<input id="street" name="street" value="${this.user.street || ''}" type="text" autocomplete="street-address"
+							required
+							custommaxlength=${STREET_MAX_LENGTH}
+							pattern=${STREET_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("postal-code", true)}
-						<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
+						<input id="postal-code" name="postalCode" value="${this.user.postalCode || ''}" type="text" autocomplete="postal-code"
+							required
+							custommaxlength=${POSTAL_CODE_MAX_LENGTH}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("city", true)}
-						<input id="city" name="city" value="${this.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
+						<input id="city" name="city" value="${this.user.city || ''}" type="text"
+							required
+							custommaxlength=${CITY_MAX_LENGTH}
+							pattern=${CITY_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-2 relative" data-input-group>
 						${this.generateLabelFor("country", true)}
-						<input id="country" name="country" value="${this.user.country || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="100" required autocomplete="on"
+						<input id="country" name="country" value="${this.user.country || ''}" type="text" autocomplete="country-name"
+							required
+							custommaxlength=${COUNTRY_MAX_LENGTH}
+							pattern=${COUNTRY_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 				</div>
 			</div>
@@ -172,19 +194,22 @@ export default class extends AProfilingView {
 
 	private generateFinalMarkup(): string {
 		const html = `
-			<div class="flex-grow flex flex-col justify-between sm:justify-evenly pt-2 sm:pt-4">
-				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-2 sm:gap-5 w-full">
+			<div class="flex-grow flex flex-col justify-center pt-2">
+				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-4 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("email", true)}
-						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" custommaxlength="100"
+						<input id="email" name="email" type="email" autocomplete="email"
+							required
+							custommaxlength=${EMAIL_MAX_LENGTH}
+							pattern=${EMAIL_PATTERN}
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-email", true)}
 						<input id="confirm-email" type="email" required match="#email" autocomplete="off"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("password", true)}
@@ -196,28 +221,30 @@ export default class extends AProfilingView {
 							digit=${PASSWORD_MIN_AMOUNT_DIGIT}
 							special="${PASSWORD_MIN_AMOUNT_SPECIAL} ${PASSWORD_SPECIAL_CHARACTERS}"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						${this.generatePasswordVisibilityButton("password")}
-						<section class="text-xs text-rose-600 p-1"></section>
+						${this.generatePasswordTogglerMarkup()}
+						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-password", true)}
 						<input id="confirm-password" type="password" autocomplete="new-password" required match="#password"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-						${this.generatePasswordVisibilityButton("confirm-password")}
-						<section class="text-xs text-rose-600 p-1"></section>
+						${this.generatePasswordTogglerMarkup()}
+						<section></section>
 					</div>
+				</div>
+				<div class="m-2 sm:m-4">
 				</div>
 				<div class="flex flex-col ms-1 mb-2" data-input-group>
 					<div>
 						<label for="policy" class="font-medium">Declaration of Consent*</label>
 					</div>
-					<div class="flex items-center text-slate-600">
-						<input type="checkbox" id="policy" class="shrink-0 h-5 sm:h-4 w-5 sm:w-4 me-3 sm:me-2 mt-0.5" required>
+					<div class="flex items-center text-slate-600 text-sm">
+						<input type="checkbox" id="policy" class="shrink-0 h-4 sm:h-4 w-5 sm:w-4 me-3 sm:me-2 mt-0.5" required>
 						<label for="policy">
 							I have read the <a class="link-body-emphasis underline hover:text-black">Personal Data Protection Policy</a>
 						</label>
 					</div>
-					<section class="text-xs text-rose-600 p-1"></section>
+					<section></section>
 				</div>
 			</div>
 			${this.generateProfilingFooterMarkup()}
@@ -241,11 +268,12 @@ export default class extends AProfilingView {
 				keywords = ["Assistance", "Care", "Support"];
 				break;
 			default:
+				keywords = [];
 				break;
 		}
 		const markup = `
 			<label role="button" class="col-span-2 md:col-span-1 bg-wf-${pillarName} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
-				<input type="checkbox" name="${pillarName}" class="appearance-none hidden" ${this.user[pillarName as keyof user] === "true" ? "checked" : ""}/>
+				<input type="checkbox" name="${pillarName}" class="appearance-none hidden" ${this.user[pillarName as keyof user] === "1" ? "checked" : ""}/>
 				<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
 					<section class="text-xs uppercase hidden sm:block pb-3">
 						Leonardo's Welfare is
@@ -292,7 +320,7 @@ export default class extends AProfilingView {
 					<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
 						${this.markupIndex + 1} / 4
 					</span>
-					<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} h-full sm:me-1 w-32 h-full mb-2 me-1 sm:me-0 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+					<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} w-48 py-2 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
 						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Register<span>
 					</button>
 				</div>
@@ -327,9 +355,9 @@ export default class extends AProfilingView {
 			if (this.markupIndex === 2) {
 				this.pillars.forEach(name => {
 					if(formData.has(name))
-						formData.set(name, "true");
+						formData.set(name, "1");
 					else
-						formData.append(name, "false");
+						formData.append(name, "0");
 				});
 			}
 			handler(formData);
@@ -340,6 +368,8 @@ export default class extends AProfilingView {
 		const searchInput = document.getElementById("worksite") as HTMLInputElement;
 		const hiddenInput = document.getElementById("hidden-worksite") as HTMLInputElement;
 		const dropdownBody = document.getElementById("worksite-dropdown-body");
+		if (!dropdownBody)
+			return ;
 		const worksiteOptions = dropdownBody.querySelectorAll("[data-worksite-option]") as NodeListOf<HTMLButtonElement>;
 
 		searchInput.addEventListener("focus", () => dropdownBody.classList.remove("hidden"));
@@ -348,8 +378,8 @@ export default class extends AProfilingView {
 		searchInput.addEventListener("input", () => {
 			let inputValue = searchInput.value.toLowerCase();
 			worksiteOptions.forEach(option => {
-				const optionContent = option.textContent.toLowerCase();
-				option.style.display = optionContent.includes(inputValue) ? '' : 'none';
+				const optionContent = option.textContent?.toLowerCase();
+				option.style.display = optionContent?.includes(inputValue) ? '' : 'none';
 			});
 		});
 

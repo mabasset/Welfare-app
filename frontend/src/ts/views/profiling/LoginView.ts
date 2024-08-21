@@ -36,7 +36,7 @@ export default class extends AProfilingView {
 								class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
 							<section class="text-xs text-rose-600 p-1 absolute"></section>
 						</div>
-						<button type="submit" class="mt-10 mb-4 flex w-full justify-center rounded-md bg-rose-600 px-3 py-1.5 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+						<button type="submit" class="mt-10 mb-4 flex w-full justify-center rounded-md bg-rose-600 px-4 py-2 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
 							<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Send<span>
 						</button>
 					</form>
@@ -56,7 +56,9 @@ export default class extends AProfilingView {
 						<label for="login-email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
 						<input id="login-email" name="email" type="email" autocomplete="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" custommaxlength="100"
 							class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
-						<section class="text-xs text-rose-600 p-1"></section>
+						<section></section>
+					</div>
+					<div class="p-2">
 					</div>
 					<div data-input-group>
 						<div class="flex items-center justify-between">
@@ -68,11 +70,13 @@ export default class extends AProfilingView {
 						<div class="relative">
 							<input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" custommaxlength="50" uppercase="1" lowercase="1" digit="1" special="1 _*-+!?,.;:"
 								class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-							${this.generatePasswordVisibilityButton("password")}
-							<section class="text-xs text-rose-600 p-1"></section>
+							${this.generatePasswordTogglerMarkup()}
+							<section></section>
 						</div>
 					</div>
-					<button type="submit" class="mt-4 flex w-full justify-center rounded-md bg-rose-600 px-3 py-1.5 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+					<div class="p-2">
+					</div>
+					<button type="submit" class="mt-2 flex w-full justify-center rounded-md bg-rose-600 px-4 py-2 shadow-sm hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
 						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Enter<span>
 					</button>
 				</form>

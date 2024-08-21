@@ -19,8 +19,6 @@ export default class {
 
 	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {
 		const formData = new FormData(form);
-		for(const [key, value] of formData.entries())
-			console.log(key, ":", value);
 		if (form.id === "login-form")
 			await this.model.login(formData);
 		else

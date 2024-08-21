@@ -3,56 +3,56 @@
         "model": "user.Worksite",
         "pk": 1,
         "fields": {
-            "address": "Piazza Monte Grappa 4 00195 Roma (RM)",
-            "department": "Leonardo Spa"
+            "department": "Leonardo Spa",
+            "address": "Piazza Monte Grappa 4 00195 Roma (RM)"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 2,
         "fields": {
-            "address": "Località Paduni 03012 Anagni (FR)",
-            "department": "Divisione Elicotteri"
+            "department": "Divisione Elicotteri",
+            "address": "Località Paduni 03012 Anagni (FR)"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 3,
         "fields": {
-            "address": "Via Giovanni Agusta 03100 Frosinone (FR)",
-            "department": null
+            "department": null,
+            "address": "Via Giovanni Agusta 03100 Frosinone (FR)"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 4,
         "fields": {
-            "address": "Via dell'Industria 4 00040 Pomezia (RM)",
-            "department": "Divisione Elettronica"
+            "department": "Divisione Elettronica",
+            "address": "Via dell'Industria 4 00040 Pomezia (RM)"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 5,
         "fields": {
-            "address": "Strada Statale 148 Pontina Km 62 04100 Latina",
-            "department": null
+            "department": null,
+            "address": "Strada Statale 148 Pontina Km 62 04100 Latina"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 6,
         "fields": {
-            "address": "Via Laurentina 760 00143 Roma (RM)",
-            "department": "Divisione Cyber Security"
+            "department": "Divisione Cyber Security",
+            "address": "Via Laurentina 760 00143 Roma (RM)"
         }
     },
     {
         "model": "user.Worksite",
         "pk": 7,
         "fields": {
-            "address": "Via Tiburtina 965 00156 Roma (RM)",
-            "department": "Spazio"
+            "department": "Spazio",
+            "address": "Via Tiburtina 965 00156 Roma (RM)"
         }
     }
 ]

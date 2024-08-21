@@ -5,17 +5,15 @@ export default abstract class {
 	constructor() {
 	}
 
-	protected async sendRequest(url: string, method?: string, body?: FormData | string): Promise<Response> {
-		if (!method)
-			method = "GET";
+	protected async sendRequest(url: string, method: string = "GET", body?: FormData): Promise<Response> {
 		const headers: HeadersInit = method === "POST" ? {
-			"X-CSRFToken": this.getCookie("csrftoken")
+			"X-CSRFToken": this.getCookie("csrftoken") || "",
 		} : {};
 		const options: RequestInit = {
 			method,
 			headers,
 		};
-		if (method !== "GET" && method !== "HEAD")
+		if ((method !== "GET" && method !== "HEAD") && body)
 			options.body = body;
 		return await fetch(url, options);
 	}

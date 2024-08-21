@@ -19,14 +19,14 @@ class Command(BaseCommand):
 				User.objects.create_superuser(
 					email=email,
 					password=password,
-					name='',
-					surname='',
-					birthday=date.today().isoformat(),
+					name='admin',
+					surname='admin',
+					birthday=date.today().replace(year=date.today().year - int(os.getenv('BIRTHDAY_MAX_OFFSET'))).isoformat(),
 					worksite=Worksite.objects.get(id='1'),
-					street='',
-					postal_code='',
-					city='',
-					country=''
+					street='admin',
+					postal_code='admin',
+					city='admin',
+					country='admin'
 				)
 				self.stdout.write(self.style.SUCCESS('Successfully created new superuser.'))
 			except Exception as e:

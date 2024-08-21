@@ -1,17 +1,14 @@
 import UserModel from "../models/UserModel";
 import RootView from "../views/RootView";
-import AController from "./AController";
 
-export default class extends AController<UserModel, RootView> {
+export default class {
+	private	view = new RootView();
 
-	constructor(model: UserModel) {
-		const view = new RootView();
-		super(model, view);
-	}
+	constructor(
+		private model: UserModel
+	) {}
 
-	public override async renderView(user: user): Promise<void> {
-		if (window.location.pathname !== "/")
-			throw new Error("", {cause: {status: 404, statusText: "Page Not Found"}});
+	public async renderView(user: user) {
 		this.view.render({user: user});
 	}
 }

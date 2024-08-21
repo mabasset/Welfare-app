@@ -2,32 +2,47 @@ import AProfilingView from "./AProfilingView";
 import { getOffsetDate } from "../../helpers";
 
 export default class extends AProfilingView {
+
 	private	markupIndex = 0;
-	private	worksites = new Map<number, string>();
+	private user = new Map<string, string>();
+	private worksites = new Map<number, string>();
+	private areasOfInterest = new Map([
+		["physical", ["Movement", "Nutrition", "Health"]],
+		["economic", ["Services", "Conventions", "Answers"]],
+		["psychological", ["Listening", "Closeness", "Growth"]],
+		["family", ["Assistance", "Care", "Support"]]
+	]);
 
 	constructor() {
 		super();
 	}
 
-	protected override renderMainMarkup() {
+	override render(user: Map<string, string>, worksite: Map<number, string>) {
+		this.markupIndex = 0;
+		this.user = user;
+		this.worksites = worksite;
+		super.render();
+	}
+
+	protected renderMainMarkup() {
 		const	generatePersonalDataMarkup = () => `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4 text-sm">
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("name", true)}
-						<input id="name" name="name" value="${this.data.user.name || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
+						<input id="name" name="name" value="${this.user.get("name") || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("surname", true)}
-						<input id="surname" name="surname" value="${this.data.user.surname || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
+						<input id="surname" name="surname" value="${this.user.get("surname") || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("birthday", true)}
-						<input id="birthday" name="birthday" value="${this.data.user.birthday || ''}" type="date" autocomplete="bday" min="${getOffsetDate(100)}" max="${getOffsetDate(15)}" required
+						<input id="birthday" name="birthday" value="${this.user.get("birthday") || ''}" type="date" autocomplete="bday" min="${getOffsetDate(100)}" max="${getOffsetDate(15)}" required
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
@@ -35,35 +50,35 @@ export default class extends AProfilingView {
 						${this.generateLabelFor("interest", false)}
 						<select id="interest" name="interest" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.data.user.interest === "0" ? 'selected' : ''}>Sport</option>
-							<option value="1" ${this.data.user.interest === "1" ? 'selected' : ''}>Reading</option>
-							<option value="2" ${this.data.user.interest === "2" ? 'selected' : ''}>Relax</option>
-							<option value="3" ${this.data.user.interest === "3" ? 'selected' : ''}>Prevention</option>
-							<option value="4" ${this.data.user.interest === "4" ? 'selected' : ''}>Other...</option>
+							<option value="0" ${this.user.get("interest") === "0" ? 'selected' : ''}>Sport</option>
+							<option value="1" ${this.user.get("interest") === "1" ? 'selected' : ''}>Reading</option>
+							<option value="2" ${this.user.get("interest") === "2" ? 'selected' : ''}>Relax</option>
+							<option value="3" ${this.user.get("interest") === "3" ? 'selected' : ''}>Prevention</option>
+							<option value="4" ${this.user.get("interest") === "4" ? 'selected' : ''}>Other...</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("marital-status", false)}
 						<select id="marital-status" name="maritalStatus" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="Single" ${this.data.user.maritalStatus === "Single" ? 'selected' : ''}>Single</option>
-							<option value="Married" ${this.data.user.maritalStatus === "Married" ? 'selected' : ''}>Married</option>
+							<option value="Single" ${this.user.get("maritalStatus") === "Single" ? 'selected' : ''}>Single</option>
+							<option value="Married" ${this.user.get("maritalStatus") === "Married" ? 'selected' : ''}>Married</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("childrens", false)}
 						<select id="childrens" name="childrens" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.data.user.childrens === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.data.user.childrens === "1" ? 'selected' : ''}>Yes</option>
+							<option value="0" ${this.user.get("childrens") === "0" ? 'selected' : ''}>No</option>
+							<option value="1" ${this.user.get("childrens") === "1" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("elderly-parents", false)}
 						<select id="elderly-parents" name="elderlyParents" class="${this.inputClasslist}">
 							<option class="hidden"></option>
-							<option value="0" ${this.data.user.elderlyParents === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.data.user.elderlyParents === "1" ? 'selected' : ''}>Yes</option>
+							<option value="0" ${this.user.get("elderlyParents") === "0" ? 'selected' : ''}>No</option>
+							<option value="1" ${this.user.get("elderlyParents") === "1" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 				</div>
@@ -74,44 +89,44 @@ export default class extends AProfilingView {
 				if (this.worksites.size === 0)
 					return ``;
 				return `
-					<ul id="worksite-dropdown-body" class="hidden ps-2 pe-3 pb-2 mt-px absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden">
-						${Array.from(this.worksites.entries()).map(([key, value]) => `<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-worksite-option>${value}</li>`).join()}
+					<ul class="hidden ps-2 pe-3 pb-2 mt-px absolute bg-white w-full rounded bg-clip-padding text-left text-base shadow-lg z-20 max-h-36 overflow-y-auto overflow-x-hidden" data-searchbar-dropdown>
+						${Array.from((this.worksites as Map<number, string>).entries()).map(([key, value]) => `<li role="button" value="${key}" class="block w-full whitespace-nowrap px-2 py-2 text-sm truncate text-neutral-700 hover:bg-slate-100 focus:bg-slate-100 text-left" data-searchbar-option>${value}</li>`).join("")}
 					</ul>
 				`;
 			};
 			return `
 				<div class="flex-grow flex items-center pt-2 sm:pt-4">
 					<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
-						<div class="col-span-6 relative" data-input-group>
+						<div class="col-span-6 relative" data-input-group data-searchbar>
 							${this.generateLabelFor("worksite", true)}
-							<input id="worksite" value="${this.data.user.worksite && this.worksites.get(Number(this.data.user.worksite)) ? this.worksites.get(Number(this.data.user.worksite)) : ''}" type="search" autocomplete="off" required
-								match="[data-worksite-option]"
-								class="${this.inputClasslist}">
+							<input id="worksite" value="${this.user.get("worksite") && this.worksites.get(Number(this.user.get("worksite"))) ? this.worksites.get(Number(this.user.get("worksite"))) : ''}" type="search" autocomplete="off" required
+								match="[data-searchbar-option]"
+								class="${this.inputClasslist}" data-searchbar-input>
 							<section></section>
 							${generateWorksitesListMarkup()}
-							<input id="hidden-worksite" name="worksite" value="${this.data.user.worksite || ''}" type="hidden">
+							<input id="hidden-worksite" name="worksite" value="${this.user.get("worksite") || ''}" type="hidden" data-searchbar-hidden-input>
 						</div>
 						<div class="col-span-6 relative" data-input-group>
 							${this.generateLabelFor("street", true)}
-							<input id="street" name="street" value="${this.data.user.street || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
+							<input id="street" name="street" value="${this.user.get("street") || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("postal-code", true)}
-							<input id="postal-code" name="postalCode" value="${this.data.user.postalCode || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
+							<input id="postal-code" name="postalCode" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("city", true)}
-							<input id="city" name="city" value="${this.data.user.city || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
+							<input id="city" name="city" value="${this.user.get("city") || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-6 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("country", true)}
-							<input id="country" name="country" value="${this.data.user.country || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
+							<input id="country" name="country" value="${this.user.get("country") || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
@@ -120,18 +135,12 @@ export default class extends AProfilingView {
 			`;
 		};
 		const	generateAreasOfInterestMarkup = () => {
-			const areasOfInterest = new Map([
-				["physical", ["Movement", "Nutrition", "Health"]],
-				["economic", ["Services", "Conventions", "Answers"]],
-				["psychological", ["Listening", "Closeness", "Growth"]],
-				["family", ["Assistance", "Care", "Support"]]
-			]);
 			const generatePillarsMarkup = () => {
 				let pillarsMarkup = ``;
-				for (const [key, value] of areasOfInterest.entries()) {
+				for (const [key, value] of this.areasOfInterest.entries()) {
 					pillarsMarkup += `
 						<label role="button" class="col-span-2 md:col-span-1 bg-wf-${key} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
-							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.data.user[key as keyof user] === "on" ? "checked" : ""}/>
+							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.user.get(key) === "on" ? "checked" : ""}/>
 							<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
 								<section class="text-xs uppercase hidden sm:block pb-3">
 									Leonardo's Welfare is
@@ -152,6 +161,7 @@ export default class extends AProfilingView {
 						</label>
 					`;
 				}
+				return pillarsMarkup;
 			}
 			return `
 				<div class="text-md text-center text-slate-500 pb-3">
@@ -189,14 +199,14 @@ export default class extends AProfilingView {
 							digit=${PASSWORD_MIN_AMOUNT_DIGIT}
 							special="${PASSWORD_MIN_AMOUNT_SPECIAL} ${PASSWORD_SPECIAL_CHARACTERS}"
 							class="${this.inputClasslist}">
-						${this.generatePasswordTogglerMarkup()}
+						${this.generatePasswordTogglerMarkup("password")}
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-password", true)}
 						<input id="confirm-password" type="password" autocomplete="new-password" required match="#password"
 							class="${this.inputClasslist}">
-						${this.generatePasswordTogglerMarkup()}
+						${this.generatePasswordTogglerMarkup("confirm-password")}
 						<section></section>
 					</div>
 				</div>
@@ -216,105 +226,107 @@ export default class extends AProfilingView {
 				</div>
 			</div>
 		`;
-		const	generateMainMarkupFooter = () => `
-			<div class="grid grid-rows-1 grid-cols-4 w-full">
-				<div class="col-span-1 flex justify-start">
-					<button type="button" id="backward-btn" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-left" viewBox="0 0 16 16">
-							<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-						</svg>
-					</button>
-				</div>
-				<div class="flex ${this.markupIndex === 3 ? 'col-span-3 justify-end' : 'col-span-2 justify-center'} sm:col-span-2 sm:justify-center select-none tekne text-md items-center">
-					<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
-						${this.markupIndex + 1} / 4
-					</span>
-					<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} w-full px-4 py-2 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
-						<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Register<span>
-					</button>
-				</div>
-				<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
-					<button type="button" id="forward-btn" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-right" viewBox="0 0 16 16">
-							<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-						</svg>
-					</button>
-				</div>
-			</div>
-		`;
-		const main = document.querySelector("main");
-		if (!main)
-			return ;
 		const	markupGeneratorFunctions = [
 			generatePersonalDataMarkup, generateLocalizationMarkup, generateAreasOfInterestMarkup, generateRegistrationMarkup
 		];
-		main.innerHTML = `
+
+		this.mainElement!.className = "w-full max-w-screen-md mx-auto my-6 sm:my-10";
+		this.mainElement!.innerHTML = `
 			<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
 				${markupGeneratorFunctions[this.markupIndex].call(this)}
-				${generateMainMarkupFooter()}
+				<div class="grid grid-rows-1 grid-cols-4 w-full">
+					<div class="col-span-1 flex justify-start">
+						<button type="button" id="backward-btn" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-left" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+							</svg>
+						</button>
+					</div>
+					<div class="flex ${this.markupIndex === 3 ? 'col-span-3 justify-end' : 'col-span-2 justify-center'} sm:col-span-2 sm:justify-center select-none tekne text-md items-center">
+						<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
+							${this.markupIndex + 1} / 4
+						</span>
+						<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} w-full px-4 py-2 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+							<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Register<span>
+						</button>
+					</div>
+					<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
+						<button type="button" id="forward-btn" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-right" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+							</svg>
+						</button>
+					</div>
+				</div>
 			</form>
 		`;
+		this.addSeachBarEventListeners();
 	}
 
-	protected override	addEventListeners() {
-		this.handleInputsValidation();
-		this.handleWorksiteInput();
-		this.handlePasswordInputTypeToggler();
-		this.handleBackwardButtonClick();
-		this.handleForwardButtonClick();
-		this.addFormSubmitionHandler(this.registrationFormSubmitionHandler);
-	}
-	
-	private handleBackwardButtonClick() {
-		const button = document.getElementById("backward-btn");
-		if (!button)
+	private addSeachBarEventListeners() {
+		const searchBar = document.querySelector("[data-searchbar]") as HTMLElement;
+		if (!searchBar)
 			return ;
-		button.addEventListener('click', () => {
-			if (this.markupIndex > 0)
-				this.markupIndex -= 1;
-			this.renderMainMarkup();
-		});
-	}
-	
-	private	handleForwardButtonClick() {
-		const button = document.getElementById("forward-btn");
-		if (!button)
-			return;
-		button.addEventListener('click', () => {
-			const form = document.querySelector('form');
-			if (!form || !this.formCheckValidity(form))
-				return;
-			if (this.markupIndex < 3)
-				this.markupIndex += 1;
-			const formData = new FormData(form);
-			this.saveFormDataInSessionStorage(formData);
-		});
-	}
+		const input = searchBar.querySelector("[data-searchbar-input]") as HTMLInputElement;
+		const hiddenInput = searchBar.querySelector("[data-searchbar-hidden-input]") as HTMLInputElement;
+		const dropdown = searchBar.querySelector("[data-searchbar-dropdown]");
+		const options = dropdown?.querySelectorAll("[data-searchbar-option]") as NodeListOf<HTMLButtonElement>;
 
-	private handleWorksiteInput() {
-		const searchInput = document.getElementById("worksite") as HTMLInputElement;
-		const hiddenInput = document.getElementById("hidden-worksite") as HTMLInputElement;
-		const dropdownBody = document.getElementById("worksite-dropdown-body");
-		if (!dropdownBody)
-			return ;
-		const worksiteOptions = dropdownBody.querySelectorAll("[data-worksite-option]") as NodeListOf<HTMLButtonElement>;
+		input.addEventListener("focus", () => dropdown?.classList.remove("hidden"));
+		input.addEventListener("blur", () => dropdown?.classList.add("hidden"));
 
-		searchInput.addEventListener("focus", () => dropdownBody.classList.remove("hidden"));
-		searchInput.addEventListener("blur", () => dropdownBody.classList.add("hidden"));
-
-		searchInput.addEventListener("input", () => {
-			let inputValue = searchInput.value.toLowerCase();
-			worksiteOptions.forEach(option => {
+		input.addEventListener("input", () => {
+			let inputValue = input.value.toLowerCase();
+			options.forEach(option => {
 				const optionContent = option.textContent?.toLowerCase();
 				option.style.display = optionContent?.includes(inputValue) ? '' : 'none';
 			});
 		});
 
-		worksiteOptions.forEach(option => {
+		options.forEach(option => {
 			option.addEventListener("mouseover", () => {
 				hiddenInput.value = option.value;
-				searchInput.value = option.innerText;
+				input.value = option.innerText;
 			});
+		});
+	}
+
+	protected override addEventListeners() {
+		super.addEventListeners();
+		this.mainElement?.addEventListener("click", event => {
+			const element = event.target as HTMLElement;
+			if (!element.closest("#backward-btn"))
+				return ;
+			this.handleBackwardButtonClick();
+		});
+	}
+	
+	private handleBackwardButtonClick() {
+		if (this.markupIndex > 0)
+			this.markupIndex -= 1;
+		this.renderMainMarkup();
+	}
+	
+	public	addForwardButtonClickHandler(handler: (user: Map<string, string>) => void) {
+		this.mainElement?.addEventListener("click", event => {
+			const element = event.target as HTMLElement;
+			if (!element.closest("#forward-btn"))
+				return ;
+			const form = document.querySelector('form');
+			if (!form || !this.formCheckValidity(form))
+				return;
+			const formData = new FormData(form);
+			if (this.markupIndex === 2)
+				for (const key of this.areasOfInterest.keys())
+					if (!formData.get(key))
+						formData.set(key, "off");
+			for(const [key, value] of formData)
+				if (typeof value === "string")
+					this.user.set(key, value);
+			handler(this.user);
+			if (this.markupIndex < 3)
+				this.markupIndex += 1;
+			this.renderMainMarkup();
 		});
 	}
 }

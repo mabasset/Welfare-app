@@ -3,8 +3,7 @@ import '../styles/index.css';
 import UserModel from './models/UserModel';
 import RootController from './controllers/RootController';
 import SignupController from './controllers/SignupController';
-import LoginController from './controllers/LoginController';
-import Router from './Router';
+import RouterController from './controllers/RouterController';
 
 ["offline", "online"].forEach(event => 
 	window.addEventListener(event, () => window.location.reload()));
@@ -15,11 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const rootController = new RootController(userModel);
 	const signupController = new SignupController(userModel);
-	//const loginController = new LoginController(profilingModel);
+	//const loginController = new LoginController(userModel);
 
-	const router = new Router(rootController, userModel);
-	//router.addRoute('/signup', signupController);
+	const routerController = new RouterController(userModel);
+	routerController.addRoute('/', rootController.renderView.bind(rootController));
+	routerController.addRoute('/signup', signupController.renderView.bind(signupController));
 	//router.addRoute('/login', loginController);
 	
-	router.start();
+	routerController.start();
 });

@@ -1,44 +1,20 @@
 export default abstract class {
 
-	protected	parentElement = document.body;
-	protected	parentElementClassList = "flex flex-col justify-between min-h-screen";
-	protected	parentElementBackgroundColor = "bg-wf-primary";
-	protected	data: any;
-
+	protected parentElement = document.body;
+	protected parentElementClassList = "flex flex-col justify-between min-h-screen";
+	protected parentElementBackgroundColor = "bg-wf-primary";
+	
 	constructor() {}
+	
+	protected abstract generateMarkup(): string;
 
-	public render(data: any) {
-		this.data = data;
+	render(...args: any) {
 		this.parentElement.className = this.parentElementClassList
 		this.parentElement.classList.add(this.parentElementBackgroundColor);
 		this.parentElement.innerHTML = this.generateMarkup();
 	}
 
-	public renderError(error: Error) {
-		type Cause = {
-			status: number;
-			statusText: string;
-		}
-		let	cause: Cause | undefined = error.cause as Cause;
-		if (!cause)
-			cause = {status: 503, statusText: "Service Unavailable"}
-		this.render(undefined);
-		document.querySelector("main")!.innerHTML = `
-			<h1>${cause.status} ${cause.statusText}</h1>
-		`;
-	}
-
-	protected generateMarkup(): string {
-		const html = `
-			${this.generateHeaderMarkup()}
-			<main>
-			</main>
-			${this.generateFooterMarkup()}
-		`
-		return html;
-	}
-
-	protected generateHeaderMarkup() : string {
+	protected	generateDefaultHeaderMarkup() {
 		return `
 			<header class="sm:w-full sm:max-w-96 sm:mx-auto">
 				<img src="/static/public/images/smile.svg" alt="smile" class="w-auto mx-auto h-20">
@@ -51,9 +27,9 @@ export default abstract class {
 		`
 	}
 
-	protected generateFooterMarkup() : string {
+	protected	generateDefaultFooterMarkup() {
 		return `
-			<footer class="text-sm sm:text-base">
+			<footer class="text-sm sm:text-base mb-6 sm:mb-10">
 				<ul class="flex flex-wrap justify-center border-0">
 					<li class="py-0 px-2">
 						<a class="text-white hover:text-black no-underline hover:underline select-none">

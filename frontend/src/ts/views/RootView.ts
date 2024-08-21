@@ -6,16 +6,14 @@ export default class extends AView {
 		super();
 	}
 
-	private generateHomeMarkup(user: user) : string {
+	private generateHomeMarkup(user: user) {
 		return `
 			<h1>Home</h1>
 		`
 	}
 
-	private generateWelcomeMarkup() : string {
+	protected override generateMarkup() {
 		return `
-			<header>
-			</header>
 			<main class="flex flex-col items-center justify-center text-white gap-4 flex-grow">
 				<div class="tekne text-center text-3xl sm:text-4xl md:text-5xl">
 					Welfare at 365 degree
@@ -53,10 +51,7 @@ export default class extends AView {
 					</span>
 				</div>
 			</main>
+			${this.generateDefaultFooterMarkup()}
 		`;
-	}
-
-	public override render(data: {user: user}) {
-		super.render(data);
 	}
 }

@@ -2,25 +2,69 @@ import AView from "../AView";
 
 export default abstract class extends AView {
 
-	protected inputClasslist = "truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring";
+	protected	inputClasslist = "truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring";
+	protected	mainElement: HTMLElement | undefined;
 
 	constructor() {
 		super();
 	}
 
-	protected abstract	renderMainMarkup(): void;
-	protected abstract	addEventListeners(): void;
+	protected abstract renderMainMarkup(): void;
 
-	public override render(data: any) {
-		super.render(data);
-		this.parentElement.classList.add("bg-wf-primary", "py-6", "sm:py-10",  "sm:px-6",  "lg:px-8");
+	override render(...args: any) {
+		super.render();
+		this.mainElement = document.querySelector("main") as HTMLElement;
 		this.renderMainMarkup();
 		this.addEventListeners();
 	}
 
-	protected	generatePasswordTogglerMarkup(): string {
-		const	html = `
-			<button type="button" tabindex="-1" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-type-toggler="password">
+	protected override generateMarkup() {
+		return `
+			${this.generateDefaultHeaderMarkup()}
+			<main></main>
+			${this.generateDefaultFooterMarkup()}
+		`;
+	}
+
+	protected addEventListeners() {
+		["input", "focusout"].forEach(eventType =>
+			this.mainElement?.addEventListener(eventType, event =>
+				this.handleInputEvents(event.target as HTMLInputElement))
+		);
+		this.mainElement?.addEventListener("click", event =>
+			this.handlePasswordTogglerClick(event.target as HTMLButtonElement)
+		);
+	}
+
+	private	handleInputEvents(input: HTMLInputElement) {
+		const inputGroup = input.closest("[data-input-group]");
+		if (!inputGroup)
+			return;
+		this.inputGroupCheckValidity(inputGroup);
+	}
+
+	private	handlePasswordTogglerClick(button: HTMLButtonElement) {
+		const inputId = button.dataset.passwordToggler;
+		if (!inputId)
+			return ;
+		const input = document.getElementById(inputId) as HTMLInputElement;
+		input.type = input.type === "password" ? "text" : "password";
+		button.querySelector(".bi-eye")?.classList.toggle("hidden");
+		button.querySelector(".bi-eye-slash")?.classList.toggle("hidden");
+	}
+
+	public addFormSubmitionHandler(handler: Function) {
+		this.mainElement?.addEventListener("submit", event => {
+			event.preventDefault();
+			const form = event.target as HTMLFormElement;
+			if (this.formCheckValidity(form))
+				handler(new FormData(form));
+		});
+	}
+
+	protected	generatePasswordTogglerMarkup(inputId: string) {
+		return `
+			<button type="button" tabindex="-1" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-password-toggler="${inputId}">
 				<svg xmlns="http://www.w3.org/2000/svg" height="22" fill="currentColor" class="hidden bi bi-eye" viewBox="0 0 16 16">
 					<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
 					<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
@@ -31,14 +75,13 @@ export default abstract class extends AView {
 					<path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
 				</svg>
 			</button>
-		`
-		return html;
+		`;
 	}
 
 	protected	generateLabelFor(inputId: string, isRequired: boolean): string {
 		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
 		const labelElement = `
-			<label for="${inputId}" class="absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white z-10">${labelText + (isRequired ? '*' : '')}</label>
+			<label for="${inputId}" class="${isRequired ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ""} absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white z-10">${labelText}</label>
 		`;
 		return labelElement;
 	}
@@ -221,51 +264,5 @@ export default abstract class extends AView {
 				isValid = false;
 		});
 		return isValid;
-	}
-
-	protected	handleInputsValidation() {
-		const inputs = document.querySelectorAll("input");
-		inputs.forEach(input => {
-			["input", "blur"].forEach(eventType => {
-				input.addEventListener(eventType, () => {
-					const inputGroup = input.closest("[data-input-group]");
-					if (!inputGroup)
-						return;
-					this.inputGroupCheckValidity(inputGroup);
-				});
-			});
-		});
-	}
-
-	protected	handlePasswordInputTypeToggler() {
-		const buttons = document.querySelectorAll("[data-type-toggler]") as NodeListOf<HTMLElement>;
-
-		buttons.forEach((button) => {
-			const inputId = button.dataset.typeToggler;
-			if (!inputId)
-				return ;
-			const input = document.getElementById(inputId) as HTMLInputElement;
-			const eyeSvg = button.querySelector(".bi-eye");
-			const eyeSlashSvg = button.querySelector(".bi-eye-slash");
-
-			button.addEventListener("click", () => {
-				const inputType = input.type;
-				input.type = inputType === "password" ? "text" : "password";
-				eyeSvg?.classList.toggle("hidden");
-				eyeSlashSvg?.classList.toggle("hidden");
-			});
-		});
-	}
-
-	public	addFormSubmitionHandler(handler: Function) {
-		const forms = document.querySelectorAll("form");
-		forms.forEach(form => {
-			form.addEventListener("submit", event => {
-				event.preventDefault();
-				if (!this.formCheckValidity(form))
-					return ;
-				handler(form);
-			});
-		});
 	}
 }

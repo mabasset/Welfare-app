@@ -1,3 +1,4 @@
+import { CustomError } from "../helpers";
 import Model from "./AModel";
 
 export default class extends Model {
@@ -9,17 +10,15 @@ export default class extends Model {
 		this.baseUrl += `${API.user.location}/`;
 	}
 
-	public async getUserData(): Promise<user> {
+	public async getUserData() {
 		const url: string = `${this.baseUrl + this.endpoints.getData}/`;
 		const response = await this.sendRequest(url);
-		if (!response.ok)
-			throw new Error(undefined, {cause: response});
 		const json = await response.json();
 		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;
 		return { isLogged, name, surname, birthday, maritalStatus, childrens, elderlyParents };
 	}
 
-	public async signup(formData: FormData): Promise<void> {
+	public async signup(formData: FormData) {
 		console.log("signup");
 		// const url: string = `${this.userAppUrl + endpointSignup}`;
 		// const response = await this.sendRequest(url, "POST", formData);
@@ -28,7 +27,7 @@ export default class extends Model {
 		// const user : user = { isLogged: json.is_authenticated };
 	}
 
-	public async login(formData: FormData): Promise<void> {
+	public async login(formData: FormData) {
 		console.log("login");
 		// const url: string = `${this.userAppUrl + endpointLogin}`;
 		//const response = await this.sendRequest(url);
@@ -36,12 +35,12 @@ export default class extends Model {
 		//const user : user = { isLogged: json.is_authenticated };
 	}
 
-	public async retrievePassword(formData: FormData): Promise<void> {
+	public async retrievePassword(formData: FormData) {
 		console.log("retrieve password");
 		// const url: string = `${this.userAppUrl + endpointRetrievePassword}`;
 	}
 
-	public async getWorksiteOptions(): Promise<Map<number, string>> {
+	public async getWorksiteOptions() {
 		const url: string = `${this.baseUrl + this.endpoints.getWorksites}/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
@@ -52,16 +51,22 @@ export default class extends Model {
 		return worksitesMap;
 	}
 
-	public	getUserDataFromSessionStrorage(): user {
-		let	user: user = {};
+	public	getUserDataFromSessionStrorage() {
+		let	user = new Map<string, string>();
 		for (let i = 0; i < sessionStorage.length; i++) {
 			const key = sessionStorage.key(i);
 			if (key !== null) {
 				const value = this.getFromSessionStorage(key);
 				if (value !== null)
-					user[key] = value;
+					user.set(key, value);
 			}
 		}
 		return user;
+	}
+
+	public	setUserDataToSessionStrorage(user: Map<string, string>) {
+		for(const [key, value] of user) {
+			this.setToSessionStorage(key, value);
+		}
 	}
 }

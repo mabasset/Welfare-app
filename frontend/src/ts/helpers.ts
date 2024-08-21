@@ -1,3 +1,20 @@
+export	class CustomError {
+	private errorMessages = new Map<number, string>([
+		[400, 'Bad Request'],
+		[401, 'Unauthorized'],
+		[404, 'Page Not Found'],
+		[500, 'Internal Server Error'],
+		[503, 'Service Unavailable'],
+	]);
+	public	text: string;
+	
+	constructor(
+		public code: number
+	) {
+		this.text = this.errorMessages.get(code) || "Unknown Error";
+	}
+}
+
 export const getOffsetDate = (offset: number) => {
 	const today = new Date();
 

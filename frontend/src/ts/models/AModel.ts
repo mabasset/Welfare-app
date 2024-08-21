@@ -1,3 +1,5 @@
+import { CustomError } from "../helpers";
+
 export default abstract class {
 
 	protected baseUrl = `https://${HOST}:${PORT}/${LOCATION_BACKEND}/`;
@@ -15,7 +17,10 @@ export default abstract class {
 		};
 		if ((method !== "GET" && method !== "HEAD") && body)
 			options.body = body;
-		return await fetch(url, options);
+		const response = await fetch(url, options);
+		if (!response.ok)
+			throw new CustomError(response.status);
+		return response;
 	}
 
 	protected setCookie(key: string, value: string, prefix?: string) {

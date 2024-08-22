@@ -163,7 +163,7 @@ export default class extends AProfilingView {
 				for (const [key, value] of this.areasOfInterest.entries()) {
 					pillarsMarkup += `
 						<label role="button" class="col-span-2 md:col-span-1 bg-wf-${key} h-full rounded shadow-lg select-none outline-4 outline-slate-500 border border-white has-[:checked]:outline py-1">
-							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.user.get(key) === "on" ? "checked" : ""}/>
+							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.user.get(key) === "true" ? "checked" : ""}/>
 							<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
 								<section class="text-xs uppercase hidden sm:block pb-3">
 									Leonardo's Welfare is
@@ -349,8 +349,7 @@ export default class extends AProfilingView {
 			const formData = new FormData(form);
 			if (this.markupIndex === 2)
 				for (const key of this.areasOfInterest.keys())
-					if (!formData.get(key))
-						formData.set(key, "off");
+					formData.set(key, formData.has(key) ? "true" : "false");
 			for(const [key, value] of formData)
 				if (typeof value === "string")
 					this.user.set(key, value);

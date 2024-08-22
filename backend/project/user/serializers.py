@@ -57,39 +57,10 @@ class SignupSerializer(serializers.ModelSerializer):
 			'physical', 'economic', 'psychological', 'family',
 			'date_joined', 'is_active', 'is_staff', 'is_superuser'
 		]
-		read_only_fields = ['date_joined', 'is_active', 'is_staff', 'is_superuser']
 
 	def validate(self, attrs):
-		# Birthday validation
-		birthday = attrs.get('birthday')
-		now = timezone.now().date()
-		age = now.year - birthday.year - ((now.month, now.day) < (birthday.month, birthday.day))
-		if age < int(os.getenv('BIRTHDAY_MAX_OFFSET')) or age > int(os.getenv('BIRTHDAY_MIN_OFFSET')):
-			raise serializers.ValidationError({'error': [f"Birthday must be between {os.getenv('BIRTHDAY_MAX_OFFSET')} and {os.getenv('BIRTHDAY_MIN_OFFSET')} years old."]})
-		# Password validation
-		password = attrs.get('password')
-		try:
-			validate_password(password)
-		except ValidationError as e:
-			raise serializers.ValidationError({'error': e.messages})
-		return attrs
-
-	def create(self, validated_data):
-		password = validated_data.pop('password', None)
-		user = User(**validated_data)
-		if password:
-			user.set_password(password)
-		user.save()
-		return user
-
-	def update(self, instance, validated_data):
-		password = validated_data.pop('password', None)
-		for attr, value in validated_data.items():
-			setattr(instance, attr, value)
-		if password:
-			instance.set_password(password)
-		instance.save()
-		return instance
+		# Add any custom validation logic here
+		return super().validate(attrs)
 
 class ForgotPasswordSerializer(serializers.Serializer):
 	email = serializers.EmailField(required=True)

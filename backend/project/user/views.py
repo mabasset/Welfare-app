@@ -1,3 +1,4 @@
+import logging
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
@@ -35,12 +36,14 @@ def signup(request):
 	print(request.data)
 	serializer = SignupSerializer(data=request.data)
 	if serializer.is_valid(raise_exception=True):
+		logging.info("Serializer is valid.")
 		user = serializer.save()
 		response = Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-		# create_jwt_tokens(user, response)
+		create_jwt_tokens(user, response)
 		return response
-
-	return Response({'error': 'Something went wrong'}, status=status.HTTP_400_BAD_REQUEST)
+	else:
+		logging.error(f"Serializer validation failed with errors: {serializer.errors}")
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

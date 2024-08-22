@@ -8,6 +8,7 @@ Inside the frontend container, the code is pure typescript and it is served thro
 where to further direct the request based on the location; for /django/ it redirects it to the backend, for /static/ it serves everything static - including Django's from python3 manage.py collectstatic command -
 and for every other request location it will serve index.html.
 
-Inside index.html we link the "bundle.js" file, created through Webpack by compiling the typescript code. So in here we can find all the frontend logic, starting with the index.ts:
-By listening for the DOMContentLoated event, a Router object is created with many locations and by starting the Router, a function associated to the location.pathname is called for generating a specific markup to inject inside the index.html.
-Copying this mechanism also fo the popstate event and we achive the Spa behaviour.
+Inside index.html we link the "bundle.js" file, created through Webpack by transpiling the typescript code. So in here we can find all the frontend logic, starting with the index.ts:
+By listening for the DOMContentLoated and the popstate events,a Router object is created with many locations. When starting the Router, a function associated to the location.pathname is called for generating a specific markup to inject inside the index.html.
+with this mechanism we achive the Spa behaviour.
+

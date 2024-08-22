@@ -39,8 +39,9 @@ export default class extends AProfilingView {
 		return html;
 	}
 
-	protected override generateMainMarkup(): string {
-		const html = `
+	protected override renderMainMarkup() {
+		this.mainElement!.className = "w-full mx-auto sm:max-w-lg p-6 sm:p-12 bg-white rounded";
+		this.mainElement!.innerHTML = `
 			<main class="w-full mx-auto sm:max-w-lg p-6 sm:p-12 bg-white rounded">
 				<h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Log in to your account</h2>
 				<form id="login-form" class="mt-6" novalidate>
@@ -62,7 +63,7 @@ export default class extends AProfilingView {
 						<div class="relative">
 							<input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" custommaxlength="50" uppercase="1" lowercase="1" digit="1" special="1 _*-+!?,.;:"
 								class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring">
-							${this.generatePasswordTogglerMarkup()}
+							${this.generatePasswordTogglerMarkup("password")}
 							<section></section>
 						</div>
 					</div>
@@ -77,8 +78,7 @@ export default class extends AProfilingView {
 	}
 
 	protected override addEventListeners() {
-		this.handlePasswordInputTypeToggler();
+		super.addEventListeners();
 		this.handleModal();
-		this.handleInputsValidation();
 	}
 }

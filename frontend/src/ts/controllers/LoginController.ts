@@ -1,3 +1,4 @@
+import { CustomError } from "../helpers";
 import ProfilingModel from "../models/UserModel";
 import LoginView from "../views/profiling/LoginView";
 
@@ -9,12 +10,10 @@ export default class {
 		this.view = new LoginView();
 	}
 
-	public async renderView(): Promise<void> {
-		const user = await this.model.getUserData();
+	public async renderView(user: user): Promise<void> {
 		if (user.isLogged)
-			return this.view.renderErrorPage(401);
+			throw new CustomError(401);
 		this.view.render();
-		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
 	}
 
 	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {

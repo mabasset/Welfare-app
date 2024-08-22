@@ -27,20 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
 		]
 		read_only_fields = ['date_joined', 'is_active', 'is_staff', 'is_superuser']
 
-class LoginSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = User
-		fields = ("email", "password")
-
-	def validate(self, data):
-		email = data.get('email')
-		password = data.get('password')
-		user = authenticate(email=email, password=password)
-		if user is None:
-			raise serializers.ValidationError("Invalid email or password")
-		data['user'] = user
-		return data
-
 class SignupSerializer(serializers.ModelSerializer):
 	email = serializers.EmailField(
 		required=True,
@@ -58,9 +44,35 @@ class SignupSerializer(serializers.ModelSerializer):
 			'date_joined', 'is_active', 'is_staff', 'is_superuser'
 		]
 
-	def validate(self, attrs):
-		# Add any custom validation logic here
-		return super().validate(attrs)
+	def validate(self, data):
+		# Birthday validation
+		birthday = attrs.get('birthday')
+		now = timezone.now().date()
+		age = now.year - birthday.year - ((now.month, now.day) < (birthday.month, birthday.day))
+		if age < int(os.getenv('BIRTHDAY_MAX_OFFSET')) or age > int(os.getenv('BIRTHDAY_MIN_OFFSET')):
+			raise serializers.ValidationError({'error': [f"Birthday must be between {os.getenv('BIRTHDAY_MAX_OFFSET')} and {os.getenv('BIRTHDAY_MIN_OFFSET')} years old."]})
+		
+		# Password validation
+		password = attrs.get('password')
+		try:
+			validate_password(password)
+		except ValidationError as e:
+			raise serializers.ValidationError({'error': e.messages})
+		return attrs
+
+class LoginSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = ("email", "password")
+
+	def validate(self, data):
+		email = data.get('email')
+		password = data.get('password')
+		user = authenticate(email=email, password=password)
+		if user is None:
+			raise serializers.ValidationError("Invalid email or password")
+		data['user'] = user
+		return data
 
 class ForgotPasswordSerializer(serializers.Serializer):
 	email = serializers.EmailField(required=True)

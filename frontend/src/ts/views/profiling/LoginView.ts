@@ -81,4 +81,14 @@ export default class extends AProfilingView {
 		super.addEventListeners();
 		this.handleModal();
 	}
+
+	public addFormSubmitionHandler(handler: (form: HTMLFormElement) => void) {
+		this.mainElement?.addEventListener("submit", event => {
+			event.preventDefault();
+			const form = event.target as HTMLFormElement;
+			if (!this.formCheckValidity(form))
+				return ;
+			handler(form);
+		});
+	}
 }

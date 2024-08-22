@@ -33,7 +33,6 @@ def get_worksites(request):
 
 @api_view(['POST'])
 def signup(request):
-	print(request.data)
 	serializer = SignupSerializer(data=request.data)
 	if serializer.is_valid(raise_exception=True):
 		logging.info("Serializer is valid.")
@@ -41,9 +40,6 @@ def signup(request):
 		response = Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
 		create_jwt_tokens(user, response)
 		return response
-	else:
-		logging.error(f"Serializer validation failed with errors: {serializer.errors}")
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -54,7 +50,6 @@ def login(request):
 		response = Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
 		create_jwt_tokens(user, response)
 		return response
-
 
 
 @api_view(['POST'])

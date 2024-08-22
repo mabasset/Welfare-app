@@ -9,7 +9,7 @@ class AdminConfig(UserAdmin):
 	fieldsets = (
 		(None, {'fields': ('email', 'password')}),
 		('Required Personal info', {'fields': ('name', 'surname', 'birthday')}),
-		# ('Other Personal info', {'fields': ('interest', 'childrens', 'elderly_parents')}),
+		('Other Personal info', {'fields': ('interest', 'marital_status', 'childrens', 'elderly_parents')}),
 		('Residence', {'fields': ('street', 'postal_code', 'city', 'country')}),
 		('Work Location', {'fields': ('worksite',)}),
 		('Areas of interest', {'fields': ('physical','economic','psychological','family')}),

@@ -10,13 +10,14 @@ export default class {
 		this.view = new LoginView();
 	}
 
-	public async renderView(user: user): Promise<void> {
+	public async renderView(user: user) {
 		if (user.isLogged)
 			throw new CustomError(401);
 		this.view.render();
+		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
 	}
 
-	private async formSubmitionHandler(form: HTMLFormElement): Promise<void> {
+	private async formSubmitionHandler(form: HTMLFormElement) {
 		const formData = new FormData(form);
 		if (form.id === "login-form")
 			await this.model.login(formData);

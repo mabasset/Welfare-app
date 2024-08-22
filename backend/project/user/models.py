@@ -54,11 +54,11 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 	interest_CHOICES = [
-		('sport', 'Sport'),
-		('reading', 'Reading'),
-		('relax', 'Relax'),
-		('prevention', 'Prevention'),
-		('other', 'Other'),
+		(0, 'Sport'),
+		(1, 'Reading'),
+		(2, 'Relax'),
+		(3, 'Prevention'),
+		(4, 'Other'),
 	]
 	marital_status_CHOICES = [
 		('single', 'Single'),
@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	birthday = models.DateField(
 		null=False, blank=False
 	)
-	interest = models.CharField(choices=interest_CHOICES, null=True, blank=True)
+	interest = models.IntegerField(choices=interest_CHOICES, null=True, blank=True)
 	marital_status = models.CharField(choices=marital_status_CHOICES, null=True, blank=True)
 	childrens = models.BooleanField(null=True, blank=True)
 	elderly_parents = models.BooleanField(null=True, blank=True)

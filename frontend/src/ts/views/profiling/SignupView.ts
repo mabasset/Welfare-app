@@ -70,7 +70,7 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("marital-status", false)}
-						<select id="marital-status" name="maritalStatus" class="${this.inputClasslist}">
+						<select id="marital-status" name="marital_status" class="${this.inputClasslist}">
 							<option class="hidden"></option>
 							<option value="Single" ${this.user.get("maritalStatus") === "Single" ? 'selected' : ''}>Single</option>
 							<option value="Married" ${this.user.get("maritalStatus") === "Married" ? 'selected' : ''}>Married</option>
@@ -86,7 +86,7 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("elderly-parents", false)}
-						<select id="elderly-parents" name="elderlyParents" class="${this.inputClasslist}">
+						<select id="elderly-parents" name="elderly-parents" class="${this.inputClasslist}">
 							<option class="hidden"></option>
 							<option value="0" ${this.user.get("elderlyParents") === "0" ? 'selected' : ''}>No</option>
 							<option value="1" ${this.user.get("elderlyParents") === "1" ? 'selected' : ''}>Yes</option>
@@ -129,7 +129,7 @@ export default class extends AProfilingView {
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("postal-code", true)}
-							<input id="postal-code" name="postalCode" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" autocomplete="on"
+							<input id="postal-code" name="postal_code" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" autocomplete="on"
 								required
 								custommaxlength=${POSTAL_CODE_MAX_LENGTH}
 								class="${this.inputClasslist}">

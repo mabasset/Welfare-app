@@ -19,21 +19,20 @@ export default class extends Model {
 	}
 
 	public async signup(formData: FormData) {
-		console.log("signup");
 		const url: string = `${this.baseUrl + this.endpoints.signup}/`;
-		const response = await this.sendRequest(url, "POST", formData);
-		console.log(response)
+		const data = Object.fromEntries(formData);
+		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
 		const json = await response.json();
-		console.log(json)
 		// const user : user = { isLogged: json.is_authenticated };
 	}
 
 	public async login(formData: FormData) {
-		console.log("login");
-		// const url: string = `${this.userAppUrl + endpointLogin}`;
-		//const response = await this.sendRequest(url);
-		//const json = await response.json();
-		//const user : user = { isLogged: json.is_authenticated };
+		const url: string = `${this.baseUrl + this.endpoints.login}/`;
+		const data = Object.fromEntries(formData);
+		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
+		console.log(response)
+		const json = await response.json();
+		const user : user = { isLogged: json.is_authenticated };
 	}
 
 	public async retrievePassword(formData: FormData) {

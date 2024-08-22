@@ -30,19 +30,30 @@ export default class extends AProfilingView {
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-4 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("name", true)}
-						<input id="name" name="name" value="${this.user.get("name") || ''}" type="text" autocomplete="given-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required autocomplete="on"
+						<input id="name" name="name" value="${this.user.get("name") || ''}" type="text" autocomplete="given-name" autocomplete="on"
+							required
+							minlength=${NAME_MIN_LENGTH}
+							custommaxlength=${NAME_MAX_LENGTH}
+							pattern=${NAME_PATTERN}
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("surname", true)}
-						<input id="surname" name="surname" value="${this.user.get("surname") || ''}" type="text" autocomplete="family-name" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ']+$" minlength="2" custommaxlength="50" required
+						<input id="surname" name="surname" value="${this.user.get("surname") || ''}" type="text" autocomplete="family-name"
+							required
+							minlength=${SURNAME_MIN_LENGTH}
+							custommaxlength=${SURNAME_MAX_LENGTH}
+							pattern=${SURNAME_PATTERN}
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("birthday", true)}
-						<input id="birthday" name="birthday" value="${this.user.get("birthday") || ''}" type="date" autocomplete="bday" min="${getOffsetDate(100)}" max="${getOffsetDate(15)}" required
+						<input id="birthday" name="birthday" value="${this.user.get("birthday") || ''}" type="date" autocomplete="bday"
+							required
+							min="${getOffsetDate(Number(BIRTHDAY_MIN_OFFSET))}"
+							max="${getOffsetDate(Number(BIRTHDAY_MAX_OFFSET))}"
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
@@ -99,7 +110,8 @@ export default class extends AProfilingView {
 					<div class="grid grid-rows-4 sm:grid-rows-3 grid-cols-6 gap-3 sm:gap-6 w-full">
 						<div class="col-span-6 relative" data-input-group data-searchbar>
 							${this.generateLabelFor("worksite", true)}
-							<input id="worksite" value="${this.user.get("worksite") && this.worksites.get(Number(this.user.get("worksite"))) ? this.worksites.get(Number(this.user.get("worksite"))) : ''}" type="search" autocomplete="off" required
+							<input id="worksite" value="${this.user.get("worksite") && this.worksites.get(Number(this.user.get("worksite"))) ? this.worksites.get(Number(this.user.get("worksite"))) : ''}" type="search" autocomplete="off"
+								required
 								match="[data-searchbar-option]"
 								class="${this.inputClasslist}" data-searchbar-input>
 							<section></section>
@@ -108,25 +120,36 @@ export default class extends AProfilingView {
 						</div>
 						<div class="col-span-6 relative" data-input-group>
 							${this.generateLabelFor("street", true)}
-							<input id="street" name="street" value="${this.user.get("street") || ''}" type="text" autocomplete="street-address" custommaxlength="200" required
+							<input id="street" name="street" value="${this.user.get("street") || ''}" type="text" autocomplete="street-address"
+								required
+								custommaxlength=${STREET_MAX_LENGTH}
+								pattern=${STREET_PATTERN}
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("postal-code", true)}
-							<input id="postal-code" name="postalCode" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" custommaxlength="10" required autocomplete="on"
+							<input id="postal-code" name="postalCode" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" autocomplete="on"
+								required
+								custommaxlength=${POSTAL_CODE_MAX_LENGTH}
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("city", true)}
-							<input id="city" name="city" value="${this.user.get("city") || ''}" type="text" pattern="[A-Za-z\\s]+" custommaxlength="100" required
+							<input id="city" name="city" value="${this.user.get("city") || ''}" type="text"
+								required
+								custommaxlength=${CITY_MAX_LENGTH}
+								pattern=${CITY_PATTERN}
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
 						<div class="col-span-6 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("country", true)}
-							<input id="country" name="country" value="${this.user.get("country") || ''}" type="text" autocomplete="country-name" pattern="[A-Za-z\\s]+" custommaxlength="56" required autocomplete="on"
+							<input id="country" name="country" value="${this.user.get("country") || ''}" type="text" autocomplete="country-name" autocomplete="on"
+								required
+								custommaxlength=${COUNTRY_MAX_LENGTH}
+								pattern=${COUNTRY_PATTERN}
 								class="${this.inputClasslist}">
 							<section></section>
 						</div>
@@ -179,13 +202,18 @@ export default class extends AProfilingView {
 				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-3 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("email", true)}
-						<input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" custommaxlength="100"
-							class="${this.inputClasslist}" autocomplete="on">
+						<input id="email" name="email" type="email" autocomplete="email" autocomplete="on"
+							required
+							custommaxlength="100"
+							pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+"
+							class="${this.inputClasslist}">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-email", true)}
-						<input id="confirm-email" type="email" autocomplete="email" required match="#email" autocomplete="off"
+						<input id="confirm-email" type="email" autocomplete="email" autocomplete="off"
+							required
+							match="#email"
 							class="${this.inputClasslist}">
 						<section></section>
 					</div>
@@ -205,7 +233,9 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-password", true)}
-						<input id="confirm-password" type="password" autocomplete="new-password" required match="#password"
+						<input id="confirm-password" type="password" autocomplete="new-password"
+							required
+							match="#password"
 							class="${this.inputClasslist}">
 						${this.generatePasswordTogglerMarkup("confirm-password")}
 						<section></section>
@@ -328,6 +358,19 @@ export default class extends AProfilingView {
 			if (this.markupIndex < 3)
 				this.markupIndex += 1;
 			this.renderMainMarkup();
+		});
+	}
+	
+	public addFormSubmitionHandler(handler: (formData: FormData) => void) {
+		this.mainElement?.addEventListener("submit", event => {
+			event.preventDefault();
+			const form = event.target as HTMLFormElement;
+			if (!this.formCheckValidity(form))
+				return ;
+			const formData = new FormData(form);
+			for(const [key, value] of this.user.entries())
+				formData.set(key, value);
+			handler(formData);
 		});
 	}
 }

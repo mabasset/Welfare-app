@@ -19,14 +19,8 @@ export default class {
 		this.view.addFormSubmitionHandler(this.handleFormSubmition.bind(this));
 	}
 
-	private handleForwardButtonClick() {
+	private async handleFormSubmition(formData: FormData) {
 		
-	}
-
-	private async handleFormSubmition(form: HTMLFormElement): Promise<void> {
-		const formData = new FormData(form);
-		for(const [key, value] of formData.entries())
-			console.log(key, ":", value);
 		await this.model.signup(formData);
 	}
 }

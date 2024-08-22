@@ -32,11 +32,12 @@ def get_worksites(request):
 
 @api_view(['POST'])
 def signup(request):
+	print(request.data)
 	serializer = SignupSerializer(data=request.data)
 	if serializer.is_valid(raise_exception=True):
 		user = serializer.save()
 		response = Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-		create_jwt_tokens(user, response)
+		# create_jwt_tokens(user, response)
 		return response
 
 	return Response({'error': 'Something went wrong'}, status=status.HTTP_400_BAD_REQUEST)

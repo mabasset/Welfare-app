@@ -56,7 +56,6 @@ module.exports = {
 			PASSWORD_MIN_AMOUNT_DIGIT: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_DIGIT),
 			PASSWORD_MIN_AMOUNT_SPECIAL: JSON.stringify(process.env.PASSWORD_MIN_AMOUNT_SPECIAL),
 			PASSWORD_SPECIAL_CHARACTERS: JSON.stringify(process.env.PASSWORD_SPECIAL_CHARACTERS),
-			SESSION_COOKIES_PREFIX: JSON.stringify(process.env.SESSION_COOKIES_PREFIX),
 			// Email validators
 			EMAIL_MAX_LENGTH: JSON.stringify(process.env.EMAIL_MAX_LENGTH),
 			EMAIL_PATTERN: JSON.stringify(process.env.EMAIL_PATTERN),

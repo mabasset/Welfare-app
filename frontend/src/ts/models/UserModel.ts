@@ -20,10 +20,11 @@ export default class extends Model {
 
 	public async signup(formData: FormData) {
 		console.log("signup");
-		// const url: string = `${this.userAppUrl + endpointSignup}`;
-		// const response = await this.sendRequest(url, "POST", formData);
-		// const json = await response.json();
-		// console.log(json)
+		const url: string = `${this.baseUrl + this.endpoints.signup}/`;
+		const response = await this.sendRequest(url, "POST", formData);
+		console.log(response)
+		const json = await response.json();
+		console.log(json)
 		// const user : user = { isLogged: json.is_authenticated };
 	}
 

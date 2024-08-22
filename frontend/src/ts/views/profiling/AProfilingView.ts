@@ -53,15 +53,6 @@ export default abstract class extends AView {
 		button.querySelector(".bi-eye-slash")?.classList.toggle("hidden");
 	}
 
-	public addFormSubmitionHandler(handler: Function) {
-		this.mainElement?.addEventListener("submit", event => {
-			event.preventDefault();
-			const form = event.target as HTMLFormElement;
-			if (this.formCheckValidity(form))
-				handler(new FormData(form));
-		});
-	}
-
 	protected	generatePasswordTogglerMarkup(inputId: string) {
 		return `
 			<button type="button" tabindex="-1" class="absolute right-0 top-0 h-10 me-3 flex items-center" data-password-toggler="${inputId}">

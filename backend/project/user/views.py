@@ -44,12 +44,16 @@ def signup(request):
 
 @api_view(['POST'])
 def login(request):
+	print(request.data)
 	serializer = LoginSerializer(data=request.data)
-	if serializer.is_valid(raise_exception=True):
+	if serializer.is_valid():
 		user = serializer.validated_data['user']
 		response = Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-		create_jwt_tokens(user, response)
+		create_jwt_tokens(user, response)  # Function to add JWT tokens to the response
 		return response
+	else:
+		logging.error(f"Serializer validation failed with errors: {serializer.errors}")
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

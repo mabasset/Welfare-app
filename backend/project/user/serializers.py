@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
 from django.utils import timezone
 
 from .models import User, Worksite
@@ -45,32 +46,23 @@ class SignupSerializer(serializers.ModelSerializer):
 		]
 
 	def validate(self, data):
-		# Birthday validation
-		birthday = attrs.get('birthday')
-		now = timezone.now().date()
-		age = now.year - birthday.year - ((now.month, now.day) < (birthday.month, birthday.day))
-		if age < int(os.getenv('BIRTHDAY_MAX_OFFSET')) or age > int(os.getenv('BIRTHDAY_MIN_OFFSET')):
-			raise serializers.ValidationError({'error': [f"Birthday must be between {os.getenv('BIRTHDAY_MAX_OFFSET')} and {os.getenv('BIRTHDAY_MIN_OFFSET')} years old."]})
-		
-		# Password validation
-		password = attrs.get('password')
-		try:
-			validate_password(password)
-		except ValidationError as e:
-			raise serializers.ValidationError({'error': e.messages})
-		return attrs
+		return super().validate(data)
 
-class LoginSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = User
-		fields = ("email", "password")
+class LoginSerializer(serializers.Serializer):
+	email = serializers.EmailField()
+	password = serializers.CharField(write_only=True)
 
 	def validate(self, data):
 		email = data.get('email')
 		password = data.get('password')
-		user = authenticate(email=email, password=password)
-		if user is None:
-			raise serializers.ValidationError("Invalid email or password")
+		try:
+			user = User.objects.get(email=email)
+			if not password == user.password:
+				raise serializers.ValidationError("Password provided is invalid.")
+			else:
+				validate_password(password)
+		except User.DoesNotExist:
+			raise serializers.ValidationError("User with this email does not exist.")
 		data['user'] = user
 		return data
 

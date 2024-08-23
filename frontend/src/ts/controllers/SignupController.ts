@@ -20,6 +20,11 @@ export default class {
 	}
 
 	private async handleFormSubmition(formData: FormData) {
-		await this.model.signup(formData);
+		try {
+			await this.model.signup(formData);
+		}
+		catch(error) {
+			console.log(error);
+		}
 	}
 }

@@ -32,7 +32,7 @@ export default abstract class extends AView {
 				this.handleInputEvents(event.target as HTMLInputElement))
 		);
 		this.mainElement?.addEventListener("click", event =>
-			this.handlePasswordTogglerClick(event.target as HTMLButtonElement)
+			this.handlePasswordTogglerClick(event.target as HTMLElement)
 		);
 	}
 
@@ -43,11 +43,16 @@ export default abstract class extends AView {
 		this.inputGroupCheckValidity(inputGroup);
 	}
 
-	private	handlePasswordTogglerClick(button: HTMLButtonElement) {
+	private	handlePasswordTogglerClick(element: HTMLElement) {
+		const button = element.closest("[data-password-toggler]") as HTMLButtonElement;
+		if (!button)
+			return ;
 		const inputId = button.dataset.passwordToggler;
 		if (!inputId)
 			return ;
 		const input = document.getElementById(inputId) as HTMLInputElement;
+		if (!input)
+			return ;
 		input.type = input.type === "password" ? "text" : "password";
 		button.querySelector(".bi-eye")?.classList.toggle("hidden");
 		button.querySelector(".bi-eye-slash")?.classList.toggle("hidden");

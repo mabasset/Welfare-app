@@ -2,7 +2,7 @@ export	class CustomError {
 	private errorMessages = new Map<number, string>([
 		[400, 'Bad Request'],
 		[401, 'Unauthorized'],
-		[404, 'Page Not Found'],
+		[404, 'This page could not be found.'],
 		[500, 'Internal Server Error'],
 		[503, 'Service Unavailable'],
 	]);

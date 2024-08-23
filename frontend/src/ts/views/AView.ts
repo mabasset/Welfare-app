@@ -2,15 +2,15 @@ export default abstract class {
 
 	protected parentElement = document.body;
 	protected parentElementClassList = "flex flex-col justify-between min-h-screen";
-	protected parentElementBackgroundColor = "bg-wf-primary";
-	
+	protected parentElementBgColor = "bg-wf-primary";
+
 	constructor() {}
-	
+
 	protected abstract generateMarkup(): string;
 
 	render(...args: any) {
 		this.parentElement.className = this.parentElementClassList
-		this.parentElement.classList.add(this.parentElementBackgroundColor);
+		this.parentElement.classList.add(this.parentElementBgColor);
 		this.parentElement.innerHTML = this.generateMarkup();
 	}
 

@@ -1,9 +1,11 @@
 import { CustomError } from "../helpers";
 import UserModel from "../models/UserModel";
 import ErrorView from "../views/ErrorView";
+import LoadingView from "../views/LoadingView";
 
 export default class {
-	private	view = new ErrorView();
+	private	errorView = new ErrorView();
+	private loadingView = new LoadingView();
 	private routes = new Map<string, Function>();
 
 	constructor (
@@ -32,14 +34,15 @@ export default class {
 			catch(error) {
 				console.log(error);
 				const customError = error instanceof CustomError ? error : new CustomError(503);
-				this.view.render(customError);
+				this.errorView.render(customError);
 			}
 		}
 		else
-			this.view.render(new CustomError(404));
+			this.errorView.render(new CustomError(404));
 	}
 
 	public start()  {
+		window.addEventListener("custom:fetch", this.loadingView.render.bind(this.loadingView));
 		window.addEventListener("popstate", this.callRenderFunction.bind(this));
 		document.addEventListener("click", (event)  => {
 			const link = (event.target as HTMLElement).closest("[data-link]") as HTMLAnchorElement;

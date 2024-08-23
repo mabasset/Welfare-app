@@ -45,20 +45,7 @@ class SignupSerializer(serializers.ModelSerializer):
 		]
 
 	def validate(self, data):
-		# Birthday validation
-		birthday = attrs.get('birthday')
-		now = timezone.now().date()
-		age = now.year - birthday.year - ((now.month, now.day) < (birthday.month, birthday.day))
-		if age < int(os.getenv('BIRTHDAY_MAX_OFFSET')) or age > int(os.getenv('BIRTHDAY_MIN_OFFSET')):
-			raise serializers.ValidationError({'error': [f"Birthday must be between {os.getenv('BIRTHDAY_MAX_OFFSET')} and {os.getenv('BIRTHDAY_MIN_OFFSET')} years old."]})
-		
-		# Password validation
-		password = attrs.get('password')
-		try:
-			validate_password(password)
-		except ValidationError as e:
-			raise serializers.ValidationError({'error': e.messages})
-		return attrs
+		return super().validate(data)
 
 class LoginSerializer(serializers.ModelSerializer):
 	class Meta:

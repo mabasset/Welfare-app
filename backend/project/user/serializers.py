@@ -1,4 +1,5 @@
 import os
+from collections import OrderedDict
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
@@ -27,6 +28,18 @@ class UserSerializer(serializers.ModelSerializer):
 			'date_joined', 'is_active', 'is_staff', 'is_superuser'
 		]
 		read_only_fields = ['date_joined', 'is_active', 'is_staff', 'is_superuser']
+
+		def to_representation(self, instance):
+			representation = super().to_representation(instance)
+			camel_case_representation = OrderedDict()
+
+			for key, value in representation.items():
+				camel_case_key = ''.join([
+					word.capitalize() if index > 0 else word
+					for index, word in enumerate(key.split('_'))
+				])
+				camel_case_representation[camel_case_key] = value
+			return camel_case_representation
 
 class SignupSerializer(serializers.ModelSerializer):
 	email = serializers.EmailField(

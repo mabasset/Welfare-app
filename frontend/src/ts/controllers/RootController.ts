@@ -1,14 +1,20 @@
 import UserModel from "../models/UserModel";
-import RootView from "../views/RootView";
+import HomeView from "../views/HomeView";
+import WelcomeView from "../views/WelcomeView";
 
 export default class {
-	private	view = new RootView();
+	private	welcomeView = new WelcomeView();
+	private	homeView = new HomeView();
 
 	constructor(
 		private model: UserModel
 	) {}
 
 	public async renderView(user: user) {
-		this.view.render({user: user});
+		console.log(user)
+		if (!user.isAuthenticated)
+			this.welcomeView.render();
+		else
+			this.homeView.render(user);
 	}
 }

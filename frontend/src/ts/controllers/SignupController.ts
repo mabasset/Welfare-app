@@ -10,7 +10,7 @@ export default class {
 	) {}
 
 	public async renderView(user: user) {
-		if (user.isLogged)
+		if (user.isAuthenticated)
 			throw new CustomError(401);
 		const sessionData = this.model.getUserDataFromSessionStrorage();
 		const worksites = await this.model.getWorksiteOptions();

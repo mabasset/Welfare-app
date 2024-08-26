@@ -19,9 +19,9 @@ from .jwt import create_jwt_tokens
 @api_view(['GET'])
 def get_data(request):
 	if not request.user.is_authenticated:
-		return Response({'is_authenticated': False})
+		return Response({'isAuthenticated': False})
 	serializer = UserSerializer(request.user)
-	return Response({'is_authenticated': True, **serializer.data})
+	return Response({'isAuthenticated': True, **serializer.data})
 
 
 @api_view(['GET'])

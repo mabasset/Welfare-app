@@ -11,7 +11,7 @@ export default class {
 	}
 
 	public async renderView(user: user) {
-		if (user.isLogged)
+		if (user.isAuthenticated)
 			throw new CustomError(401);
 		this.view.render();
 		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));

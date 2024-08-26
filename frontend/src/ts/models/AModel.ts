@@ -18,7 +18,6 @@ export default abstract class {
 		};
 		if ((method !== "GET" && method !== "HEAD") && body)
 			options.body = body;
-		window.dispatchEvent(new CustomEvent("custom:fetch"));
 		const response = await fetch(url, options);
 		console.log(response);
 		if (!response.ok)

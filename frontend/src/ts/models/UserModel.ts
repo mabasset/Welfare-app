@@ -10,7 +10,7 @@ export default class extends Model {
 		this.baseUrl += `${API.user.location}/`;
 	}
 
-	public async getUserData() {
+	public async getData() {
 		const url: string = `${this.baseUrl + this.endpoints.getData}/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
@@ -20,37 +20,34 @@ export default class extends Model {
 	public async signup(formData: FormData) {
 		const url: string = `${this.baseUrl + this.endpoints.signup}/`;
 		const data = Object.fromEntries(formData);
-		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
-		const json = await response.json();
-		// const user : user = { isAuthenticated: json.is_authenticated };
+		await this.sendRequest(url, "POST", JSON.stringify(data));
 	}
 
 	public async login(formData: FormData) {
 		const url: string = `${this.baseUrl + this.endpoints.login}/`;
 		const data = Object.fromEntries(formData);
-		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
-		console.log(response)
-		const json = await response.json();
-		const user : user = { isAuthenticated: json.is_authenticated };
+		await this.sendRequest(url, "POST", JSON.stringify(data));
 	}
 
 	public async retrievePassword(formData: FormData) {
 		console.log("retrieve password");
-		// const url: string = `${this.userAppUrl + endpointRetrievePassword}`;
+		const url: string = `${this.baseUrl + this.endpoints.forgotPassword}/`;
+		const data = Object.fromEntries(formData);
+		await this.sendRequest(url, "POST", JSON.stringify(data));
 	}
 
-	public async getWorksiteOptions() {
+	public async getWorksites() {
 		const url: string = `${this.baseUrl + this.endpoints.getWorksites}/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
-		const worksitesMap = new Map<number, string>();
+		const worksites = new Map<number, string>();
 		for (const key in json)
 			if (json.hasOwnProperty(key))
-				worksitesMap.set(parseInt(key), json[key]);
-		return worksitesMap;
+				worksites.set(parseInt(key), json[key]);
+		return worksites;
 	}
 
-	public	getUserDataFromSessionStrorage() {
+	public	getDataFromSessionStrorage() {
 		let	user = new Map<string, string>();
 		for (let i = 0; i < sessionStorage.length; i++) {
 			const key = sessionStorage.key(i);
@@ -63,7 +60,7 @@ export default class extends Model {
 		return user;
 	}
 
-	public	setUserDataToSessionStrorage(user: Map<string, string>) {
+	public	setDataToSessionStrorage(user: Map<string, string>) {
 		for(const [key, value] of user) {
 			this.setToSessionStorage(key, value);
 		}

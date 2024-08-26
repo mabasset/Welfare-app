@@ -3,28 +3,28 @@ import UserModel from "../models/UserModel";
 import SignupView from "../views/profiling/SignupView";
 
 export default class {
-	private view = new SignupView();
+	private view: SignupView;
 
 	constructor(
-		private model: UserModel
-	) {}
+		private userModel: UserModel
+	) {
+		this.view = new SignupView(
+			this.userModel.setDataToSessionStrorage.bind(this.userModel),
+			this.registerUser.bind(this)
+		);
+	}
 
 	public async renderView(user: user) {
 		if (user.isAuthenticated)
 			throw new CustomError(401);
-		const sessionData = this.model.getUserDataFromSessionStrorage();
-		const worksites = await this.model.getWorksiteOptions();
+		const sessionData = this.userModel.getDataFromSessionStrorage();
+		const worksites = await this.userModel.getWorksites();
 		this.view.render(sessionData, worksites);
-		this.view.addForwardButtonClickHandler(this.model.setUserDataToSessionStrorage.bind(this.model));
-		this.view.addFormSubmitionHandler(this.handleFormSubmition.bind(this));
 	}
 
-	private async handleFormSubmition(formData: FormData) {
-		try {
-			await this.model.signup(formData);
-		}
-		catch(error) {
-			console.log(error);
-		}
+	private async registerUser(formData: FormData) {
+		await this.userModel.signup(formData);
+		history.pushState(null, "", "/");
+		window.dispatchEvent(new Event("popstate"));
 	}
 }

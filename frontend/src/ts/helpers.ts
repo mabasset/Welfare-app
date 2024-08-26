@@ -3,10 +3,11 @@ export	class CustomError {
 		[400, 'Bad Request'],
 		[401, 'Unauthorized'],
 		[404, 'This page could not be found.'],
+		[409, 'Conflict.'],
 		[500, 'Internal Server Error'],
 		[503, 'Service Unavailable'],
 	]);
-	public	text: string;
+	text: string;
 	
 	constructor(
 		public code: number

@@ -7,11 +7,10 @@ export default class {
 	private	homeView = new HomeView();
 
 	constructor(
-		private model: UserModel
+		private userModel: UserModel
 	) {}
 
 	public async renderView(user: user) {
-		console.log(user)
 		if (!user.isAuthenticated)
 			this.welcomeView.render();
 		else

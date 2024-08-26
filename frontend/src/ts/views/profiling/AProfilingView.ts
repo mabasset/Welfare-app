@@ -2,38 +2,19 @@ import AView from "../AView";
 
 export default abstract class extends AView {
 
-	protected	inputClasslist = "truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring";
-	protected	mainElement: HTMLElement | undefined;
-
 	constructor() {
 		super();
 	}
 
-	protected abstract renderMainMarkup(): void;
-
-	override render(...args: any) {
-		super.render();
-		this.mainElement = document.querySelector("main") as HTMLElement;
-		this.renderMainMarkup();
-		this.addEventListeners();
-	}
-
-	protected override generateMarkup() {
-		return `
-			${this.generateDefaultHeaderMarkup()}
-			<main></main>
-			${this.generateDefaultFooterMarkup()}
-		`;
-	}
-
-	protected addEventListeners() {
-		["input", "focusout"].forEach(eventType =>
-			this.mainElement?.addEventListener(eventType, event =>
-				this.handleInputEvents(event.target as HTMLInputElement))
-		);
-		this.mainElement?.addEventListener("click", event =>
-			this.handlePasswordTogglerClick(event.target as HTMLElement)
-		);
+	protected override addEventListeners() {
+		super.addEventListeners();
+		document.querySelectorAll("input").forEach(input =>
+			["input", "focusout"].forEach(event =>
+				input.addEventListener(event, () =>
+					this.handleInputEvents(input))));
+		document.querySelectorAll("[data-password-toggler]").forEach(button =>
+			button.addEventListener("click", () =>
+				this.handlePasswordTogglerClick(button as HTMLButtonElement)));
 	}
 
 	private	handleInputEvents(input: HTMLInputElement) {
@@ -43,10 +24,7 @@ export default abstract class extends AView {
 		this.inputGroupCheckValidity(inputGroup);
 	}
 
-	private	handlePasswordTogglerClick(element: HTMLElement) {
-		const button = element.closest("[data-password-toggler]") as HTMLButtonElement;
-		if (!button)
-			return ;
+	private	handlePasswordTogglerClick(button: HTMLButtonElement) {
 		const inputId = button.dataset.passwordToggler;
 		if (!inputId)
 			return ;
@@ -77,7 +55,7 @@ export default abstract class extends AView {
 	protected	generateLabelFor(inputId: string, isRequired: boolean): string {
 		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
 		const labelElement = `
-			<label for="${inputId}" class="${isRequired ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ""} absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white z-10">${labelText}</label>
+			<label for="${inputId}" class="${isRequired ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ""} absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white">${labelText}</label>
 		`;
 		return labelElement;
 	}

@@ -14,8 +14,7 @@ export default class extends Model {
 		const url: string = `${this.baseUrl + this.endpoints.getData}/`;
 		const response = await this.sendRequest(url);
 		const json = await response.json();
-		const { is_authenticated: isLogged, name, surname, birthday, marital_status: maritalStatus, childrens, elderly_parents: elderlyParents } = json;
-		return { isLogged, name, surname, birthday, maritalStatus, childrens, elderlyParents };
+		return json;
 	}
 
 	public async signup(formData: FormData) {
@@ -23,7 +22,7 @@ export default class extends Model {
 		const data = Object.fromEntries(formData);
 		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
 		const json = await response.json();
-		// const user : user = { isLogged: json.is_authenticated };
+		// const user : user = { isAuthenticated: json.is_authenticated };
 	}
 
 	public async login(formData: FormData) {
@@ -32,7 +31,7 @@ export default class extends Model {
 		const response = await this.sendRequest(url, "POST", JSON.stringify(data));
 		console.log(response)
 		const json = await response.json();
-		const user : user = { isLogged: json.is_authenticated };
+		const user : user = { isAuthenticated: json.is_authenticated };
 	}
 
 	public async retrievePassword(formData: FormData) {

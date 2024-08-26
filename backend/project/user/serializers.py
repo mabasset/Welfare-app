@@ -1,8 +1,10 @@
 import os
+from collections import OrderedDict
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
 from django.utils import timezone
 
 from .models import User, Worksite
@@ -27,6 +29,18 @@ class UserSerializer(serializers.ModelSerializer):
 		]
 		read_only_fields = ['date_joined', 'is_active', 'is_staff', 'is_superuser']
 
+		def to_representation(self, instance):
+			representation = super().to_representation(instance)
+			camel_case_representation = OrderedDict()
+
+			for key, value in representation.items():
+				camel_case_key = ''.join([
+					word.capitalize() if index > 0 else word
+					for index, word in enumerate(key.split('_'))
+				])
+				camel_case_representation[camel_case_key] = value
+			return camel_case_representation
+
 class SignupSerializer(serializers.ModelSerializer):
 	email = serializers.EmailField(
 		required=True,
@@ -47,17 +61,21 @@ class SignupSerializer(serializers.ModelSerializer):
 	def validate(self, data):
 		return super().validate(data)
 
-class LoginSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = User
-		fields = ("email", "password")
+class LoginSerializer(serializers.Serializer):
+	email = serializers.EmailField()
+	password = serializers.CharField(write_only=True)
 
 	def validate(self, data):
 		email = data.get('email')
 		password = data.get('password')
-		user = authenticate(email=email, password=password)
-		if user is None:
-			raise serializers.ValidationError("Invalid email or password")
+		try:
+			user = User.objects.get(email=email)
+			if not password == user.password:
+				raise serializers.ValidationError("Password provided is invalid.")
+			else:
+				validate_password(password)
+		except User.DoesNotExist:
+			raise serializers.ValidationError("User with this email does not exist.")
 		data['user'] = user
 		return data
 

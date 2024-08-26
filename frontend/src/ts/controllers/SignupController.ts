@@ -6,10 +6,10 @@ export default class {
 	private view: SignupView;
 
 	constructor(
-		private model: UserModel
+		private userModel: UserModel
 	) {
 		this.view = new SignupView(
-			this.model.setUserDataToSessionStrorage.bind(this.model),
+			this.userModel.setDataToSessionStrorage.bind(this.userModel),
 			this.registerUser.bind(this)
 		);
 	}
@@ -17,13 +17,13 @@ export default class {
 	public async renderView(user: user) {
 		if (user.isAuthenticated)
 			throw new CustomError(401);
-		const sessionData = this.model.getUserDataFromSessionStrorage();
-		const worksites = await this.model.getWorksiteOptions();
+		const sessionData = this.userModel.getDataFromSessionStrorage();
+		const worksites = await this.userModel.getWorksites();
 		this.view.render(sessionData, worksites);
 	}
 
 	private async registerUser(formData: FormData) {
-		await this.model.signup(formData);
+		await this.userModel.signup(formData);
 		history.pushState(null, "", "/");
 		window.dispatchEvent(new Event("popstate"));
 	}

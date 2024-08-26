@@ -12,7 +12,7 @@ export default class {
 		private userModel: UserModel,
 	) {}
 
-	public	addRoute( path: string, renderFunction: Function ) {
+	public addRoute( path: string, renderFunction: Function ) {
 		this.routes.set(path, renderFunction);
 	}
 
@@ -29,7 +29,7 @@ export default class {
 		const	renderFunction = this.matchRoute();
 		if (renderFunction) {
 			try {
-				const user = await this.userModel.getUserData();
+				const user = await this.userModel.getData();
 				await renderFunction(user);
 			}
 			catch(error) {

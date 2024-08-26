@@ -6,7 +6,9 @@ export default class {
 
 	private view : LoginView;
 
-	constructor(private model: ProfilingModel) {
+	constructor(
+		private userModel: ProfilingModel
+	) {
 		this.view = new LoginView(this.logUserIn.bind(this));
 	}
 
@@ -17,7 +19,7 @@ export default class {
 	}
 
 	private async logUserIn(formData: FormData) {
-		await this.model.login(formData);
+		await this.userModel.login(formData);
 		history.pushState(null, "", "/");
 		window.dispatchEvent(new Event("popstate"));
 	}

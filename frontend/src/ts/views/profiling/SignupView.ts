@@ -300,10 +300,6 @@ export default class extends AProfilingView {
 		document.getElementById("backward-btn")?.addEventListener("click", this.handleBackwardBtnClick.bind(this));
 		document.getElementById("forward-btn")?.addEventListener("click", this.handleForwardBtnClick.bind(this));
 		document.getElementById("signup-btn")?.addEventListener("click", this.handleSignupBtnClick.bind(this));
-		this.addSeachBarEventListeners();
-	}
-
-	private addSeachBarEventListeners() {
 		const searchBar = document.querySelector("[data-searchbar]") as HTMLElement;
 		if (!searchBar)
 			return ;
@@ -311,10 +307,8 @@ export default class extends AProfilingView {
 		const hiddenInput = searchBar.querySelector("[data-searchbar-hidden-input]") as HTMLInputElement;
 		const dropdown = searchBar.querySelector("[data-searchbar-dropdown]");
 		const options = dropdown?.querySelectorAll("[data-searchbar-option]") as NodeListOf<HTMLButtonElement>;
-
 		input.addEventListener("focus", () => dropdown?.classList.remove("hidden"));
 		input.addEventListener("blur", () => dropdown?.classList.add("hidden"));
-
 		input.addEventListener("input", () => {
 			let inputValue = input.value.toLowerCase();
 			options.forEach(option => {
@@ -322,7 +316,6 @@ export default class extends AProfilingView {
 				option.style.display = optionContent?.includes(inputValue) ? '' : 'none';
 			});
 		});
-
 		options.forEach(option => {
 			option.addEventListener("mouseover", () => {
 				hiddenInput.value = option.value;
@@ -354,7 +347,7 @@ export default class extends AProfilingView {
 		this.updateMainMarkup();
 	}
 	
-	private async handleSignupBtnClick(event: Event) {
+	private async handleSignupBtnClick() {
 		const form = document.querySelector('form');
 		if (!form || !this.formCheckValidity(form))
 			return ;

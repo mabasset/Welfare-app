@@ -101,7 +101,7 @@ export default abstract class {
 						</div>
 						<div class="ml-auto pl-3">
 							<div class="-m-1.5">
-								<button class="text-${color}-600 p-1.5 hover:bg-red-200 rounded-md focus:outline outline-2 outline-red-600 outline-offset-2">
+								<button class="text-${color}-600 p-1.5 hover:bg-red-200 rounded-md focus:outline outline-2 outline-red-600 outline-offset-2" data-alert-dismiss>
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
 										<path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"></path>
 									</svg>
@@ -116,7 +116,11 @@ export default abstract class {
 	}
 
 	protected addEventListeners() {
+		document.getElementById("alert-container")?.addEventListener("click", this.handleAlerRemoverClick.bind(this));
+	}
 
+	private handleAlerRemoverClick(event: Event) {
+		(event.target as HTMLElement).closest("[data-alert-dismiss]")?.closest("[data-alert]")?.remove();
 	}
 
 	protected handleModal() {

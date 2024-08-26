@@ -56,7 +56,7 @@ def login(request):
 		return response
 	else:
 		logging.error(f"Serializer validation failed with errors: {serializer.errors}")
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])

@@ -61,8 +61,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 		(4, 'Other'),
 	]
 	marital_status_CHOICES = [
-		('single', 'Single'),
-		('married', 'Married'),
+		(0, 'Single'),
+		(1, 'Married'),
 	]
 	email = models.EmailField(max_length=int(os.getenv('EMAIL_MAX_LENGTH')), unique=True)
 	name = models.CharField(
@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 		null=False, blank=False
 	)
 	interest = models.IntegerField(choices=interest_CHOICES, null=True, blank=True)
-	marital_status = models.CharField(choices=marital_status_CHOICES, null=True, blank=True)
+	marital_status = models.IntegerField(choices=marital_status_CHOICES, null=True, blank=True)
 	childrens = models.BooleanField(null=True, blank=True)
 	elderly_parents = models.BooleanField(null=True, blank=True)
 	worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, null=False, blank=False)

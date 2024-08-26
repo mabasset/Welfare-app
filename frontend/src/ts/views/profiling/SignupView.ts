@@ -1,8 +1,9 @@
 import AProfilingView from "./AProfilingView";
-import { getOffsetDate } from "../../helpers";
+import { CustomError, getOffsetDate } from "../../helpers";
 
 export default class extends AProfilingView {
 
+	override mainClassList = "w-full max-w-screen-md mx-auto my-6 sm:my-10";
 	private	markupIndex = 0;
 	private user = new Map<string, string>();
 	private worksites = new Map<number, string>();
@@ -13,7 +14,10 @@ export default class extends AProfilingView {
 		["family", ["Assistance", "Care", "Support"]]
 	]);
 
-	constructor() {
+	constructor(
+		private setToSessionStorage: (user: Map<string, string>) => void,
+		private registerUser: (formData: FormData) => Promise<void>,
+	) {
 		super();
 	}
 
@@ -24,7 +28,7 @@ export default class extends AProfilingView {
 		super.render();
 	}
 
-	protected renderMainMarkup() {
+	override generateMainMarkup() {
 		const	generatePersonalDataMarkup = () => `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4 text-sm">
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-4 sm:gap-6 w-full">
@@ -34,8 +38,7 @@ export default class extends AProfilingView {
 							required
 							minlength=${NAME_MIN_LENGTH}
 							custommaxlength=${NAME_MAX_LENGTH}
-							pattern=${NAME_PATTERN}
-							class="${this.inputClasslist}">
+							pattern=${NAME_PATTERN}>
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
@@ -44,8 +47,7 @@ export default class extends AProfilingView {
 							required
 							minlength=${SURNAME_MIN_LENGTH}
 							custommaxlength=${SURNAME_MAX_LENGTH}
-							pattern=${SURNAME_PATTERN}
-							class="${this.inputClasslist}">
+							pattern=${SURNAME_PATTERN}>
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
@@ -53,13 +55,12 @@ export default class extends AProfilingView {
 						<input id="birthday" name="birthday" value="${this.user.get("birthday") || ''}" type="date" autocomplete="bday"
 							required
 							min="${getOffsetDate(Number(BIRTHDAY_MIN_OFFSET))}"
-							max="${getOffsetDate(Number(BIRTHDAY_MAX_OFFSET))}"
-							class="${this.inputClasslist}">
+							max="${getOffsetDate(Number(BIRTHDAY_MAX_OFFSET))}">
 						<section></section>
 					</div>
 					<div class="col-span-3 relative">
 						${this.generateLabelFor("interest", false)}
-						<select id="interest" name="interest" class="${this.inputClasslist}">
+						<select id="interest" name="interest" >
 							<option class="hidden"></option>
 							<option value="0" ${this.user.get("interest") === "0" ? 'selected' : ''}>Sport</option>
 							<option value="1" ${this.user.get("interest") === "1" ? 'selected' : ''}>Reading</option>
@@ -70,26 +71,26 @@ export default class extends AProfilingView {
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("marital-status", false)}
-						<select id="marital-status" name="marital_status" class="${this.inputClasslist}">
+						<select id="marital-status" name="marital_status" >
 							<option class="hidden"></option>
-							<option value="Single" ${this.user.get("maritalStatus") === "Single" ? 'selected' : ''}>Single</option>
-							<option value="Married" ${this.user.get("maritalStatus") === "Married" ? 'selected' : ''}>Married</option>
+							<option value="0" ${this.user.get("marital_status") === "0" ? 'selected' : ''}>Single</option>
+							<option value="1" ${this.user.get("marital_status") === "1" ? 'selected' : ''}>Married</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("childrens", false)}
-						<select id="childrens" name="childrens" class="${this.inputClasslist}">
+						<select id="childrens" name="childrens" >
 							<option class="hidden"></option>
-							<option value="0" ${this.user.get("childrens") === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.user.get("childrens") === "1" ? 'selected' : ''}>Yes</option>
+							<option value="false" ${this.user.get("childrens") === "false" ? 'selected' : ''}>No</option>
+							<option value="true" ${this.user.get("childrens") === "true" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 					<div class="col-span-3 sm:col-span-2 relative">
 						${this.generateLabelFor("elderly-parents", false)}
-						<select id="elderly-parents" name="elderly-parents" class="${this.inputClasslist}">
+						<select id="elderly-parents" name="elderly_parents" >
 							<option class="hidden"></option>
-							<option value="0" ${this.user.get("elderlyParents") === "0" ? 'selected' : ''}>No</option>
-							<option value="1" ${this.user.get("elderlyParents") === "1" ? 'selected' : ''}>Yes</option>
+							<option value="false" ${this.user.get("elderly_parents") === "false" ? 'selected' : ''}>No</option>
+							<option value="true" ${this.user.get("elderly_parents") === "true" ? 'selected' : ''}>Yes</option>
 						</select>
 					</div>
 				</div>
@@ -113,7 +114,7 @@ export default class extends AProfilingView {
 							<input id="worksite" value="${this.user.get("worksite") && this.worksites.get(Number(this.user.get("worksite"))) ? this.worksites.get(Number(this.user.get("worksite"))) : ''}" type="search" autocomplete="off"
 								required
 								match="[data-searchbar-option]"
-								class="${this.inputClasslist}" data-searchbar-input>
+								 data-searchbar-input>
 							<section></section>
 							${generateWorksitesListMarkup()}
 							<input id="hidden-worksite" name="worksite" value="${this.user.get("worksite") || ''}" type="hidden" data-searchbar-hidden-input>
@@ -123,16 +124,14 @@ export default class extends AProfilingView {
 							<input id="street" name="street" value="${this.user.get("street") || ''}" type="text" autocomplete="street-address"
 								required
 								custommaxlength=${STREET_MAX_LENGTH}
-								pattern=${STREET_PATTERN}
-								class="${this.inputClasslist}">
+								pattern=${STREET_PATTERN}>
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
 							${this.generateLabelFor("postal-code", true)}
-							<input id="postal-code" name="postal_code" value="${this.user.get("postalCode") || ''}" type="text" autocomplete="postal-code" autocomplete="on"
+							<input id="postal-code" name="postal_code" value="${this.user.get("postal_code") || ''}" type="text" autocomplete="postal-code" autocomplete="on"
 								required
-								custommaxlength=${POSTAL_CODE_MAX_LENGTH}
-								class="${this.inputClasslist}">
+								custommaxlength=${POSTAL_CODE_MAX_LENGTH}>
 							<section></section>
 						</div>
 						<div class="col-span-3 sm:col-span-2 relative" data-input-group>
@@ -140,8 +139,7 @@ export default class extends AProfilingView {
 							<input id="city" name="city" value="${this.user.get("city") || ''}" type="text"
 								required
 								custommaxlength=${CITY_MAX_LENGTH}
-								pattern=${CITY_PATTERN}
-								class="${this.inputClasslist}">
+								pattern=${CITY_PATTERN}>
 							<section></section>
 						</div>
 						<div class="col-span-6 sm:col-span-2 relative" data-input-group>
@@ -149,8 +147,7 @@ export default class extends AProfilingView {
 							<input id="country" name="country" value="${this.user.get("country") || ''}" type="text" autocomplete="country-name" autocomplete="on"
 								required
 								custommaxlength=${COUNTRY_MAX_LENGTH}
-								pattern=${COUNTRY_PATTERN}
-								class="${this.inputClasslist}">
+								pattern=${COUNTRY_PATTERN}>
 							<section></section>
 						</div>
 					</div>
@@ -205,16 +202,14 @@ export default class extends AProfilingView {
 						<input id="email" name="email" type="email" autocomplete="email" autocomplete="on"
 							required
 							custommaxlength="100"
-							pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+"
-							class="${this.inputClasslist}">
+							pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
 						${this.generateLabelFor("confirm-email", true)}
 						<input id="confirm-email" type="email" autocomplete="email" autocomplete="off"
 							required
-							match="#email"
-							class="${this.inputClasslist}">
+							match="#email">
 						<section></section>
 					</div>
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
@@ -226,8 +221,7 @@ export default class extends AProfilingView {
 							lowercase=${PASSWORD_MIN_AMOUNT_LOWER}
 							uppercase=${PASSWORD_MIN_AMOUNT_UPPER}
 							digit=${PASSWORD_MIN_AMOUNT_DIGIT}
-							special="${PASSWORD_MIN_AMOUNT_SPECIAL} ${PASSWORD_SPECIAL_CHARACTERS}"
-							class="${this.inputClasslist}">
+							special="${PASSWORD_MIN_AMOUNT_SPECIAL} ${PASSWORD_SPECIAL_CHARACTERS}">
 						${this.generatePasswordTogglerMarkup("password")}
 						<section></section>
 					</div>
@@ -235,8 +229,7 @@ export default class extends AProfilingView {
 						${this.generateLabelFor("confirm-password", true)}
 						<input id="confirm-password" type="password" autocomplete="new-password"
 							required
-							match="#password"
-							class="${this.inputClasslist}">
+							match="#password">
 						${this.generatePasswordTogglerMarkup("confirm-password")}
 						<section></section>
 					</div>
@@ -260,14 +253,12 @@ export default class extends AProfilingView {
 		const	markupGeneratorFunctions = [
 			generatePersonalDataMarkup, generateLocalizationMarkup, generateAreasOfInterestMarkup, generateRegistrationMarkup
 		];
-
-		this.mainElement!.className = "w-full max-w-screen-md mx-auto my-6 sm:my-10";
-		this.mainElement!.innerHTML = `
+		return `
 			<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
 				${markupGeneratorFunctions[this.markupIndex].call(this)}
 				<div class="grid grid-rows-1 grid-cols-4 w-full">
 					<div class="col-span-1 flex justify-start">
-						<button type="button" id="backward-btn" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">
+						<button id="backward-btn" type="button" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-left" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
 							</svg>
@@ -277,12 +268,18 @@ export default class extends AProfilingView {
 						<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
 							${this.markupIndex + 1} / 4
 						</span>
-						<button id="register-btn" type="submit" class="${this.markupIndex === 3 ? '' : 'hidden'} w-full px-4 py-2 shadow-md rounded-md bg-rose-600 hover:bg-rose-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
-							<span class="uppercase text-white font-semibold text-sm sm:text-base text-shadow-md leading-6">Register<span>
+						<button id="signup-btn" type="button" class="${this.markupIndex === 3 ? '' : 'hidden'} w-9/12 h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
+							<span class="uppercase font-semibold text-sm sm:text-base text-shadow-md leading-6 group-disabled:hidden">
+								Register
+							</span>
+							<svg class="animate-spin size-5 mx-auto hidden group-disabled:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+							</svg>
 						</button>
 					</div>
 					<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
-						<button type="button" id="forward-btn" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
+						<button id="forward-btn" type="button" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-right" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
 							</svg>
@@ -291,6 +288,18 @@ export default class extends AProfilingView {
 				</div>
 			</form>
 		`;
+	}
+
+	protected updateMainMarkup() {
+		document.querySelector("main")!.innerHTML = this.generateMainMarkup();
+		this.addEventListeners();
+	}
+
+	protected override addEventListeners() {
+		super.addEventListeners();
+		document.getElementById("backward-btn")?.addEventListener("click", this.handleBackwardBtnClick.bind(this));
+		document.getElementById("forward-btn")?.addEventListener("click", this.handleForwardBtnClick.bind(this));
+		document.getElementById("signup-btn")?.addEventListener("click", this.handleSignupBtnClick.bind(this));
 		this.addSeachBarEventListeners();
 	}
 
@@ -321,55 +330,47 @@ export default class extends AProfilingView {
 			});
 		});
 	}
-
-	protected override addEventListeners() {
-		super.addEventListeners();
-		this.mainElement?.addEventListener("click", event => {
-			const element = event.target as HTMLElement;
-			if (!element.closest("#backward-btn"))
-				return ;
-			this.handleBackwardButtonClick();
-		});
-	}
 	
-	private handleBackwardButtonClick() {
+	private handleBackwardBtnClick() {
 		if (this.markupIndex > 0)
 			this.markupIndex -= 1;
-		this.renderMainMarkup();
+		this.updateMainMarkup();
 	}
 	
-	public	addForwardButtonClickHandler(handler: (user: Map<string, string>) => void) {
-		this.mainElement?.addEventListener("click", event => {
-			const element = event.target as HTMLElement;
-			if (!element.closest("#forward-btn"))
-				return ;
-			const form = document.querySelector('form');
-			if (!form || !this.formCheckValidity(form))
-				return;
-			const formData = new FormData(form);
-			if (this.markupIndex === 2)
-				for (const key of this.areasOfInterest.keys())
-					formData.set(key, formData.has(key) ? "true" : "false");
-			for(const [key, value] of formData)
-				if (typeof value === "string")
-					this.user.set(key, value);
-			handler(this.user);
-			if (this.markupIndex < 3)
-				this.markupIndex += 1;
-			this.renderMainMarkup();
-		});
+	private	handleForwardBtnClick() {
+		const form = document.querySelector('form');
+		if (!form || !this.formCheckValidity(form))
+			return;
+		const formData = new FormData(form);
+		if (this.markupIndex === 2)
+			for (const key of this.areasOfInterest.keys())
+				formData.set(key, formData.has(key) ? "true" : "false");
+		for(const [key, value] of formData)
+			if (typeof value === "string")
+				this.user.set(key, value);
+		this.setToSessionStorage(this.user);
+		if (this.markupIndex < 3)
+			this.markupIndex += 1;
+		this.updateMainMarkup();
 	}
 	
-	public addFormSubmitionHandler(handler: (formData: FormData) => void) {
-		this.mainElement?.addEventListener("submit", event => {
-			event.preventDefault();
-			const form = event.target as HTMLFormElement;
-			if (!this.formCheckValidity(form))
-				return ;
-			const formData = new FormData(form);
-			for(const [key, value] of this.user.entries())
-				formData.set(key, value);
-			handler(formData);
-		});
+	private async handleSignupBtnClick(event: Event) {
+		const form = document.querySelector('form');
+		if (!form || !this.formCheckValidity(form))
+			return ;
+		this.toggleButton("signup-btn");
+		const formData = new FormData(form);
+		for(const [key, value] of this.user.entries())
+			formData.set(key, value);
+		try {
+			await this.registerUser(formData);
+		}
+		catch (error) {
+			this.toggleButton("signup-btn");
+			if (error instanceof CustomError && error.code === 409)
+				this.renderAlert("rose", "This email address is already registered.");
+			else
+				this.renderAlert("rose", "Something went wrong. Please try again later.");
+		}
 	}
 }

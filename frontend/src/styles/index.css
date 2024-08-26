@@ -43,3 +43,15 @@ select {
 dialog::backdrop {
 	background-color: rgba(0, 0, 0, 0.5);
 }
+
+#alert-container {
+	@apply absolute top-0;
+}
+
+#alert-container:has([data-alert]) {
+	@apply px-4 sm:px-6 lg:px-8 pt-12 w-full space-y-1 z-50;
+}
+
+input, select {
+	@apply truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring;
+}

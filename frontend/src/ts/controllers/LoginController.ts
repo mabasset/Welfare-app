@@ -7,21 +7,18 @@ export default class {
 	private view : LoginView;
 
 	constructor(private model: ProfilingModel) {
-		this.view = new LoginView();
+		this.view = new LoginView(this.logUserIn.bind(this));
 	}
 
 	public async renderView(user: user) {
 		if (user.isLogged)
 			throw new CustomError(401);
 		this.view.render();
-		this.view.addFormSubmitionHandler(this.formSubmitionHandler.bind(this));
 	}
 
-	private async formSubmitionHandler(form: HTMLFormElement) {
-		const formData = new FormData(form);
-		if (form.id === "login-form")
-			await this.model.login(formData);
-		else
-			await this.model.retrievePassword(formData);
+	private async logUserIn(formData: FormData) {
+		await this.model.login(formData);
+		history.pushState(null, "", "/");
+		window.dispatchEvent(new Event("popstate"));
 	}
 }

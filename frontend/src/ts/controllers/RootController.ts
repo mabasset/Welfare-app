@@ -9,6 +9,7 @@ export default class {
 	) {}
 
 	public async renderView(user: user) {
+		
 		this.view.render({user: user});
 	}
 }

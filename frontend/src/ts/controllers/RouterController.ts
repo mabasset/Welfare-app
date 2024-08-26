@@ -25,6 +25,7 @@ export default class {
 
 
 	private async callRenderFunction()  {
+		this.loadingView.render();
 		const	renderFunction = this.matchRoute();
 		if (renderFunction) {
 			try {
@@ -41,8 +42,7 @@ export default class {
 			this.errorView.render(new CustomError(404));
 	}
 
-	public start()  {
-		window.addEventListener("custom:fetch", this.loadingView.render.bind(this.loadingView));
+	public start() {
 		window.addEventListener("popstate", this.callRenderFunction.bind(this));
 		document.addEventListener("click", (event)  => {
 			const link = (event.target as HTMLElement).closest("[data-link]") as HTMLAnchorElement;

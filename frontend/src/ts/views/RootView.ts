@@ -129,7 +129,7 @@ export default class extends AView {
 					</span>
 				</div>
 			</main>
-			${this.generateDefaultFooterMarkup()}
+			${this.generateFooterMarkup()}
 		`;
 	}
 }

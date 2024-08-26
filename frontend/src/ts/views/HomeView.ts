@@ -17,21 +17,19 @@ export default class extends AView {
 
 	protected override generateMarkup() {
 		return `
-			<header class="w-full grow-0 flex justify-between items-center py-3 px-4 sm:px-14 text-slate-300 border-b-2">
+			<header class="w-full grow-0 flex justify-between items-center px-4 sm:px-14 text-slate-300 border-b-2 h-20">
 				<a href="https://www.leonardo.com/">
 					<img src="/static/public/images/logo_Leonardo.svg" alt="logo-leonardo" class="w-auto mx-auto h-10 sm:h-12"/>
 				</a>
-				<div class="hidden sm:flex justify-between items-center min-w-80 text-2xl">
-					<div role="button" class="hover:text-black" id="user-icon">
+				<div class="hidden sm:flex justify-between items-center min-w-96 text-2xl h-full">
+					<div role="button" class="hover:text-black grow flex justify-center items-center h-full" id="user-icon">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-person-circle" viewBox="0 0 16 16">
 							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
 							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
 						</svg>
 					</div>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-14">
-						<path stroke-linecap="round" stroke-linejoin="round" d="m9 20.247 6-16.5" />
-					</svg>
-					<div id="screen-modes" class="flex min-w-20 justify-between">
+					|
+					<div id="screen-modes" class="flex min-w-20 justify-evenly grow flex justify-center items-center h-full">
 						<div role="button" class="hover:text-black" id="lightmode-icon">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-sun" viewBox="0 0 16 16">
 								<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
@@ -43,28 +41,30 @@ export default class extends AView {
 							</svg>
 						</div>
 					</div>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-14">
-						<path stroke-linecap="round" stroke-linejoin="round" d="m9 20.247 6-16.5" />
-					</svg>
-					<div role="button" class="hover:text-black" id="languages-dropdown-open-target">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-translate" viewBox="0 0 16 16">
-							<path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/>
-							<path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/>
-						</svg>
+					|
+					<div role="button" class="relative grow flex justify-center items-center h-full" id="languages-dropdown-open-target">
+						<div class="flex">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="hover:text-black h-7 bi bi-translate" viewBox="0 0 16 16">
+								<path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/>
+								<path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/>
+							</svg>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+							</svg>
+						</div>
+						<dialog id="languages-dropdown" class="top-100 outline-0 text-lg text-center bg-slate-50 top-20 z-20 divide-y divide-gray-200 text-gray-700 uppercase">
+							<div class="py-2 px-8"><a role="button" class="hover:underline">it</a></div>
+							<div class="py-2 px-8"><a role="button" class="hover:underline">en</a></div>
+						</dialog>
 					</div>
-					<dialog id="languages-dropdown">
-						dialogi
-					</dialog>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-14">
-						<path stroke-linecap="round" stroke-linejoin="round" d="m9 20.247 6-16.5" />
-					</svg>
-					<div role="button" class="hover:text-black" id="search-icon">
+					|
+					<div role="button" class="hover:text-black grow flex justify-center items-center h-full" id="search-icon">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="#ed0909" class="h-7 bi bi-search" viewBox="0 0 16 16">
 							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 						</svg>
 					</div>
 				</div>
-				<div id="sidebar-display-target" role="button" class="block sm:hidden text-white">
+				<div id="sidebar-display-target" role="button grow flex justify-center items-center h-full" class="block sm:hidden text-white">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 					</svg>
@@ -102,7 +102,7 @@ export default class extends AView {
 								<span>${this.getCurrentDate()}</span>
 							</header>
 							<div class="overflow-auto flex flex-col bg-white h-60 rounded-md">
-								<div class="sticky top-0 z-30 bg-white border-b shadow-md">
+								<div class="sticky top-0 z-30 bg-white border-b shadow-sm">
 									<div class="grid grid-cols-[3.5rem_auto_auto_auto_auto_auto_auto_auto] text-lg sm:pe-8 text-center divide-x divide-gray-200">
 										<div class="hidden sm:block"></div>
 										<div class="py-3 flex justify-center items-center">
@@ -217,6 +217,8 @@ export default class extends AView {
 						</div>
 					</div>
 				</section>
+				<section >
+				</section>
 			</main>
 			<footer>
 			</footer>
@@ -237,8 +239,9 @@ export default class extends AView {
 		if (!trigger || !dropdown)
 			return ;
 		trigger.addEventListener("click", () => {
-			dropdown.show()
-		})
+			dropdown.classList.toggle('active');
+			!dropdown.classList.contains('active') ? dropdown.show() : dropdown.close();
+		});
 	}
 
 	private getCurrentDate() {

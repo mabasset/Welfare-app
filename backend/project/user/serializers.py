@@ -3,6 +3,7 @@ from collections import OrderedDict
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
+from rest_framework.exceptions import AuthenticationFailed
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from django.utils import timezone
@@ -71,11 +72,11 @@ class LoginSerializer(serializers.Serializer):
 		try:
 			user = User.objects.get(email=email)
 			if not password == user.password:
-				raise serializers.ValidationError("Password provided is invalid.")
+				raise AuthenticationFailed("Password provided is invalid.")
 			else:
 				validate_password(password)
 		except User.DoesNotExist:
-			raise serializers.ValidationError("User with this email does not exist.")
+			raise AuthenticationFailed("User with this email does not exist.")
 		data['user'] = user
 		return data
 

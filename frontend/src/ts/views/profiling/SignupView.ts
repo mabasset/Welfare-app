@@ -292,11 +292,11 @@ export default class extends AProfilingView {
 
 	protected updateMainMarkup() {
 		document.querySelector("main")!.innerHTML = this.generateMainMarkup();
-		this.addEventListeners();
+		this.addEventHandlers();
 	}
 
-	protected override addEventListeners() {
-		super.addEventListeners();
+	protected override addEventHandlers() {
+		super.addEventHandlers();
 		document.getElementById("backward-btn")?.addEventListener("click", this.handleBackwardBtnClick.bind(this));
 		document.getElementById("forward-btn")?.addEventListener("click", this.handleForwardBtnClick.bind(this));
 		document.getElementById("signup-btn")?.addEventListener("click", this.handleSignupBtnClick.bind(this));

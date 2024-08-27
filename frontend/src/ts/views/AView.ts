@@ -17,7 +17,7 @@ export default abstract class {
 		const alertContainer = document.createElement("div");
 		alertContainer.setAttribute("id", "alert-container");
 		document.body.insertAdjacentElement("afterbegin", alertContainer);
-		this.addEventListeners();
+		this.addEventHandlers();
 	}
 
 	protected generateMarkup() {
@@ -90,7 +90,7 @@ export default abstract class {
 		const generateAlertMarkup = () => `
 			<div class="max-w-4xl mx-auto" data-alert>
 				<div class="p-4 rounded-md bg-${color}-100">
-					<div class="flex">
+					<div class="flex items-center">
 						<div class="shrink-0">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 text-${color}-600">
 								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"></path>
@@ -115,32 +115,11 @@ export default abstract class {
 		document.getElementById("alert-container")!.insertAdjacentHTML("afterbegin", generateAlertMarkup());
 	}
 
-	protected addEventListeners() {
-		document.getElementById("alert-container")?.addEventListener("click", this.handleAlerRemoverClick.bind(this));
-	}
+	protected addEventHandlers() {
+		const handleAlerDismisserClick = (event: Event) =>
+			(event.target as HTMLElement).closest("[data-alert-dismiss]")?.closest("[data-alert]")?.remove()
 
-	private handleAlerRemoverClick(event: Event) {
-		(event.target as HTMLElement).closest("[data-alert-dismiss]")?.closest("[data-alert]")?.remove();
-	}
-
-	protected handleModal() {
-		const openBtn = document.querySelector("[data-open-modal]");
-		const closeBtn = document.querySelector("[data-close-modal]");
-		const modal = document.querySelector("[data-modal]") as HTMLDialogElement;
-
-		openBtn?.addEventListener("click", () => modal.showModal());
-		closeBtn?.addEventListener("click", () => modal.close());
-		modal?.addEventListener("mousedown", event => {
-			const modalDimensions = modal.getBoundingClientRect()
-			if (
-				event.clientX < modalDimensions.left ||
-				event.clientX > modalDimensions.right ||
-				event.clientY < modalDimensions.top ||
-				event.clientY > modalDimensions.bottom
-			) {
-				modal.close()
-			}
-		})
+		document.getElementById("alert-container")?.addEventListener("click", handleAlerDismisserClick);
 	}
 
 	public toggleButton(id: string) {

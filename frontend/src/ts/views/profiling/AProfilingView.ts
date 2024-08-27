@@ -6,8 +6,8 @@ export default abstract class extends AView {
 		super();
 	}
 
-	protected override addEventListeners() {
-		super.addEventListeners();
+	protected override addEventHandlers() {
+		super.addEventHandlers();
 		document.querySelectorAll("input").forEach(input =>
 			["input", "focusout"].forEach(event =>
 				input.addEventListener(event, () =>

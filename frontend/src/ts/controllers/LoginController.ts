@@ -9,7 +9,10 @@ export default class {
 	constructor(
 		private userModel: ProfilingModel
 	) {
-		this.view = new LoginView(this.logUserIn.bind(this));
+		this.view = new LoginView(
+			userModel.retrievePassword.bind(userModel),
+			this.logUserIn.bind(this)
+		);
 	}
 
 	public async renderView(user: user) {

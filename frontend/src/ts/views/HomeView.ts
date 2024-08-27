@@ -52,9 +52,9 @@ export default class extends AView {
 								<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 							</svg>
 						</div>
-						<dialog id="languages-dropdown" class="top-100 outline-0 text-lg text-center bg-slate-50 top-20 z-20 divide-y divide-gray-200 text-gray-700 uppercase">
-							<div class="py-2 px-8"><a role="button" class="hover:underline">it</a></div>
-							<div class="py-2 px-8"><a role="button" class="hover:underline">en</a></div>
+						<dialog id="languages-dropdown" class="top-100 outline-0 text-lg text-center bg-slate-50 top-20 z-20 divide-y divide-gray-200 text-gray-700">
+							<div class="py-2 px-8 hover:underline"><a role="button">Ita</a></div>
+							<div class="py-2 px-8 hover:underline"><a role="button">Eng</a></div>
 						</dialog>
 					</div>
 					|
@@ -239,8 +239,8 @@ export default class extends AView {
 		if (!trigger || !dropdown)
 			return ;
 		trigger.addEventListener("click", () => {
-			dropdown.classList.toggle('active');
 			!dropdown.classList.contains('active') ? dropdown.show() : dropdown.close();
+			dropdown.classList.toggle('active');
 		});
 	}
 
@@ -252,29 +252,3 @@ export default class extends AView {
 		return `${day < 10 ? '0' + day : day} / ${month < 10 ? '0' + month : month} / ${year}`;
 	}
 }
-
-// <header class="flex flex-col">
-// 	<div class="ps-4 sm:ps-7 py-4 border-b-2 border-slate-200">
-// 		<a href="https://www.leonardo.com/">
-// 			<img src="/static/public/images/logo_Leonardo.svg" alt="logo-leonardo" class="h-10 sm:h-12"/>
-// 		</a>
-// 	</div>
-// 	<label for="hb" class="absolute top-0 right-0 block sm:hidden p-3" tabindex="0">
-		// <svg class="h-11" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 9" stroke="#eee" stroke-width=".6" fill="rgba(0,0,0,0)" stroke-linecap="round" style="cursor: pointer">
-		// 	<path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7">
-		// 		<animate dur="0.2s" attributeName="d" values="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7;M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7" fill="freeze" begin="start.begin" />
-		// 		<animate dur="0.2s" attributeName="d" values="M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7;M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7" fill="freeze" begin="reverse.begin" />
-		// 	</path>
-		// 	<rect width="10" height="10" stroke="none">
-		// 		<animate dur="2s" id="reverse" attributeName="width" begin="click" />
-		// 	</rect>
-		// 	<rect width="10" height="10" stroke="none">
-		// 		<animate dur="0.001s" id="start" attributeName="width" values="10;0" fill="freeze" begin="click" />
-		// 		<animate dur="0.001s" attributeName="width" values="0;10" fill="freeze" begin="reverse.begin" />
-		// 	</rect>
-		// </svg>
-// 	</label>
-// 	<input id="hb" type="checkbox" class="appearance-none hidden peer">
-	
-// </header>
-

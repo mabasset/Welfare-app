@@ -1,6 +1,6 @@
-import { CustomError } from "../helpers";
 import ProfilingModel from "../models/UserModel";
 import LoginView from "../views/profiling/LoginView";
+import { CustomError } from "../helpers";
 
 export default class {
 
@@ -15,7 +15,7 @@ export default class {
 		);
 	}
 
-	public async renderView(user: user) {
+	public async renderView(user: User) {
 		if (user.isAuthenticated)
 			throw new CustomError(401);
 		this.view.render();

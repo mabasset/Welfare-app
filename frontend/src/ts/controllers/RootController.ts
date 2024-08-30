@@ -10,7 +10,7 @@ export default class {
 		private userModel: UserModel
 	) {}
 
-	public async renderView(user: user) {
+	public async renderView(user: User) {
 		if (!user.isAuthenticated)
 			this.welcomeView.render();
 		else

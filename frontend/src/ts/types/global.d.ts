@@ -48,3 +48,7 @@ declare const CITY_PATTERN: string;
 
 declare const COUNTRY_MAX_LENGTH: string;
 declare const COUNTRY_PATTERN: string;
+
+type User = {
+	[key: string]: string | boolean | number;
+}

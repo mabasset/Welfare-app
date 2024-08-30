@@ -1,5 +1,5 @@
 import AProfilingView from "./AProfilingView";
-import { CustomError, getOffsetDate } from "../../helpers";
+import { AlertEvent, CustomError, getOffsetDate } from "../../helpers";
 
 export default class extends AProfilingView {
 
@@ -360,10 +360,10 @@ export default class extends AProfilingView {
 		}
 		catch (error) {
 			this.toggleButton("signup-btn");
-			if (error instanceof CustomError && error.code === 409)
-				this.renderAlert("rose", "This email address is already registered.");
-			else
-				this.renderAlert("rose", "Something went wrong. Please try again later.");
+			const alertText = error instanceof CustomError && error.code === 409 ?
+				"This email address is already registered." :
+					"Something went wrong. Please try again later.";
+			this.renderAlert(0, alertText);
 		}
 	}
 }

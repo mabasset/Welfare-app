@@ -1,6 +1,6 @@
-import { CustomError } from "../helpers";
 import UserModel from "../models/UserModel";
 import SignupView from "../views/profiling/SignupView";
+import { CustomError } from "../helpers";
 
 export default class {
 	private view: SignupView;
@@ -14,7 +14,7 @@ export default class {
 		);
 	}
 
-	public async renderView(user: user) {
+	public async renderView(user: User) {
 		if (user.isAuthenticated)
 			throw new CustomError(401);
 		const sessionData = this.userModel.getDataFromSessionStrorage();

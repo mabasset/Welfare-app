@@ -1,5 +1,5 @@
-import { CustomError } from "../helpers";
 import AView from "./AView";
+import { CustomError } from "../helpers";
 
 export default class extends AView {
 
@@ -13,7 +13,7 @@ export default class extends AView {
 
 	render(error: CustomError) {
 		this.errorCode = error.code;
-		this.errorText = error.text;
+		this.errorText = error.message;
 		super.render();
 	}
 

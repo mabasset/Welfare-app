@@ -1,4 +1,3 @@
-import { CustomError } from "../helpers";
 import Model from "./AModel";
 
 export default class extends Model {

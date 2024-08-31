@@ -11,6 +11,7 @@ export default class {
 	) {}
 
 	public async renderView(user: user) {
+		console.log(user)
 		if (!user.isAuthenticated)
 			this.welcomeView.render();
 		else

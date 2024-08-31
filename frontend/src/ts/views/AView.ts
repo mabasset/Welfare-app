@@ -51,7 +51,7 @@ export default abstract class {
 
 	protected	generateFooterMarkup() {
 		return `
-			<ul class="flex flex-wrap justify-center border-0">
+			<ul class="flex flex-wrap justify-center border-0 pb-8">
 				<li class="py-0 px-2">
 					<a class="text-white hover:text-black no-underline hover:underline select-none">
 						Privacy Policy

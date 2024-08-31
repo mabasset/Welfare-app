@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, RegexValidator
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-# by adding permissionMixin we hook the user to the django's permission framework 
 
 
 class Worksite(models.Model):
@@ -16,26 +15,11 @@ class Worksite(models.Model):
 		return f"{self.department} - {self.address}" if self.department else self.address
 
 class UserManager(BaseUserManager):
-	def create_user(self, email, password=None, **other_fields):
+	def create_user(self, email, password=None, **extra_fields):
 		if not email:
 			raise ValueError('The Email field must be set')
-		if not password:
-			raise ValueError('A Password must be set')
-
-		worksite = other_fields.pop('worksite', None)
-		if worksite is not None:
-			if isinstance(worksite, str) and worksite.isdigit():
-				worksite = int(worksite)
-			if isinstance(worksite, int):
-				try:
-					worksite = Worksite.objects.get(id=worksite)
-				except Worksite.DoesNotExist:
-					raise ValueError(f"Worksite with id {worksite} does not exist.")
-			elif not isinstance(worksite, Worksite):
-				raise ValueError("Worksite must be a Worksite instance or a valid integer ID.")
-
 		email = self.normalize_email(email)
-		user = self.model(email=email, worksite=worksite, **other_fields)
+		user = self.model(email=email, **extra_fields)
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
@@ -141,16 +125,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	objects = UserManager()
 
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = [
-		'name',
-		'surname',
-		'birthday',
-		'worksite',
-		'street',
-		'postal_code',
-		'city',
-		'country'
-	]
+	REQUIRED_FIELDS = [ 'name', 'surname', 'birthday', 'worksite', 'street', 'postal_code', 'city', 'country' ]
 
 	def clean(self):
 		super().clean()

@@ -9,7 +9,6 @@ export default abstract class {
 
 	protected async sendRequest(url: string, method: string = "GET", body?: FormData | string): Promise<Response> {
 		const headers: HeadersInit = method === "POST" ? {
-			"X-CSRFToken": this.getCookie("csrftoken") || "",
 			'Content-Type': 'application/json'
 		} : {};
 		const options: RequestInit = {

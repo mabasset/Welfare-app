@@ -339,7 +339,7 @@ export default class extends AProfilingView {
 			for (const key of this.areasOfInterest.keys())
 				formData.set(key, formData.has(key) ? "true" : "false");
 		for(const [key, value] of formData)
-			if (typeof value === "string")
+			if (value && typeof value === "string")
 				this.user.set(key, value);
 		this.setToSessionStorage(this.user);
 		if (this.markupIndex < 3)

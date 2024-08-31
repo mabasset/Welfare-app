@@ -1,78 +1,93 @@
-import logging
-from django.core.exceptions import ValidationError
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
-
+from user.models import Worksite, User
+from user.serializers import WorksiteSerializer, UserSerializer
+from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status
+from django.http import JsonResponse
 
-from .serializers import UserSerializer, LoginSerializer, SignupSerializer, ForgotPasswordSerializer
-from .models import User, Worksite
-from .jwt import create_jwt_tokens
 
+class ListCreateWorksite(generics.ListCreateAPIView):
+	# permission_classes = [permissions.IsAdminUser]
+	queryset = Worksite.objects.all()
+	serializer_class = WorksiteSerializer
+
+	def get(self, request, *args, **kwargs):
+		worksites = self.get_queryset()
+		worksites_dict = {worksite.id: str(worksite) for worksite in worksites}
+		return Response(worksites_dict)
+
+class RetrieveUpdateDestroyWorksite(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = [permissions.IsAdminUser]
+	queryset = Worksite.objects.all()
+	serializer_class = WorksiteSerializer
+
+
+class ListUser(generics.ListAPIView):
+	# permission_classes = [permissions.IsAdminUser]
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+class CreateUser(generics.CreateAPIView):
+	permission_classes = [permissions.AllowAny]
+	serializer_class = UserSerializer
+
+	def create(self, request, *args, **kwargs):
+		response = super().create(request, *args, **kwargs)
+		user = User.objects.get(email=request.data.get('email'))
+		token, created = Token.objects.get_or_create(user=user)
+		response = JsonResponse({'message': 'Login successful'})
+		response.set_cookie(
+			key='auth_token', 
+			value=token.key, 
+			httponly=True,  # Prevents JavaScript access to the cookie
+			secure=True,	# Ensures the cookie is sent over HTTPS only
+			samesite='Strict'  # Controls cross-site request forgery protections
+		)
+		return response
+
+class RetrieveUpdateDestroyUser(generics.RetrieveUpdateDestroyAPIView):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+	# permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+	lookup_field = 'email'
+
+class LoginUser(APIView):
+	def post(self, request):
+		email = request.data.get('email')
+		password = request.data.get('password')
+		if not email or not password:
+			return Response({'error': 'Email and password are required'}, status=400)
+
+		try:
+			user = User.objects.get(email=email)
+			token, created = Token.objects.get_or_create(user=user)
+			response = JsonResponse({'message': 'Login successful'})
+			response.set_cookie(
+				key='auth_token', 
+				value=token.key, 
+				httponly=True,
+				secure=True,
+				samesite='Strict'
+			)
+			return response
+		except User.DoesNotExist:
+			return Response({'error': 'Invalid credentials'}, status=401)
 
 @api_view(['GET'])
 def get_data(request):
-	if not request.user.is_authenticated:
+	token_key = request.COOKIES.get('auth_token')
+	if not token_key:
 		return Response({'isAuthenticated': False})
-	serializer = UserSerializer(request.user)
+
+	try:
+		token = Token.objects.get(key=token_key)
+		user = token.user
+	except Token.DoesNotExist:
+		return Response({'isAuthenticated': False})
+
+	serializer = UserSerializer(user)
 	return Response({'isAuthenticated': True, **serializer.data})
-
-
-@api_view(['GET'])
-def get_worksites(request):
-	worksites = Worksite.objects.all()
-	worksites_dict = {worksite.id: str(worksite) for worksite in worksites}
-	return Response(worksites_dict)
-
-
-@api_view(['POST'])
-def signup(request):
-	serializer = SignupSerializer(data=request.data)
-	if serializer.is_valid():
-		logging.info("Serializer is valid.")
-		#user = serializer.save()
-		response = Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-		#create_jwt_tokens(user, response)
-		return response
-	else:
-		logging.error(f"failed with errors: {serializer.errors}")
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-def login(request):
-	print(request.data)
-	serializer = LoginSerializer(data=request.data)
-	if serializer.is_valid():
-		user = serializer.validated_data['user']
-		response = Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-		create_jwt_tokens(user, response)  # Function to add JWT tokens to the response
-		return response
-	else:
-		logging.error(f"Serializer validation failed with errors: {serializer.errors}")
-		return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
-
-
-@api_view(['POST'])
-def forgot_password(request):
-	serializer = ForgotPasswordSerializer(data=request.data)
-	if serializer.is_valid(raise_exception=True):
-		email = serializer.validated_data['email']
-		user = User.objects.get(email=email)
-		
-		# Generate password reset token
-		token = default_token_generator.make_token(user)
-		uid = urlsafe_base64_encode(force_bytes(user.pk))
-		reset_url = f"https://{os.getenv('HOST')}/{os.getenv('ROUTE_RESET_PASSWORD')}?uidb64={uid}&token={token}"
-
-		subject = "Password Reset Requested"
-		message = f"Hi {user.name},\n\nTo reset your password, click the link below:\n{reset_url}\n\nIf you did not request a password reset, please ignore this email."
-		send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
-		
-		return Response({'message': 'Password reset email sent successfully.'}, status=status.HTTP_200_OK)

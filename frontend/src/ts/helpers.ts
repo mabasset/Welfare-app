@@ -1,18 +1,22 @@
-export	class CustomError {
-	private errorMessages = new Map<number, string>([
-		[400, 'Bad Request'],
-		[401, 'Unauthorized'],
-		[404, 'This page could not be found.'],
-		[409, 'Conflict.'],
-		[500, 'Internal Server Error'],
-		[503, 'Service Unavailable'],
-	]);
-	text: string;
-	
+export class AlertEvent extends CustomEvent<{color: string, text: string}> {
+	constructor(color: string, text: string) {
+		super("alert", {detail: {color, text}});
+	}
+}
+
+export class CustomError extends Error {
 	constructor(
 		public code: number
 	) {
-		this.text = this.errorMessages.get(code) || "Unknown Error";
+		const messages = new Map([
+			[400, 'Bad Request'],
+			[401, 'Unauthorized'],
+			[404, 'This page could not be found.'],
+			[409, 'Conflict.'],
+			[500, 'Internal Server Error'],
+			[503, 'Service Unavailable'],
+		]);
+		super(messages.get(code) || "Unknown Error");
 	}
 }
 

@@ -1,5 +1,5 @@
-import { CustomError } from "../../helpers";
 import AProfilingView from "./AProfilingView";
+import { AlertEvent, CustomError } from "../../helpers";
 
 export default class extends AProfilingView {
 
@@ -91,28 +91,6 @@ export default class extends AProfilingView {
 	}
 
 	override addEventHandlers() {
-		const addModalEventHandlers = () => {
-			const handleModalEnablerClick = (enabler: HTMLElement) =>
-				(document.querySelector(`[data-modal=${enabler.dataset.openModal}]`) as HTMLDialogElement)?.showModal();
-			const handleModalDisablerClick = (disabler: HTMLElement) =>
-				(disabler.closest(`[data-modal]`) as HTMLDialogElement)?.close();
-			const handleModalOutOfBoundClick = (event: PointerEvent) => {
-				const modal = (event.target as HTMLElement).closest("[data-modal]") as HTMLDialogElement;
-				if (!modal)
-					return ;
-				const modalDimensions = modal.getBoundingClientRect()
-  				if (event.clientX < modalDimensions.left || event.clientX > modalDimensions.right || event.clientY < modalDimensions.top || event.clientY > modalDimensions.bottom)
-  					modal.close();
-			};
-			
-			document.querySelectorAll("[data-open-modal]").forEach(enabler => 
-				enabler.addEventListener("click", () =>
-					handleModalEnablerClick(enabler as HTMLElement)));
-			document.querySelectorAll("[data-close-modal]").forEach(disabler =>
-				disabler.addEventListener("click", () =>
-					handleModalDisablerClick(disabler as HTMLElement)));
-			document.addEventListener("mousedown", event => handleModalOutOfBoundClick(event as PointerEvent));
-		};
 		const handleRetrievePasswordBtnClick = async () => {
 			const form = document.getElementById('password-recovery-form') as HTMLFormElement;
 			if (!form || !this.formCheckValidity(form))
@@ -120,13 +98,13 @@ export default class extends AProfilingView {
 			this.toggleButton("retrieve-password-btn");
 			try {
 				await this.retrievePassword(new FormData(form));
-				this.renderAlert("emerald", "Your password has been sent to your email.");
+				this.renderAlert(120, "Your password has been sent to your email.")
 			}
 			catch(error) {
-				if (error instanceof CustomError && error.code === 401)
-					this.renderAlert("rose", "This email is not registered.");
-				else
-					this.renderAlert("rose", "Something went wrong. Please try again later.");
+				const alertText = error instanceof CustomError && error.code === 401 ?
+					"This email is not registered." :
+						"Something went wrong. Please try again later.";
+				this.renderAlert(0, alertText);
 			}
 			this.toggleButton("retrieve-password-btn");
 			(document.querySelector(`[data-modal="forgotPassword"]`) as HTMLDialogElement)?.close();
@@ -135,21 +113,20 @@ export default class extends AProfilingView {
 			const form = document.getElementById('login-form') as HTMLFormElement;
 			if (!form || !this.formCheckValidity(form))
 				return ;
-			this.toggleButton("login-password-btn");
+			this.toggleButton("login-btn");
 			try {
 				await this.logUserIn(new FormData(form));
 			}
 			catch(error) {
-				this.toggleButton("login-password-btn");
-				if (error instanceof CustomError && error.code === 401)
-					this.renderAlert("rose", "Wrong email or password.");
-				else
-					this.renderAlert("rose", "Something went wrong. Please try again later.");
+				this.toggleButton("login-btn");
+				const alertText = error instanceof CustomError && error.code === 401 ?
+					"Wrong email or password." :
+						"Something went wrong. Please try again later.";
+				this.renderAlert(0, alertText);
 			}
 		}
 
 		super.addEventHandlers();
-		addModalEventHandlers();
 		document.getElementById("retrieve-password-btn")?.addEventListener("click", handleRetrievePasswordBtnClick.bind(this));
 		document.getElementById("login-btn")?.addEventListener("click", handleLoginBtnClick.bind(this));
 	}

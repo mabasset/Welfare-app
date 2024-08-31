@@ -1,7 +1,7 @@
-import { CustomError } from "../helpers";
 import UserModel from "../models/UserModel";
 import ErrorView from "../views/ErrorView";
 import LoadingView from "../views/LoadingView";
+import { CustomError } from "../helpers";
 
 export default class {
 	private	errorView = new ErrorView();

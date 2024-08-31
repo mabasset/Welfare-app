@@ -44,12 +44,8 @@ dialog::backdrop {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
-#alert-container {
-	@apply absolute top-0;
-}
-
-#alert-container:has([data-alert]) {
-	@apply px-4 sm:px-6 lg:px-8 pt-12 w-full space-y-1 z-50;
+[data-alert-container]:has([data-alert]) {
+	@apply px-4 pt-12 w-full space-y-1 z-50;
 }
 
 input, select {

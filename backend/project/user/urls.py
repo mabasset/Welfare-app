@@ -1,11 +1,13 @@
 import os
 from django.urls import path
-from .views import *
+from user import views
 
 urlpatterns = [
-    path(os.getenv('ENDPOINT_USER_GET_DATA')+'/', get_data, name='get_data'),
-    path(os.getenv('ENDPOINT_USER_GET_WORKSITES')+'/', get_worksites, name='get_worksites'),
-    path(os.getenv('ENDPOINT_USER_SIGNUP')+'/', signup, name='signup'),
-    path(os.getenv('ENDPOINT_USER_LOGIN')+'/', login, name='login'),
-    path(os.getenv('ENDPOINT_USER_FORGOT_PASSWORD')+'/', forgot_password, name='forgot_password'),
+	path('worksites/', views.ListCreateWorksite.as_view()),
+	path('worksites/<int:pk>/', views.RetrieveUpdateDestroyWorksite.as_view()),
+	path('users/', views.ListUser.as_view()),
+	path('users/<email>/', views.RetrieveUpdateDestroyUser.as_view()),
+	path('signup/', views.CreateUser.as_view()),
+	path('login/', views.LoginUser.as_view()),
+	path('get_data/', views.get_data),
 ]

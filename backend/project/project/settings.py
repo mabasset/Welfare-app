@@ -12,47 +12,41 @@ host = os.getenv('HOST')
 ALLOWED_HOSTS = host.split(" ")
 CSRF_TRUSTED_ORIGINS = [f'https://{host}']
 
-ROOT_URLCONF = 'project.urls'
 
 INSTALLED_APPS = [
 	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 	'django_password_validators',
 	'rest_framework',
-	'rest_framework_simplejwt',
+	'rest_framework.authtoken',
 	'user',
 ]
 
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ROOT_URLCONF = 'project.urls'
 
-SECURE_COOKIE = True
 
 REST_FRAMEWORK = {
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
-		'rest_framework.authentication.SessionAuthentication',	# Needed to recognize admin user as a non AnonymousUser instance
-		'rest_framework_simplejwt.authentication.JWTAuthentication',
+		'rest_framework.authentication.TokenAuthentication',
 	),
 }
-
-SIMPLE_JWT = {
-	'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-	'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-}
-
 
 TEMPLATES = [
 	{
@@ -138,16 +132,18 @@ USE_L10N = True
 # Django will use timezone-aware datetimes internally
 USE_TZ = True
 
+[
+    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
+    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
+    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
+    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
+    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
+]
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.parent / 'static'
 
 AUTH_USER_MODEL = 'user.User'
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 465
-# EMAIL_USE_SSL = True
-# EMAIL_HOST_USER = 'welfareison@gmail.com'
-# EMAIL_HOST_PASSWORD = 'pass wo rd'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -24,7 +24,7 @@ export default class {
 
 	private async registerUser(formData: FormData) {
 		await this.userModel.signup(formData);
-		history.pushState(null, "", "/");
+		history.pushState(null, "", "/login");
 		window.dispatchEvent(new Event("popstate"));
 	}
 }

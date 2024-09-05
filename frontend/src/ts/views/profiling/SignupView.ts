@@ -240,12 +240,12 @@ export default class SignupView extends AProfilingView {
 				</div>
 				<div class="flex flex-col ms-1 mb-2" data-input-group>
 					<div>
-						<label for="policy" class="font-medium">Declaration of Consent*</label>
+						<label for="policy" class="font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Declaration of Consent</label>
 					</div>
 					<div class="flex items-center text-slate-600 text-sm">
 						<input type="checkbox" id="policy" class="shrink-0 h-4 sm:h-4 w-5 sm:w-4 me-3 sm:me-2 mt-0.5" required>
 						<label for="policy">
-							I have read the <a class="link-body-emphasis underline hover:text-black">Personal Data Protection Policy</a>
+							I have read the <a href="https://www.leonardo.com/en/privacy-policy" target="_blank" class="link-body-emphasis underline hover:text-black" data-open-window="privacy-policy">Personal Data Protection Policy</a>
 						</label>
 					</div>
 					<section></section>

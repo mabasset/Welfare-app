@@ -1,4 +1,5 @@
 module.exports = {
+	darkmode: 'selector',
 	content: [
 		'./src/**/*.{html,js,jsx,ts,tsx}',
 		'./static/**/*.{html,js,jsx,ts,tsx}',

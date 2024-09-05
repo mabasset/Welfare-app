@@ -1,7 +1,8 @@
-import AView from "./AView";
+import AView from "../AView";
 
 export default class extends AView {
 	
+	override documentTitle = "Loading...";
 	override bodyClassList = "flex h-screen items-center justify-center";
 
 	constructor() {

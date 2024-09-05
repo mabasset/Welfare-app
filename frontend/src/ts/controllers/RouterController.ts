@@ -1,6 +1,6 @@
 import UserModel from "../models/UserModel";
-import ErrorView from "../views/ErrorView";
-import LoadingView from "../views/LoadingView";
+import ErrorView from "../views/utility/ErrorView";
+import LoadingView from "../views/utility/LoadingView";
 import { CustomError } from "../helpers";
 
 export default class {
@@ -46,7 +46,8 @@ export default class {
 		window.addEventListener("popstate", this.callRenderFunction.bind(this));
 		document.addEventListener("click", (event)  => {
 			const link = (event.target as HTMLElement).closest("[data-link]") as HTMLAnchorElement;
-			if (!link) return;
+			if (!link)
+				return ;
 			event.preventDefault();
 			history.pushState(null, "", link.href);
 			this.callRenderFunction();

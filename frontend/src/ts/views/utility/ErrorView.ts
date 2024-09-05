@@ -1,11 +1,12 @@
-import AView from "./AView";
-import { CustomError } from "../helpers";
+import AView from "../AView";
+import { CustomError } from "../../helpers";
 
 export default class extends AView {
 
+	override documentTitle = "Error";
 	private errorCode: number | undefined;
 	private errorText: string | undefined;
-	override mainClassList = "flex flex-auto items-center justify-center text-center flex-col sm:flex-row text-white";
+	override mainClassName = "flex flex-auto items-center justify-center text-center flex-col sm:flex-row text-white";
 
 	constructor() {
 		super();

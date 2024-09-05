@@ -1,9 +1,10 @@
 import AProfilingView from "./AProfilingView";
-import { AlertEvent, CustomError } from "../../helpers";
+import { CustomError } from "../../helpers";
 
-export default class extends AProfilingView {
+export default class LoginView extends AProfilingView {
 
-	override mainClassList = "w-full mx-auto sm:max-w-lg p-6 sm:p-12 bg-white rounded";
+	override documentTitle = "Login";
+	override mainClassName = "w-full mx-auto sm:max-w-lg p-6 sm:p-12 bg-white rounded";
 	
 	constructor(
 		private retrievePassword: (formData: FormData) => Promise<void>,
@@ -14,7 +15,7 @@ export default class extends AProfilingView {
 
 	protected override generateMarkup(): string {
 		const generateModalMarkup = () => `
-			<dialog data-modal="forgotPassword" class="max-w-max xs:max-w-xs m-2 xs:mt-10 xs:mx-auto rounded-[1.8rem]">
+			<dialog class="max-w-max xs:max-w-xs m-2 xs:mt-10 xs:mx-auto rounded-[1.8rem]" data-modal="forgotPassword">
 				<div class="flex flex-col">
 					<div class="px-4 pt-4 flex justify-end">
 						<button data-close-modal>
@@ -34,7 +35,7 @@ export default class extends AProfilingView {
 								class="truncate w-full px-3 h-10 outline-none rounded border-2 border-slate-400 ring-slate-200 focus:ring" autocomplete="on">
 							<section class="text-xs text-rose-600 p-1 absolute"></section>
 						</div>
-						<button id="retrieve-password-btn" type="button" class="mt-10 mb-4 w-full h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
+						<button class="mt-10 mb-4 w-full h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
 							<span class="uppercase font-semibold text-sm sm:text-base text-shadow-md leading-6 group-disabled:hidden">
 								Send
 							</span>
@@ -77,7 +78,7 @@ export default class extends AProfilingView {
 					</div>
 				</div>
 				<div class="p-4"></div>
-				<button id="login-btn" type="button" class="w-full h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
+				<button class="w-full h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
 					<span class="uppercase font-semibold text-sm sm:text-base text-shadow-md leading-6 group-disabled:hidden">
 						Enter
 					</span>
@@ -91,43 +92,50 @@ export default class extends AProfilingView {
 	}
 
 	override addEventHandlers() {
-		const handleRetrievePasswordBtnClick = async () => {
-			const form = document.getElementById('password-recovery-form') as HTMLFormElement;
-			if (!form || !this.formCheckValidity(form))
-				return ;
-			this.toggleButton("retrieve-password-btn");
-			try {
-				await this.retrievePassword(new FormData(form));
-				this.renderAlert(120, "Your password has been sent to your email.")
+		(function retrievePasswordForm(this: LoginView) {
+			const form = document.getElementById("password-recovery-form") as HTMLFormElement;
+			const handleSubmit = async (event: SubmitEvent) => {
+				event.preventDefault();
+				if (!this.formCheckValidity(form))
+					return ;
+				const submitter = event.submitter as HTMLButtonElement;
+				submitter.disabled = true;
+				try {
+					await this.retrievePassword(new FormData(form));
+					this.renderAlert(120, "Your password has been sent to your email.")
+				}
+				catch(error) {
+					const alertText = error instanceof CustomError && error.code === 401 ?
+						"This email is not registered." :
+							"Something went wrong. Please try again later.";
+					this.renderAlert(0, alertText);
+				}
+				submitter.disabled = false;
+				(document.querySelector(`[data-modal="forgotPassword"]`) as HTMLDialogElement)?.close();
+			};
+			form?.addEventListener("submit", handleSubmit);
+		}).call(this);
+		(function loginForm(this: LoginView) {
+			const form = document.getElementById("login-form") as HTMLFormElement;
+			const handleSubmit = async (event: SubmitEvent) => {
+				event.preventDefault();
+				if (!this.formCheckValidity(form))
+					return ;
+				const submitter = event.submitter as HTMLButtonElement;
+				submitter.disabled = true;
+				try {
+					await this.logUserIn(new FormData(form));
+				}
+				catch(error) {
+					submitter.disabled = false;
+					const alertText = error instanceof CustomError && error.code === 401 ?
+						"Wrong email or password." :
+							"Something went wrong. Please try again later.";
+					this.renderAlert(0, alertText);
+				}
 			}
-			catch(error) {
-				const alertText = error instanceof CustomError && error.code === 401 ?
-					"This email is not registered." :
-						"Something went wrong. Please try again later.";
-				this.renderAlert(0, alertText);
-			}
-			this.toggleButton("retrieve-password-btn");
-			(document.querySelector(`[data-modal="forgotPassword"]`) as HTMLDialogElement)?.close();
-		};
-		const handleLoginBtnClick = async () => {
-			const form = document.getElementById('login-form') as HTMLFormElement;
-			if (!form || !this.formCheckValidity(form))
-				return ;
-			this.toggleButton("login-btn");
-			try {
-				await this.logUserIn(new FormData(form));
-			}
-			catch(error) {
-				this.toggleButton("login-btn");
-				const alertText = error instanceof CustomError && error.code === 401 ?
-					"Wrong email or password." :
-						"Something went wrong. Please try again later.";
-				this.renderAlert(0, alertText);
-			}
-		}
-
+			form?.addEventListener("submit", handleSubmit);
+		}).call(this);
 		super.addEventHandlers();
-		document.getElementById("retrieve-password-btn")?.addEventListener("click", handleRetrievePasswordBtnClick.bind(this));
-		document.getElementById("login-btn")?.addEventListener("click", handleLoginBtnClick.bind(this));
 	}
 }

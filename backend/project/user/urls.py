@@ -9,6 +9,6 @@ urlpatterns = [
 	path('users/<email>/', views.RetrieveUpdateDestroyUser.as_view()),
 	path('signup/', views.SignupUser.as_view()),
 	path('login/', views.LoginUser.as_view()),
-	path('get-data/', views.GetData.as_view()),
-	path('get-protected-data/', views.GetProtectedData.as_view()),
+	path('get_data/', views.GetData.as_view()),
+	path('get_protected_data/', views.GetProtectedData.as_view()),
 ]

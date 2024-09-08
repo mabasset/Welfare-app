@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Hidden field to store the redirect URL -->
+        <input type="hidden" name="next" value="{{ next }}" />
+        
+        <!-- Render the form fields for username and password -->
+        {{ form.as_p }}
+        
+        <!-- Submit button -->
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

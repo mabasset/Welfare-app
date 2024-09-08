@@ -8,9 +8,9 @@ export default abstract class {
 	}
 
 	protected async sendRequest(url: string, method: string = "GET", body?: FormData | string): Promise<Response> {
-		const headers: HeadersInit = method === "POST" ? {
-			'Content-Type': 'application/json'
-		} : {};
+		const headers: HeadersInit = {
+			'Content-Type': 'application/json',
+		};
 		const options: RequestInit = {
 			method,
 			headers,

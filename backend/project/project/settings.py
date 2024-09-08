@@ -12,29 +12,44 @@ host = os.getenv('HOST')
 ALLOWED_HOSTS = host.split(" ")
 CSRF_TRUSTED_ORIGINS = [f'https://{host}']
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+LOGIN_URL = '/django/accounts/login/'
+
 
 INSTALLED_APPS = [
 	'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
 	'django_password_validators',
 	'rest_framework',
 	'rest_framework.authtoken',
+	'oauth2_provider',
+	'oidc_provider',
+	'corsheaders',
 	'user',
 ]
 
+OAUTH2_PROVIDER = {
+	"OIDC_ENABLED": True,
+	"OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
+	"SCOPES": {
+		"openid": "OpenID Connect scope",
+	},
+}
 
 MIDDLEWARE = [
+	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -42,16 +57,21 @@ ROOT_URLCONF = 'project.urls'
 
 REST_FRAMEWORK = {
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+	'PAGE_SIZE': 10,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
 		'rest_framework.authentication.TokenAuthentication',
+		'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+	),
+	'DEFAULT_PERMISSION_CLASSES': (
+		'oauth2_provider.contrib.rest_framework.IsAuthenticatedOrTokenHasScope',
+		'rest_framework.permissions.DjangoModelPermissions',
 	),
 }
 
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
+		'DIRS': ['/usr/src/app/project/templates'],
 		'APP_DIRS': True,
 		'OPTIONS': {
 			'context_processors': [
@@ -133,11 +153,11 @@ USE_L10N = True
 USE_TZ = True
 
 [
-    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
-    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
-    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
-    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
-    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
+	'%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
+	'%b %d %Y', '%b %d, %Y',			# 'Oct 25 2006', 'Oct 25, 2006'
+	'%d %b %Y', '%d %b, %Y',			# '25 Oct 2006', '25 Oct, 2006'
+	'%B %d %Y', '%B %d, %Y',			# 'October 25 2006', 'October 25, 2006'
+	'%d %B %Y', '%d %B, %Y',			# '25 October 2006', '25 October, 2006'
 ]
 
 

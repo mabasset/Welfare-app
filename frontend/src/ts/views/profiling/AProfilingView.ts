@@ -1,39 +1,17 @@
 import AView from "../AView";
 
-export default abstract class extends AView {
+export default abstract class AProfilingView extends AView {
 
 	constructor() {
 		super();
 	}
 
-	protected override addEventHandlers() {
-		super.addEventHandlers();
-		document.querySelectorAll("input").forEach(input =>
-			["input", "focusout"].forEach(event =>
-				input.addEventListener(event, () =>
-					this.handleInputEvents(input))));
-		document.querySelectorAll("[data-password-toggler]").forEach(button =>
-			button.addEventListener("click", () =>
-				this.handlePasswordTogglerClick(button as HTMLButtonElement)));
-	}
-
-	private	handleInputEvents(input: HTMLInputElement) {
-		const inputGroup = input.closest("[data-input-group]");
-		if (!inputGroup)
-			return;
-		this.inputGroupCheckValidity(inputGroup);
-	}
-
-	private	handlePasswordTogglerClick(button: HTMLButtonElement) {
-		const inputId = button.dataset.passwordToggler;
-		if (!inputId)
-			return ;
-		const input = document.getElementById(inputId) as HTMLInputElement;
-		if (!input)
-			return ;
-		input.type = input.type === "password" ? "text" : "password";
-		button.querySelector(".bi-eye")?.classList.toggle("hidden");
-		button.querySelector(".bi-eye-slash")?.classList.toggle("hidden");
+	protected	generateLabelFor(inputId: string, isRequired: boolean) {
+		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
+		const labelElement = `
+			<label for="${inputId}" class="${isRequired ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ""} absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white">${labelText}</label>
+		`;
+		return labelElement;
 	}
 
 	protected	generatePasswordTogglerMarkup(inputId: string) {
@@ -52,12 +30,46 @@ export default abstract class extends AView {
 		`;
 	}
 
-	protected	generateLabelFor(inputId: string, isRequired: boolean): string {
-		let labelText = (inputId.charAt(0).toUpperCase() + inputId.slice(1)).replace(/-/g, ' ');
-		const labelElement = `
-			<label for="${inputId}" class="${isRequired ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ""} absolute font-medium max-w-42 truncate left-2 sm:left-2.5 -top-3 px-1 bg-white">${labelText}</label>
-		`;
-		return labelElement;
+	protected override addEventHandlers() {
+		(function passwordTogglers() {
+			const addClickHandler = (button: HTMLButtonElement) => {
+				const handler = () => {
+					const inputId = button.dataset.passwordToggler;
+					if (!inputId)
+						return ;
+					const input = document.getElementById(inputId) as HTMLInputElement;
+					if (!input)
+						return ;
+					input.type = input.type === "password" ? "text" : "password";
+					button.querySelector(".bi-eye")?.classList.toggle("hidden");
+					button.querySelector(".bi-eye-slash")?.classList.toggle("hidden");
+				};
+				button.addEventListener("click", handler);
+			};
+			(document.querySelectorAll("[data-password-toggler]") as NodeListOf<HTMLButtonElement>).forEach(addClickHandler);
+		})();
+		(function inputFields(this: AProfilingView) {
+			const addEventHandlers = (input: HTMLInputElement) => {
+				const handler = () => {
+					const inputGroup = input.closest("[data-input-group]");
+					if (inputGroup)
+						this.inputGroupCheckValidity(inputGroup);
+				};
+				["input", "focusout"].forEach(eventType =>
+					input.addEventListener(eventType, handler));
+			};
+			document.querySelectorAll("input").forEach(addEventHandlers)
+		}).call(this);
+		super.addEventHandlers();
+	}
+
+	protected	formCheckValidity(form: HTMLFormElement): boolean {
+		let isValid = true;
+		form.querySelectorAll("[data-input-group]").forEach(inputGroup => {
+			if (!this.inputGroupCheckValidity(inputGroup))
+				isValid = false;
+		});
+		return isValid;
 	}
 
 	protected	inputGroupCheckValidity(inputGroup: Element): boolean {
@@ -227,16 +239,5 @@ export default abstract class extends AView {
 		errorSection!.innerHTML = "";
 		input.classList.remove("!border-rose-400", "!ring-rose-200");
 		return true;
-	}
-
-	protected	formCheckValidity(form: HTMLFormElement): boolean {
-		let isValid = true;
-		const inputGroups = form.querySelectorAll("[data-input-group]");
-
-		inputGroups.forEach(inputGroup => {
-			if(!this.inputGroupCheckValidity(inputGroup))
-				isValid = false;
-		});
-		return isValid;
 	}
 }

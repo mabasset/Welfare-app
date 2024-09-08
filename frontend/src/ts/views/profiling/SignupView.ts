@@ -1,9 +1,11 @@
 import AProfilingView from "./AProfilingView";
-import { AlertEvent, CustomError, getOffsetDate } from "../../helpers";
+import { CustomError, getOffsetDate } from "../../helpers";
+import { off } from "process";
 
-export default class extends AProfilingView {
+export default class SignupView extends AProfilingView {
 
-	override mainClassList = "w-full max-w-screen-md mx-auto my-6 sm:my-10";
+	override documentTitle = "Signup";
+	override mainClassName = "w-full max-w-screen-md mx-auto my-6 sm:my-10";
 	private	markupIndex = 0;
 	private user = new Map<string, string>();
 	private worksites = new Map<number, string>();
@@ -15,7 +17,7 @@ export default class extends AProfilingView {
 	]);
 
 	constructor(
-		private setToSessionStorage: (user: Map<string, string>) => void,
+		private saveUserDataInSessionStorage: (user: Map<string, string>) => void,
 		private registerUser: (formData: FormData) => Promise<void>,
 	) {
 		super();
@@ -29,7 +31,7 @@ export default class extends AProfilingView {
 	}
 
 	override generateMainMarkup() {
-		const	generatePersonalDataMarkup = () => `
+		const personalData = () => `
 			<div class="flex-grow flex items-center pt-2 sm:pt-4 text-sm">
 				<div class="grid grid-rows-5 sm:grid-rows-3 grid-cols-6 gap-4 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
@@ -96,8 +98,8 @@ export default class extends AProfilingView {
 				</div>
 			</div>
 		`;
-		const	generateLocalizationMarkup = () => {
-			const generateWorksitesListMarkup = () => {
+		const localization = () => {
+			const worksitesList = () => {
 				if (this.worksites.size === 0)
 					return ``;
 				return `
@@ -116,7 +118,7 @@ export default class extends AProfilingView {
 								match="[data-searchbar-option]"
 								 data-searchbar-input>
 							<section></section>
-							${generateWorksitesListMarkup()}
+							${worksitesList()}
 							<input id="hidden-worksite" name="worksite" value="${this.user.get("worksite") || ''}" type="hidden" data-searchbar-hidden-input>
 						</div>
 						<div class="col-span-6 relative" data-input-group>
@@ -154,8 +156,8 @@ export default class extends AProfilingView {
 				</div>
 			`;
 		};
-		const	generateAreasOfInterestMarkup = () => {
-			const generatePillarsMarkup = () => {
+		const areasOfInterest = () => {
+			const pillars = () => {
 				let pillarsMarkup = ``;
 				for (const [key, value] of this.areasOfInterest.entries()) {
 					pillarsMarkup += `
@@ -189,12 +191,12 @@ export default class extends AProfilingView {
 				</div>
 				<div class="flex-grow flex pb-3 sm:pb-6">
 					<div class="grid grid-rows-2 md:grid-rows-1 grid-cols-4 gap-4 w-full text-white text-shadow-lg">
-						${generatePillarsMarkup()}
+						${pillars()}
 					</div>
 				</div>
 			`
 		};
-		const	generateRegistrationMarkup = () => `
+		const registration = () => `
 			<div class="flex-grow flex flex-col justify-center">
 				<div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-6 gap-3 sm:gap-6 w-full">
 					<div class="col-span-6 sm:col-span-3 relative" data-input-group>
@@ -238,12 +240,12 @@ export default class extends AProfilingView {
 				</div>
 				<div class="flex flex-col ms-1 mb-2" data-input-group>
 					<div>
-						<label for="policy" class="font-medium">Declaration of Consent*</label>
+						<label for="policy" class="font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Declaration of Consent</label>
 					</div>
 					<div class="flex items-center text-slate-600 text-sm">
 						<input type="checkbox" id="policy" class="shrink-0 h-4 sm:h-4 w-5 sm:w-4 me-3 sm:me-2 mt-0.5" required>
 						<label for="policy">
-							I have read the <a class="link-body-emphasis underline hover:text-black">Personal Data Protection Policy</a>
+							I have read the <a href="https://www.leonardo.com/en/privacy-policy" target="_blank" class="link-body-emphasis underline hover:text-black" data-open-window="privacy-policy">Personal Data Protection Policy</a>
 						</label>
 					</div>
 					<section></section>
@@ -251,10 +253,10 @@ export default class extends AProfilingView {
 			</div>
 		`;
 		const	markupGeneratorFunctions = [
-			generatePersonalDataMarkup, generateLocalizationMarkup, generateAreasOfInterestMarkup, generateRegistrationMarkup
+			personalData, localization, areasOfInterest, registration
 		];
 		return `
-			<form class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
+			<form id="signup-form" class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
 				${markupGeneratorFunctions[this.markupIndex].call(this)}
 				<div class="grid grid-rows-1 grid-cols-4 w-full">
 					<div class="col-span-1 flex justify-start">
@@ -268,7 +270,7 @@ export default class extends AProfilingView {
 						<span class="${this.markupIndex === 3 ? 'hidden' : ''}">
 							${this.markupIndex + 1} / 4
 						</span>
-						<button id="signup-btn" type="button" class="${this.markupIndex === 3 ? '' : 'hidden'} w-9/12 h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
+						<button class="${this.markupIndex === 3 ? '' : 'hidden'} w-9/12 h-10 text-white px-4 py-2 shadow-md rounded-md bg-rose-400 enabled:bg-rose-600 enabled:hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 group">
 							<span class="uppercase font-semibold text-sm sm:text-base text-shadow-md leading-6 group-disabled:hidden">
 								Register
 							</span>
@@ -279,7 +281,7 @@ export default class extends AProfilingView {
 						</button>
 					</div>
 					<div class="${this.markupIndex === 3 ? 'col-span-0' : 'col-span-1'} flex justify-end">
-						<button id="forward-btn" type="button" class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
+						<button class="${this.markupIndex === 3 ? 'hidden' : ''} me-1 sm:me-3">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-10 bi bi-arrow-right" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
 							</svg>
@@ -290,80 +292,83 @@ export default class extends AProfilingView {
 		`;
 	}
 
-	protected updateMainMarkup() {
-		document.querySelector("main")!.innerHTML = this.generateMainMarkup();
-		this.addEventHandlers();
-	}
-
-	protected override addEventHandlers() {
-		super.addEventHandlers();
-		document.getElementById("backward-btn")?.addEventListener("click", this.handleBackwardBtnClick.bind(this));
-		document.getElementById("forward-btn")?.addEventListener("click", this.handleForwardBtnClick.bind(this));
-		document.getElementById("signup-btn")?.addEventListener("click", this.handleSignupBtnClick.bind(this));
-		const searchBar = document.querySelector("[data-searchbar]") as HTMLElement;
-		if (!searchBar)
-			return ;
-		const input = searchBar.querySelector("[data-searchbar-input]") as HTMLInputElement;
-		const hiddenInput = searchBar.querySelector("[data-searchbar-hidden-input]") as HTMLInputElement;
-		const dropdown = searchBar.querySelector("[data-searchbar-dropdown]");
-		const options = dropdown?.querySelectorAll("[data-searchbar-option]") as NodeListOf<HTMLButtonElement>;
-		input.addEventListener("focus", () => dropdown?.classList.remove("hidden"));
-		input.addEventListener("blur", () => dropdown?.classList.add("hidden"));
-		input.addEventListener("input", () => {
-			let inputValue = input.value.toLowerCase();
+	override addEventHandlers() {
+		(function signupForm(this: SignupView) {
+			const updateMainMarkup = (offset: number) => {
+				this.markupIndex += offset;
+				document.querySelector("main")!.innerHTML = this.generateMainMarkup();
+				this.addEventHandlers();
+			};
+			(function backwardBtnCLick() {
+				const handler = () =>
+					updateMainMarkup(-1);
+				document.getElementById("backward-btn")?.addEventListener("click", handler);
+			})();
+			(function submition(this: SignupView) {
+				const form = document.getElementById("signup-form") as HTMLFormElement;
+				const handler = (event: SubmitEvent) => {
+					const submitUserDataToServer = async () => {
+						const submitter = event.submitter as HTMLButtonElement;
+						submitter.disabled = true;
+						for(const [key, value] of this.user.entries())
+							formData.set(key, value);
+						try {
+							await this.registerUser(formData);
+						}
+						catch (error) {
+							submitter.disabled = false;
+							const alertText = error instanceof CustomError && error.code === 409 ?
+								"This email address is already registered." :
+									"Something went wrong. Please try again later.";
+							this.renderAlert(0, alertText);
+						}
+					};
+					const saveUserDataAndMoveForward = () => {
+						if (this.markupIndex === 2)
+							for (const key of this.areasOfInterest.keys())
+								formData.set(key, formData.has(key) ? "true" : "false");
+						for(const [key, value] of formData)
+							if (value && typeof value === "string")
+								this.user.set(key, value);
+						this.saveUserDataInSessionStorage(this.user);
+						updateMainMarkup(1);
+					};
+					event.preventDefault();
+					if (!this.formCheckValidity(form))
+						return ;
+					const formData = new FormData(form);
+					if (this.markupIndex === 3)
+						submitUserDataToServer();
+					else
+						saveUserDataAndMoveForward();
+				};
+				form?.addEventListener("submit", handler);
+			}).call(this);
+		}).call(this);
+		(function searchBar(){
+			const searchBar = document.querySelector("[data-searchbar]") as HTMLElement;
+			if (!searchBar)
+				return ;
+			const input = searchBar.querySelector("[data-searchbar-input]") as HTMLInputElement;
+			const hiddenInput = searchBar.querySelector("[data-searchbar-hidden-input]") as HTMLInputElement;
+			const dropdown = searchBar.querySelector("[data-searchbar-dropdown]");
+			const options = dropdown?.querySelectorAll("[data-searchbar-option]") as NodeListOf<HTMLButtonElement>;
+			input.addEventListener("focus", () => dropdown?.classList.remove("hidden"));
+			input.addEventListener("blur", () => dropdown?.classList.add("hidden"));
+			input.addEventListener("input", () => {
+				let inputValue = input.value.toLowerCase();
+				options.forEach(option => {
+					const optionContent = option.textContent?.toLowerCase();
+					option.style.display = optionContent?.includes(inputValue) ? '' : 'none';
+				});
+			});
 			options.forEach(option => {
-				const optionContent = option.textContent?.toLowerCase();
-				option.style.display = optionContent?.includes(inputValue) ? '' : 'none';
+				option.addEventListener("mouseover", () => {
+					hiddenInput.value = option.value;
+					input.value = option.innerText;
+				});
 			});
-		});
-		options.forEach(option => {
-			option.addEventListener("mouseover", () => {
-				hiddenInput.value = option.value;
-				input.value = option.innerText;
-			});
-		});
-	}
-	
-	private handleBackwardBtnClick() {
-		if (this.markupIndex > 0)
-			this.markupIndex -= 1;
-		this.updateMainMarkup();
-	}
-	
-	private	handleForwardBtnClick() {
-		const form = document.querySelector('form');
-		if (!form || !this.formCheckValidity(form))
-			return;
-		const formData = new FormData(form);
-		if (this.markupIndex === 2)
-			for (const key of this.areasOfInterest.keys())
-				formData.set(key, formData.has(key) ? "true" : "false");
-		for(const [key, value] of formData)
-			if (value && typeof value === "string")
-				this.user.set(key, value);
-		this.setToSessionStorage(this.user);
-		if (this.markupIndex < 3)
-			this.markupIndex += 1;
-		this.updateMainMarkup();
-	}
-	
-	private async handleSignupBtnClick() {
-		const form = document.querySelector('form');
-		if (!form || !this.formCheckValidity(form))
-			return ;
-		this.toggleButton("signup-btn");
-		const formData = new FormData(form);
-		for(const [key, value] of this.user.entries())
-			formData.set(key, value);
-		try {
-			await this.registerUser(formData);
-		}
-		catch (error) {
-			this.toggleButton("signup-btn");
-			const alertText = error instanceof CustomError && error.code === 409 ?
-				"This email address is already registered." :
-					"Something went wrong. Please try again later.";
-			this.renderAlert(0, alertText);
-		}
+		})();
+		super.addEventHandlers();
 	}
 }

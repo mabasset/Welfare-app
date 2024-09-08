@@ -3,10 +3,10 @@ import AView from "./AView";
 
 export default class extends AView {
 
+	override documentTitle = "Home Page";
 	private user: User | undefined
-	override headerClassList = "w-full grow-0 flex justify-between items-center px-4 sm:px-14 text-slate-300 border-b-2 h-20";
-	override mainClassList = "flex grow relative";
-	override footerClassList = "";
+	override headerClassName = "w-full grow-0 flex justify-between items-center px-4 sm:px-14 text-slate-300 border-b-2 h-20";
+	override mainClassName = "flex grow relative";
 
 	constructor () {
 		super();
@@ -39,30 +39,30 @@ export default class extends AView {
 					</dialog>
 				</div>
 				|
-				<div id="screen-modes" class="flex min-w-20 justify-evenly grow flex justify-center items-center h-full">
-					<button class="hover:text-black" id="lightmode-icon">
+				<div id="screen-modes" class="flex min-w-20 justify-evenly grow items-center h-full">
+					<button class="text-white dark:text-black" id="lightmode-icon">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-sun" viewBox="0 0 16 16">
 							<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
 						</svg>
 					</button>
-					<button class="hover:text-black" id="darkmode-icon">
+					<button class="text-black dark:text-white" id="darkmode-icon">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-moon" viewBox="0 0 16 16">
 							<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
 						</svg>
 					</button>
 				</div>
 				|
-				<div role="button" class="relative grow flex justify-center items-center h-full" id="languages-dropdown-open-target">
-					<div class="flex">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="hover:text-black h-7 bi bi-translate" viewBox="0 0 16 16">
+				<div role="button" class="relative grow flex justify-center items-center h-full">
+					<button class="hover:text-black flex" data-toggle-dropdown="language">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-translate" viewBox="0 0 16 16">
 							<path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/>
 							<path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/>
 						</svg>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 						</svg>
-					</div>
-					<dialog id="languages-dropdown" class="top-100 outline-0 text-lg text-center bg-slate-50 top-20 z-20 divide-y divide-gray-200 text-gray-700">
+					</button>
+					<dialog class="top-100 outline-0 text-lg text-center bg-slate-50 top-20 z-20 divide-y divide-gray-200 text-gray-700" data-dropdown="language">
 						<div class="py-2 px-8 hover:underline"><a role="button">Ita</a></div>
 						<div class="py-2 px-8 hover:underline"><a role="button">Eng</a></div>
 					</dialog>
@@ -233,21 +233,11 @@ export default class extends AView {
 		`;
 	}
 
-	override generateFooterMarkup() {
-		return `
-		`;
-	}
-
 	override addEventHandlers() {
-
 		const handleSidebar = () =>
-			document.getElementById('sidebar')?.classList.toggle('!translate-x-0')
-		const handleLanguageChoiceDropdown = () => {
-			const dropdown = document.getElementById('languages-dropdown') as HTMLDialogElement;
-			dropdown.classList.contains('active') ? dropdown.close() : dropdown.show();
-			dropdown.classList.toggle('active');
-		}
-
+			document.getElementById('sidebar')?.classList.toggle('!translate-x-0');
+		
 		document.getElementById('sidebar-display-target')?.addEventListener('click', handleSidebar);
+		super.addEventHandlers();
 	}
 }

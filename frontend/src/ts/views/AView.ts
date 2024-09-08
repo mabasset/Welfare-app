@@ -1,13 +1,15 @@
 export default abstract class {
-	protected bodyClassList = "flex flex-col justify-between min-h-screen";
+	protected bodyClassList = "flex flex-col justify-between min-h-svh";
 
-	protected headerClassList = "sm:w-full sm:max-w-96 sm:mx-auto";
-	protected mainClassList = "";
-	protected footerClassList = "text-sm sm:text-base mb-6 sm:mb-10";
+	protected headerClassName = "sm:w-full sm:max-w-96 sm:mx-auto pt-6";
+	protected mainClassName = "";
+	protected footerClassName = "text-sm sm:text-base mb-6 sm:mb-10";
+	abstract documentTitle: string;
 
 	constructor() {}
 
 	render(...args: any) {
+		document.title = this.documentTitle + " | Leonardo's Welfare";
 		document.body.className = this.bodyClassList;
 		document.body.classList.add("bg-wf-primary");
 		document.body.innerHTML = this.generateMarkup();
@@ -33,7 +35,7 @@ export default abstract class {
 						</div>
 						<div class="ml-auto pl-3">
 							<div class="-m-1.5">
-								<button class="p-1.5 rounded-md focus:outline outline-2 outline-offset-2" data-alert-dismiss style="color: hsl(${hue}, 100%, 40%); outline-color: hsl(${hue}, 100%, 40%)">
+								<button class="p-1.5 rounded-md focus:outline outline-2 outline-offset-2" style="color: hsl(${hue}, 100%, 40%); outline-color: hsl(${hue}, 100%, 40%)" data-alert-closer>
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
 										<path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"></path>
 									</svg>
@@ -48,13 +50,13 @@ export default abstract class {
 
 	protected generateMarkup() {
 		return `
-			<header class="${this.headerClassList}">
+			<header class="${this.headerClassName}">
 				${this.generateHeaderMarkup()}
 			</header>
-			<main class="${this.mainClassList}">
+			<main class="${this.mainClassName}">
 				${this.generateMainMarkup()}
 			</main>
-			<footer class="${this.footerClassList}">
+			<footer class="${this.footerClassName}">
 				${this.generateFooterMarkup()}
 			</footer>
 		`;
@@ -79,23 +81,23 @@ export default abstract class {
 		return `
 			<ul class="flex flex-wrap justify-center border-0 pb-8">
 				<li class="py-0 px-2">
-					<a class="text-white hover:text-black no-underline hover:underline select-none">
+					<a href="https://www.leonardo.com/en/privacy-policy" target="_blank" class="text-white hover:text-black no-underline hover:underline select-none" data-open-window="privacy-policy">
 						Privacy Policy
 					</a>
 				</li>
 				<li class="py-0 px-2 border-l border-transparent">
-					<a class="text-white hover:text-black no-underline hover:underline select-none">
+					<a href="https://www.leonardo.com/en/cookie-policy" target="_blank" class="text-white hover:text-black no-underline hover:underline select-none" data-open-window="cookie-policy">
 						Cookie Policy
 					</a>
 				</li>
 				<li class="py-0 px-2 border-l border-transparent">
 					<a class="text-white hover:text-black no-underline hover:underline select-none">
-						Preference Cookie
+						Cookie Preferences
 					</a>
 				</li>
 				<li class="py-0 px-2 border-l border-transparent">
-					<a class="text-white hover:text-black no-underline hover:underline select-none">
-						Legal Notes
+					<a href="https://www.leonardo.com/en/legal-notice" target="_blank" class="text-white hover:text-black no-underline hover:underline select-none" data-open-window="legal-notice">
+						Legal Notice
 					</a>
 				</li>
 				<li class="py-0 px-2 border-l border-transparent">
@@ -104,7 +106,7 @@ export default abstract class {
 					</a>
 				</li>
 				<li class="py-0 px-2 border-l border-transparent">
-					<a class="text-white hover:text-black no-underline hover:underline select-none">
+					<a href="https://www.leonardo.com/en/cert" target="_blank" class="text-white hover:text-black no-underline hover:underline select-none" data-open-window="cert">
 						CERT
 					</a>
 				</li>
@@ -113,50 +115,58 @@ export default abstract class {
 	}
 
 	protected addEventHandlers() {
-		const addModalEventHandlers = () => {
-			const handleModalEnablerClick = (enabler: HTMLElement) =>
-				(document.querySelector(`[data-modal=${enabler.dataset.openModal}]`) as HTMLDialogElement)?.showModal();
-			const handleModalDisablerClick = (disabler: HTMLElement) =>
-				(disabler.closest(`[data-modal]`) as HTMLDialogElement)?.close();
-			const handleModalOutOfBoundClick = (modal: HTMLDialogElement, event: PointerEvent) => {
-				const modalDimensions = modal.getBoundingClientRect();
-  				if (event.clientX < modalDimensions.left || event.clientX > modalDimensions.right || event.clientY < modalDimensions.top || event.clientY > modalDimensions.bottom)
-  					modal.close();
+		(function modals() {
+			(function openers() {
+				const addClickHandler = (opener: HTMLElement) => {
+					const handler = () =>
+						(document.querySelector(`[data-modal=${opener.dataset.openModal}]`) as HTMLDialogElement)?.showModal();
+					opener.addEventListener("click", handler);
+				};
+				(document.querySelectorAll(`[data-open-modal]`) as NodeListOf<HTMLElement>).forEach(addClickHandler);
+			})();
+			(function closers() {
+				const addClickHandler = (closer: HTMLElement) => {
+					const handler = () =>
+						(closer.closest(`[data-modal]`) as HTMLDialogElement)?.close();
+					closer.addEventListener("click", handler);
+				};
+				(document.querySelectorAll("[data-close-modal]") as NodeListOf<HTMLElement>).forEach(addClickHandler);
+			})();
+			(function outOfBoundClicks() {
+				const addMouseDownkHandler = (modal: HTMLDialogElement) => {
+					const handler = (event: MouseEvent) => {
+						const modalDimensions = modal.getBoundingClientRect();
+  						if (event.clientX < modalDimensions.left || event.clientX > modalDimensions.right || event.clientY < modalDimensions.top || event.clientY > modalDimensions.bottom)
+  							modal.close();
+					};
+					modal.addEventListener("mousedown", handler);
+				};
+				(document.querySelectorAll("[data-modal]") as NodeListOf<HTMLDialogElement>).forEach(addMouseDownkHandler);
+			})();
+		})();
+		(function dropdownTogglers() {
+			const addClickHandler = (toggler: HTMLElement) => {
+				const handler = () =>
+					(document.querySelector(`[data-dropdown=${toggler.dataset.toggleDropdown}]`) as HTMLDialogElement)?.toggleAttribute("open");
+				toggler.addEventListener("click", handler);
 			};
-
-			document.querySelectorAll(`[data-open-modal]`).forEach(enabler => 
-				enabler.addEventListener("click", () =>
-					handleModalEnablerClick(enabler as HTMLElement)));
-			document.querySelectorAll("[data-close-modal]").forEach(disabler =>
-				disabler.addEventListener("click", () =>
-					handleModalDisablerClick(disabler as HTMLElement)));
-			document.querySelectorAll("[data-modal]").forEach(modal => 
-				modal.addEventListener("mousedown", event =>
-					handleModalOutOfBoundClick(modal as HTMLDialogElement, event as PointerEvent)));
-		};
-		const addDropDownEventHandlers = () => {
-			const handleDropDownTogglerClick = (toggler: HTMLElement) =>
-				(document.querySelector(`[data-dropdown=${toggler.dataset.toggleDropdown}]`) as HTMLDialogElement)?.toggleAttribute("open");
-
-			document.querySelectorAll("[data-toggle-dropdown]").forEach(toggler =>
-				toggler.addEventListener("click", () =>
-					handleDropDownTogglerClick(toggler as HTMLElement)));
-		};
-		const addAlertEventHandlers = () => {
-			const handleAlerDismisserClick = (event: Event) =>
-				(event.target as HTMLElement).closest("[data-alert-dismiss]")?.closest("[data-alert]")?.remove();
-
-			document.querySelector("[data-alert-container]")?.addEventListener("click", handleAlerDismisserClick);
-		};
-
-		addModalEventHandlers();
-		addDropDownEventHandlers();
-		addAlertEventHandlers();
-	}
-
-	public toggleButton(id: string) {
-		const button = document.getElementById(id) as HTMLButtonElement;
-		if (button)
-			button.disabled = !button.disabled;
+			(document.querySelectorAll("[data-toggle-dropdown]") as NodeListOf<HTMLElement>).forEach(addClickHandler);
+		})();
+		(function alerts() {
+			const handleAlertCloserClick = (event: Event) => {
+				(event.target as HTMLElement).closest("[data-alert-closer]")?.closest("[data-alert]")?.remove();
+			}
+			document.querySelector("[data-alert-container]")?.addEventListener("click", handleAlertCloserClick);
+		})();
+		(function popupWindowOpeners() {
+			const addClickHandler = (opener: HTMLLinkElement) => {
+				const handler = (event: Event) => {
+					event.preventDefault();
+					window.open(opener.href, opener.dataset.openWindow,'width=600,height=400,top=100,left=5');
+				}
+				opener.addEventListener("click", handler);
+			}
+			(document.querySelectorAll("[data-open-window]") as NodeListOf<HTMLLinkElement>).forEach(addClickHandler);
+		})();
 	}
 }

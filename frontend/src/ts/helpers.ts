@@ -1,9 +1,3 @@
-export class AlertEvent extends CustomEvent<{color: string, text: string}> {
-	constructor(color: string, text: string) {
-		super("alert", {detail: {color, text}});
-	}
-}
-
 export class CustomError extends Error {
 	constructor(
 		public code: number

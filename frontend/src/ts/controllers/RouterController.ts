@@ -34,8 +34,7 @@ export default class {
 			}
 			catch(error) {
 				console.log(error);
-				const customError = error instanceof CustomError ? error : new CustomError(503);
-				this.errorView.render(customError);
+				this.errorView.render(error instanceof CustomError ? error : new CustomError(503));
 			}
 		}
 		else

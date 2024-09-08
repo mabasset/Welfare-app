@@ -88,7 +88,9 @@ class LogoutUser(APIView):
 		return response
 
 
-class GetData(APIView, ProtectedResourceView):
+class GetData(APIView):
+	permission_classes = [permissions.AllowAny]
+
 	def get(self, request, *args, **kwargs):
 		token_key = request.COOKIES.get('auth_token')
 		if not token_key:

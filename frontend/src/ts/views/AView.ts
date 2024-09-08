@@ -9,7 +9,7 @@ export default abstract class {
 	constructor() {}
 
 	render(...args: any) {
-		document.title = this.documentTitle + " | Leonardo's Welfare";
+		document.title = this.documentTitle + " | Welfare is on";
 		document.body.className = this.bodyClassList;
 		document.body.classList.add("bg-wf-primary");
 		document.body.innerHTML = this.generateMarkup();

@@ -164,7 +164,7 @@ export default class SignupView extends AProfilingView {
 							<input type="checkbox" name="${key}" class="appearance-none hidden" ${this.user.get(key) === "true" ? "checked" : ""}/>
 							<div class="h-full flex flex-col items-center justify-center text-shadow-lg">
 								<section class="text-xs uppercase hidden sm:block pb-3">
-									Leonardo's Welfare is
+									Welfare is on is
 								</section>
 								<section class="tekne text-md sm:text-xl flex flex-col items-center">
 									<span>${key.charAt(0).toUpperCase() + key.slice(1)}</span>
@@ -251,12 +251,9 @@ export default class SignupView extends AProfilingView {
 				</div>
 			</div>
 		`;
-		const	markupGeneratorFunctions = [
-			personalData, localization, areasOfInterest, registration
-		];
 		return `
 			<form id="signup-form" class="min-h-96 bg-white sm:rounded-lg p-4 pt-6 sm:p-8 w-full flex flex-col" novalidate>
-				${markupGeneratorFunctions[this.markupIndex].call(this)}
+				${[personalData, localization, areasOfInterest, registration][this.markupIndex].call(this)}
 				<div class="grid grid-rows-1 grid-cols-4 w-full">
 					<div class="col-span-1 flex justify-start">
 						<button id="backward-btn" type="button" class="${this.markupIndex === 0 ? 'hidden' : ''} ms-1 sm:ms-3">

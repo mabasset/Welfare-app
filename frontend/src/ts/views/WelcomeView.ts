@@ -16,7 +16,7 @@ export default class extends AView {
 	override generateMainMarkup() {
 		return `
 			<div class="tekne text-center text-3xl sm:text-4xl md:text-5xl">
-				Welfare at 365 degree
+				365 degree Welfare
 			</div>
 			<p class="my-6 md:my-9 text-center text-xl sm:text-2xl md:text-3xl">
 				<span class="uppercase">

@@ -87,17 +87,29 @@ export default class extends AView {
 			<nav id="sidebar" class="absolute md:static flex flex-col divide-y-2 inset-0 overflow-hidden md:!max-w-96 -translate-x-full md:translate-x-0 font-semibold bg-slate-50 z-20 transition-all duration-300 ease-linear">
 				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer">
 					<div class="flex justify-between items-center m-0 p-0 hover:underline">
-						<div class="uppercase text-lg">Welfare Areas</div>
+						<div class="uppercase text-lg">Physical Wellbeing</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 						</svg>
 					</div>
-					<input id="welfare-areas-sidebar-option" type="checkbox" class="appearance-none hidden peer">
+					<input id="physical-wellbeing-sidebar-option" type="checkbox" class="appearance-none hidden peer">
 					<div class="overflow-hidden max-h-0 peer-checked:max-h-96 transition-all delay-0 duration-500 ease-in-out text-left">
-						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Physical Wellbeing</a>
-						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Economical Wellbeing</a>
-						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Psychological Wellbeing</a>
-						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Family Wellbeing</a>
+						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Gympass</a>
+						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Supplementary Health Care</a>
+					</div>
+				</label>
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer">
+					<div class="flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg">Economic Wellbeing</div>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+						</svg>
+					</div>
+					<input id="economic-wellbeing-sidebar-option" type="checkbox" class="appearance-none hidden peer">
+					<div class="overflow-hidden max-h-0 peer-checked:max-h-96 transition-all delay-0 duration-500 ease-in-out text-left">
+						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Flexible Benefit</a>
+						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Supplementary Pension</a>
+						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Conventions</a>
 					</div>
 				</label>
 				<a role="button" class="py-4 px-8 select-none text-gray-700 hover:underline uppercase text-lg">Calendar</a>

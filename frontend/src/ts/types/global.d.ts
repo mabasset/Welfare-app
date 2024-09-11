@@ -9,6 +9,7 @@ declare const API: {
 			getWorksites: string,
 			signup: string,
 			login: string,
+			logout: string,
 			forgotPassword: string,
 		}
 	},
@@ -21,8 +22,6 @@ declare const PASSWORD_MIN_AMOUNT_UPPER: string;
 declare const PASSWORD_MIN_AMOUNT_DIGIT: string;
 declare const PASSWORD_MIN_AMOUNT_SPECIAL: string;
 declare const PASSWORD_SPECIAL_CHARACTERS: string;
-
-declare const ROUTE_RESET_PASSWORD: string;
 
 declare const EMAIL_MAX_LENGTH: string;
 declare const EMAIL_PATTERN: string;

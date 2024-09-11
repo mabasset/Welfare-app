@@ -27,15 +27,13 @@ if settings.DEBUG:
 	# OAuth2 Token Management endpoints
 	oauth2_endpoint_views += [
 		path('authorized-tokens/', oauth2_views.AuthorizedTokensListView.as_view(), name="authorized-token-list"),
-		path('authorized-tokens/<pk>/delete/', oauth2_views.AuthorizedTokenDeleteView.as_view(),
-			name="authorized-token-delete"),
+		path('authorized-tokens/<pk>/delete/', oauth2_views.AuthorizedTokenDeleteView.as_view(), name="authorized-token-delete"),
 	]
 
 
 urlpatterns = [
 	path('django/accounts/login/', views.CustomLoginView.as_view(), name='custom_login'),
 	path(os.getenv('LOCATION_BACKEND')+'/admin/', admin.site.urls),
-	path(os.getenv('LOCATION_BACKEND')+'/accounts/login/', admin.site.urls),
 	path(os.getenv('LOCATION_BACKEND')+'/o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
 	path(os.getenv('LOCATION_BACKEND')+'/openid/', include('oidc_provider.urls', namespace='oidc_provider')),
 	path(os.getenv('LOCATION_BACKEND')+'/'+os.getenv('LOCATION_USER_APP')+'/', include('user.urls')),

@@ -18,10 +18,10 @@ export default class {
 	) {}
 
 	public async renderView(user: User, urlParams: Record<string, string>) {
-		//if (!user.isAuthenticated)
-		//	this.welcomeView.render();
-		//else
-		this.homeView.render(user, urlParams.section);
+		if (!user.isAuthenticated)
+			this.welcomeView.render();
+		else
+			this.homeView.render(user, urlParams.section);
 	}
 
 	public addRoute( path: string, renderingFunction: RenderingFunction) {

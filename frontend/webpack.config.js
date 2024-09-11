@@ -40,14 +40,14 @@ module.exports = {
 					location: JSON.stringify(process.env.LOCATION_USER_APP),
 					endpoints: {
 						getData: JSON.stringify(process.env.ENDPOINT_USER_GET_DATA),
-						getWorksites: JSON.stringify(process.env.ENDPOINT_USER_GET_WORKSITES),
+						getWorksites: JSON.stringify(process.env.ENDPOINT_USER_WORKSITES),
 						signup: JSON.stringify(process.env.ENDPOINT_USER_SIGNUP),
 						login: JSON.stringify(process.env.ENDPOINT_USER_LOGIN),
+						logout: JSON.stringify(process.env.ENDPOINT_USER_LOGOUT),
 						forgotPassword: JSON.stringify(process.env.ENDPOINT_USER_FORGOT_PASSWORD),
 					}
 				},
 			},
-			ROUTE_RESET_PASSWORD: JSON.stringify(process.env.ROUTE_RESET_PASSWORD),
 			// Password validators
 			PASSWORD_MIN_LENGTH: JSON.stringify(process.env.PASSWORD_MIN_LENGTH),
 			PASSWORD_MAX_LENGTH: JSON.stringify(process.env.PASSWORD_MAX_LENGTH),

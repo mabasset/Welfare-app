@@ -1,6 +1,5 @@
 import AProfilingView from "./AProfiling";
 import { CustomError, getOffsetDate } from "../../helpers";
-import { off } from "process";
 
 export default class SignupView extends AProfilingView {
 

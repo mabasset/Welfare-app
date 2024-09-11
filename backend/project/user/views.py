@@ -38,16 +38,18 @@ class RetrieveUpdateDestroyUser(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = UserSerializer
 	lookup_field = 'email'
 
-
-class SignupUser(generics.CreateAPIView):
+class SignupUser(APIView):
 	permission_classes = [permissions.AllowAny]
-	serializer_class = UserSerializer
 
-	def create(self, request, *args, **kwargs):
-		response = super().create(request, *args, **kwargs)
-		user = User.objects.get(email=request.data.get('email'))
-		return Response({'message': 'Signup successful'}, status=status.HTTP_200_OK)
-
+	def post(self, request):
+		email = request.data.get('email', '').lower()
+		if User.objects.filter(email=email).exists():
+			return Response({'email': 'email already exist.'}, status=status.HTTP_409_CONFLICT)
+		serializer = UserSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response({'message': 'Signup successful'}, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginUser(APIView):
 	permission_classes = [permissions.AllowAny]

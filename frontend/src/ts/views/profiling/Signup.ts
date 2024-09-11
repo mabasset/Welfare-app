@@ -1,4 +1,4 @@
-import AProfilingView from "./AProfilingView";
+import AProfilingView from "./AProfiling";
 import { CustomError, getOffsetDate } from "../../helpers";
 import { off } from "process";
 

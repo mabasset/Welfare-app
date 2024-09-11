@@ -1,10 +1,9 @@
 import '../styles/index.css';
 
-import UserModel from './models/UserModel';
-import RootController from './controllers/RootController';
-import SignupController from './controllers/SignupController';
-import RouterController from './controllers/RouterController';
-import LoginController from './controllers/LoginController';
+import UserModel from './models/User';
+import RootController from './controllers/Root';
+import SignupController from './controllers/Signup';
+import LoginController from './controllers/Login';
 
 ["offline", "online"].forEach(event => 
 	window.addEventListener(event, () => window.location.reload()));
@@ -19,11 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	const rootController = new RootController(userModel);
 	const signupController = new SignupController(userModel);
 	const loginController = new LoginController(userModel);
-	
-	const routerController = new RouterController(userModel);
-	routerController.addRoute('/', rootController.renderView.bind(rootController));
-	routerController.addRoute('/signup', signupController.renderView.bind(signupController));
-	routerController.addRoute('/login', loginController.renderView.bind(loginController));
 
-	routerController.start();
+	rootController.addRoute('/signup', signupController.renderView.bind(signupController));
+	rootController.addRoute('/login', loginController.renderView.bind(loginController));
+
+	rootController.startRouting();
 });

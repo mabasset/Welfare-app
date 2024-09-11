@@ -1,4 +1,4 @@
-import { getOffsetDate } from "../helpers";
+import { CustomError, getOffsetDate } from "../helpers";
 import AView from "./AView";
 
 export default class extends AView {
@@ -9,13 +9,182 @@ export default class extends AView {
 	override mainClassName = "flex grow relative border-t";
 	override footerClassName = "pb-6 sm:pt-6 bg-slate-600";
 
+	private section = "";
+	private contentSectionMarkupGeneratorFunctions: Record<string, () => string> = {
+		"": this.home,
+		"physical": this.physical,
+		"economic": this.economic,
+		"psychological": this.psychological,
+		"family": this.family,
+		"coatch": this.coatch
+	}
+
 	constructor () {
 		super();
 	}
 
-	override render(user: User) {
+	override render(user: User, section: string) {
+		if (!this.contentSectionMarkupGeneratorFunctions[section])
+			throw new CustomError(404);
 		this.user = user;
+		this.section = section;
 		super.render();
+	}
+
+	private home() {
+		return `
+			<div class="absolute flex flex-col justify-center items-center h-full w-full">
+				<div id="daily-tasks" class="absolute block bg-slate-200 rounded-md shadow-lg md:w-4/5">
+					<header class="flex justify-between items-center py-1 px-4">
+						<span>daily tasks</span>
+						<span>${getOffsetDate(0)}</span>
+					</header>
+					<div class="overflow-auto flex flex-col bg-white h-60 rounded-md">
+						<div class="sticky top-0 z-30 bg-white border-b shadow-sm">
+							<div class="grid grid-cols-[3.5rem_auto_auto_auto_auto_auto_auto_auto] text-lg sm:pe-8 text-center divide-x divide-gray-200">
+								<div class="hidden sm:block"></div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Mon 
+										<span class="font-semibold text-lg">26</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Tue 
+										<span class="font-semibold text-lg">27</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Wed 
+										<span class="font-semibold text-lg">28</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Thu 
+										<span class="font-semibold text-lg">29</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Fri 
+										<span class="font-semibold text-lg">30</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Sat 
+										<span class="font-semibold text-lg">31</span>
+									</span>
+								</div>
+								<div class="py-3 flex justify-center items-center">
+									<span class="text-md">Sun 
+										<span class="font-semibold text-lg">01</span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="flex flex-1">
+							<div class="w-14 sticky"></div>
+							<div class="flex-1 grid grid-rows-[repeat(1, minmax(0, 1fr))] grid-cols-[repeat(1, minmax(0, 1fr))]">
+								<div class="grid grid-rows-[repeat(18,_minmax(3.5rem,_1fr))] row-start-1 col-start-1 col-end-2 divide-y divide-gray-200">
+									<div class="h-7 row-end-1"></div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">6AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">7AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">8AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">9AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">10AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">11AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">12AM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">1PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">2PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">3PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">4PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">5PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">6PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">7PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">8PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">9PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">10PM</div>
+									</div>
+									<div>
+										<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">11PM</div>
+									</div>
+								</div>
+								<div class="grid grid-cols-[repeat(7,_minmax(0,_1fr))] divide-x divide-gray-200">
+									<div class="col-start-1"></div>
+									<div class="col-start-2"></div>
+									<div class="col-start-3"></div>
+									<div class="col-start-4"></div>
+									<div class="col-start-5"></div>
+									<div class="col-start-6"></div>
+									<div class="col-start-7"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
+	private physical() {
+		return `
+			<h1>physical</h1>
+		`;
+	}
+
+	private economic() {
+		return `
+			<h1>economic</h1>
+		`;
+	}
+
+	private psychological() {
+		return `
+			<h1>psychological</h1>
+		`;
+	}
+
+	private family() {
+		return `
+			<h1>family</h1>
+		`;
+	}
+
+	private coatch() {
+		return `
+			<h1>coatch</h1>
+		`;
 	}
 
 	override generateHeaderMarkup() {
@@ -118,128 +287,8 @@ export default class extends AView {
 				<a role="button" class="py-4 px-8 select-none text-gray-700 hover:underline uppercase text-lg">Training and Development</a>
 				<a role="button" class="py-4 px-8 select-none text-gray-700 hover:underline uppercase text-lg">Speakyourmind</a>
 			</nav>
-			<section class="grow relative">
-				<div class="absolute flex flex-col justify-center items-center h-full w-full">
-					<div id="daily-tasks" class="absolute block bg-slate-200 rounded-md shadow-lg md:w-4/5">
-						<header class="flex justify-between items-center py-1 px-4">
-							<span>daily tasks</span>
-							<span>${getOffsetDate(0)}</span>
-						</header>
-						<div class="overflow-auto flex flex-col bg-white h-60 rounded-md">
-							<div class="sticky top-0 z-30 bg-white border-b shadow-sm">
-								<div class="grid grid-cols-[3.5rem_auto_auto_auto_auto_auto_auto_auto] text-lg sm:pe-8 text-center divide-x divide-gray-200">
-									<div class="hidden sm:block"></div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Mon 
-											<span class="font-semibold text-lg">26</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Tue 
-											<span class="font-semibold text-lg">27</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Wed 
-											<span class="font-semibold text-lg">28</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Thu 
-											<span class="font-semibold text-lg">29</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Fri 
-											<span class="font-semibold text-lg">30</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Sat 
-											<span class="font-semibold text-lg">31</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Sun 
-											<span class="font-semibold text-lg">01</span>
-										</span>
-									</div>
-								</div>
-							</div>
-							<div class="flex flex-1">
-								<div class="w-14 sticky"></div>
-								<div class="flex-1 grid grid-rows-[repeat(1, minmax(0, 1fr))] grid-cols-[repeat(1, minmax(0, 1fr))]">
-									<div class="grid grid-rows-[repeat(18,_minmax(3.5rem,_1fr))] row-start-1 col-start-1 col-end-2 divide-y divide-gray-200">
-										<div class="h-7 row-end-1"></div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">6AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">7AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">8AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">9AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">10AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">11AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">12AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">1PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">2PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">3PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">4PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">5PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">6PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">7PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">8PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">9PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">10PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 z-20 sticky text-gray-400 text-right text-xs pe-2">11PM</div>
-										</div>
-									</div>
-									<div class="grid grid-cols-[repeat(7,_minmax(0,_1fr))] divide-x divide-gray-200">
-										<div class="col-start-1"></div>
-										<div class="col-start-2"></div>
-										<div class="col-start-3"></div>
-										<div class="col-start-4"></div>
-										<div class="col-start-5"></div>
-										<div class="col-start-6"></div>
-										<div class="col-start-7"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<section id="content-section" class="grow relative">
+				${this.contentSectionMarkupGeneratorFunctions[this.section]()}
 			</section>
 		`;
 	}

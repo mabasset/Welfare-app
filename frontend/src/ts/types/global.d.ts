@@ -52,3 +52,5 @@ declare const COUNTRY_PATTERN: string;
 type User = {
 	[key: string]: string | boolean | number;
 }
+
+type RenderingFunction = (user: User, urlParams: Record<string, string>) => Promise<void>;

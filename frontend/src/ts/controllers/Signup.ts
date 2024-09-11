@@ -1,5 +1,5 @@
-import UserModel from "../models/UserModel";
-import SignupView from "../views/profiling/SignupView";
+import UserModel from "../models/User";
+import SignupView from "../views/profiling/Signup";
 import { CustomError } from "../helpers";
 
 export default class {

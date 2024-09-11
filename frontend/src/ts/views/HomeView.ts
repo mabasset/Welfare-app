@@ -50,12 +50,12 @@ export default class extends AView {
 				<div class="sm:hidden flex justify-between items-center text-2xl min-h-20 shadow-md border m-4 rounded-lg">
 					${this.generateToolbar()}
 				</div>
-				<div class="h-16 sm:h-20 flex px-8 items-center text-lg">
+				<div class="tekne font-normal h-16 sm:h-20 flex px-8 items-center text-lg 2xl:text-xl">
 					Leonardo's Wellbeing is
 				</div>
 				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
-					<div class="flex justify-between items-center m-0 p-0 hover:underline">
-						<div class="uppercase text-lg">Physical</div>
+					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg 2xl:text-xl">Physical</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 						</svg>
@@ -67,8 +67,8 @@ export default class extends AView {
 					</div>
 				</label>
 				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
-					<div class="flex justify-between items-center m-0 p-0 hover:underline">
-						<div class="uppercase text-lg">Economic</div>
+					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg 2xl:text-xl">Economic</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 						</svg>
@@ -81,8 +81,8 @@ export default class extends AView {
 					</div>
 				</label>
 				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
-					<div class="flex justify-between items-center m-0 p-0 hover:underline">
-						<div class="uppercase text-lg">Psychological</div>
+					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg 2xl:text-xl">Psychological</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 						</svg>
@@ -94,8 +94,8 @@ export default class extends AView {
 					</div>
 				</label>
 				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer">
-					<div class="flex justify-between items-center m-0 p-0 hover:underline">
-						<div class="uppercase text-lg">Family</div>
+					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg 2xl:text-xl">Family</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 						</svg>
@@ -106,136 +106,58 @@ export default class extends AView {
 					</div>
 				</label>
 			</nav>
-			<section class="grow relative">
-				<div class="absolute flex flex-col justify-center items-center h-full w-full">
-					<div id="daily-tasks" class="absolute block bg-slate-200 rounded-md shadow-lg w-full md:w-4/5">
-						<header class="flex justify-between items-center py-1 px-4">
-							<span>daily tasks</span>
-							<span>${getOffsetDate(0)}</span>
-						</header>
-						<div class="overflow-auto flex flex-col bg-white h-60 rounded-b-lg">
-							<div class="sticky top-0 bg-white border-b shadow-md z-10">
-								<div class="grid grid-cols-[3.5rem_auto_auto_auto_auto_auto_auto_auto] text-lg sm:pe-8 text-center divide-x divide-gray-200">
-									<div class="hidden sm:block"></div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Mon 
-											<span class="font-semibold text-lg block sm:inline">26</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Tue 
-											<span class="font-semibold text-lg block sm:inline">27</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Wed 
-											<span class="font-semibold text-lg block sm:inline">28</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Thu 
-											<span class="font-semibold text-lg block sm:inline">29</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Fri 
-											<span class="font-semibold text-lg block sm:inline">30</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Sat 
-											<span class="font-semibold text-lg block sm:inline">31</span>
-										</span>
-									</div>
-									<div class="py-3 flex justify-center items-center">
-										<span class="text-md">Sun 
-											<span class="font-semibold text-lg block sm:inline">01</span>
-										</span>
-									</div>
-								</div>
+			<section class="grow relative flex flex-col items-center">
+				<div class="py-4 md:py-0 md:flex-1 w-full text-white text-center">
+					<div class="w-full md:h-1/2 flex justify-around items-center">
+						<div class="text-2xl md:text-3xl lg:text-4xl">
+							<span class="font-bold">Welcome</span>
+							<span class="px-4">${this.user?.name} !</span>
+						</div>
+						<img src="/static/public/images/smile.svg" alt="smile" class="hidden lg:block h-16">
+					</div>
+				</div>
+				<div id="daily-tasks" class="z-10 md:m-0 border md:absolute top-[20%] block bg-gray-100 md:rounded-lg shadow-lg w-full md:w-4/5">
+					${this.generateCalendar()}
+				</div>
+				<div class="bg-white flex-1 h-full w-full text-sm flex flex-col md:flex-row md:justify-around md:items-center">
+					<div class="space-y-4 w-2/5 text-center">
+						<div class="text-gray-700">Be aware of the news from your areas of interest</div>
+						<div class="w-full flex items-center h-36">
+							<div class="px-3">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+								</svg>
 							</div>
-							<div class="flex flex-1">
-								<div class="w-14 sticky"></div>
-								<div class="flex-1 grid grid-rows-[repeat(1, minmax(0, 1fr))] grid-cols-[repeat(1, minmax(0, 1fr))]">
-									<div class="grid grid-rows-[repeat(18,_minmax(3.5rem,_1fr))] row-start-1 col-start-1 col-end-2 divide-y divide-gray-200">
-										<div class="h-7 row-end-1"></div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">6AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">7AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">8AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">9AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">10AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">11AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">12AM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">1PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">2PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">3PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">4PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">5PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">6PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">7PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">8PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">9PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">10PM</div>
-										</div>
-										<div>
-											<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">11PM</div>
-										</div>
-									</div>
-									<div class="grid grid-cols-[repeat(7,_minmax(0,_1fr))] divide-x divide-gray-200">
-										<div class="col-start-1"></div>
-										<div class="col-start-2"></div>
-										<div class="col-start-3"></div>
-										<div class="col-start-4"></div>
-										<div class="col-start-5"></div>
-										<div class="col-start-6"></div>
-										<div class="col-start-7"></div>
-									</div>
-								</div>
+							<div class="grow h-full bg-wf-primary rounded-lg"></div>
+							<div class="px-3">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+									<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+								</svg>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="h-1/2 flex justify-center text-white">
-					<p class="w-full md:w-4/5 text-2xl mt-24">Welcome ${this.user?.name}</p>
-				</div>
-				<div class="bg-white h-1/2">
+					<div class="flex flex-col items-center gap-y-4 w-1/3">
+						<div class="hidden sm:block text-gray-700">
+							If you're having difficulties with the application, or if you need<br>
+							clarifications on the insites of your personal Welfare, choose your Welfare<br>
+							coach and expose your needs through our chat.
+						</div>
+						<a href="/messages" class="relative bg-slate-900 text-lime-300 md:w-full p-4 pb-6 md:rounded-md flex" data-link>
+							<div class="flex-1">
+								<span class="uppercase text-md">Chat with our</span>
+								<br>
+								<div class="tekne text-xl pt-2">Welfare Coaches</div>
+							</div>
+							<div>
+								<img src="/static/public/images/logo.svg" alt="logo" class="hidden lg:block h-auto">
+							</div>
+							<hr class="absolute border border-dotted border-sky-600 right-0 left-0 bottom-3">
+						</a>
+					</div>
 				</div>
 			</section>
-			`;
-		}
+		`;
+	}
 
 	override generateFooterMarkup() {
 		return `
@@ -382,6 +304,128 @@ export default class extends AView {
 		`;
 	}
 
+	private generateCalendar() {
+		return `
+			<header class="flex justify-between items-center py-1 px-4">
+				<span>daily tasks</span>
+				<span>${getOffsetDate(0)}</span>
+			</header>
+			<div class="overflow-auto flex flex-col bg-white h-60 rounded-b-lg h-80 lg:h-60">
+				<div class="sticky top-0 bg-white border-b shadow-md z-10">
+					<div class="grid grid-cols-[3.5rem_auto_auto_auto_auto_auto_auto_auto] text-lg sm:pe-8 text-center divide-x divide-gray-200">
+						<div class="hidden sm:block"></div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Mon 
+								<span class="font-semibold text-lg block sm:inline">26</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Tue 
+								<span class="font-semibold text-lg block sm:inline">27</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Wed 
+								<span class="font-semibold text-lg block sm:inline">28</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Thu 
+								<span class="font-semibold text-lg block sm:inline">29</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Fri 
+								<span class="font-semibold text-lg block sm:inline">30</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Sat 
+								<span class="font-semibold text-lg block sm:inline">31</span>
+							</span>
+						</div>
+						<div class="py-3 flex justify-center items-center">
+							<span class="text-md">Sun 
+								<span class="font-semibold text-lg block sm:inline">01</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="flex flex-1">
+					<div class="w-14 sticky"></div>
+					<div class="flex-1 grid grid-rows-[repeat(1, minmax(0, 1fr))] grid-cols-[repeat(1, minmax(0, 1fr))]">
+						<div class="grid grid-rows-[repeat(18,_minmax(3.5rem,_1fr))] row-start-1 col-start-1 col-end-2 divide-y divide-gray-200">
+							<div class="h-7 row-end-1"></div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">6AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">7AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">8AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">9AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">10AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">11AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">12AM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">1PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">2PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">3PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">4PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">5PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">6PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">7PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">8PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">9PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">10PM</div>
+							</div>
+							<div>
+								<div class="w-14 -mt-2.5 -ms-14 sticky text-gray-400 text-right text-xs pe-2">11PM</div>
+							</div>
+						</div>
+						<div class="grid grid-cols-[repeat(7,_minmax(0,_1fr))] divide-x divide-gray-200">
+							<div class="col-start-1"></div>
+							<div class="col-start-2"></div>
+							<div class="col-start-3"></div>
+							<div class="col-start-4"></div>
+							<div class="col-start-5"></div>
+							<div class="col-start-6"></div>
+							<div class="col-start-7"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
 	private generateToolbar(breakpoint?: string) {
 		return `
 			<div class="relative grow flex justify-center items-center h-full">
@@ -394,12 +438,12 @@ export default class extends AView {
 			</div>
 			|
 			<div id="screen-modes" class="flex min-w-20 justify-evenly grow items-center h-full">
-				<button class="text-white dark:text-black" id="lightmode-icon">
+				<button class="hover:text-black" id="lightmode-icon">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-sun" viewBox="0 0 16 16">
 						<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
 					</svg>
 				</button>
-				<button class="text-black dark:text-white" id="darkmode-icon">
+				<button class="hover:text-black" id="darkmode-icon">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-7 bi bi-moon" viewBox="0 0 16 16">
 						<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
 					</svg>

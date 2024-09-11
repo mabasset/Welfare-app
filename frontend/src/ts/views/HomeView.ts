@@ -6,7 +6,7 @@ export default class extends AView {
 	override documentTitle = "Home Page";
 	private user: User | undefined
 	override headerClassName = "w-full grow-0 flex justify-between items-center px-6 sm:px-12 lg:px-20 text-white border-b-2 h-20";
-	override mainClassName = "flex grow relative";
+	override mainClassName = "flex grow relative h-96";
 	override footerClassName = "py-6 px-4 sm:px-6 text-white";
 
 	constructor () {
@@ -227,6 +227,11 @@ export default class extends AView {
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="flex-1 h-1/2 flex justify-center items-center">
+					<p class="w-full md:w-4/5 text-2xl">Welcome ${this.user?.name}</p>
+				</div>
+				<div class="flex-1 bg-white h-1/2">
 				</div>
 			</section>
 			`;

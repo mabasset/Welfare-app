@@ -11,9 +11,9 @@ export default class {
 	) {}
 
 	public async renderView(user: User) {
-		//if (!user.isAuthenticated)
-		//	this.welcomeView.render();
-		//else
+		if (!user.isAuthenticated)
+			this.welcomeView.render();
+		else
 			this.homeView.render(user);
 	}
 }

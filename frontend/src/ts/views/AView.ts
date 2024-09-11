@@ -1,6 +1,5 @@
 export default abstract class {
 	protected bodyClassList = "flex flex-col justify-between min-h-svh";
-
 	protected headerClassName = "sm:w-full sm:max-w-96 sm:mx-auto pt-6";
 	protected mainClassName = "";
 	protected footerClassName = "text-sm sm:text-base mb-6 sm:mb-10";

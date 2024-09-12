@@ -1,5 +1,5 @@
-import ProfilingModel from "../models/UserModel";
-import LoginView from "../views/profiling/LoginView";
+import ProfilingModel from "../models/User";
+import LoginView from "../views/profiling/Login";
 import { CustomError } from "../helpers";
 
 export default class {

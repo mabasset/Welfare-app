@@ -1,4 +1,4 @@
-import AProfilingView from "./AProfilingView";
+import AProfilingView from "./AProfiling";
 import { CustomError, getOffsetDate } from "../../helpers";
 
 export default class SignupView extends AProfilingView {
@@ -168,7 +168,7 @@ export default class SignupView extends AProfilingView {
 								</section>
 								<section class="tekne text-md sm:text-xl flex flex-col items-center">
 									<span>${key.charAt(0).toUpperCase() + key.slice(1)}</span>
-									<span>Wellbeing</span>
+									<span>Well Being</span>
 								</section>
 								<section class="hidden sm:block">
 									<svg xmlns="http://www.w3.org/2000/svg" height="30" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">

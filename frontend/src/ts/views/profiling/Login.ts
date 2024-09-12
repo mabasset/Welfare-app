@@ -1,4 +1,4 @@
-import AProfilingView from "./AProfilingView";
+import AProfilingView from "./AProfiling";
 import { CustomError } from "../../helpers";
 
 export default class LoginView extends AProfilingView {

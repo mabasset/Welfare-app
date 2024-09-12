@@ -136,7 +136,7 @@ export default class extends AView {
 							</div>
 						</div>
 					</div>
-					<div class="flex flex-col items-center gap-y-4 w-1/3">
+					<div class="flex flex-col items-center gap-y-4 sm:w-1/3">
 						<div class="hidden sm:block text-gray-700">
 							If you're having difficulties with the application, or if you need<br>
 							clarifications on the insites of your personal Welfare, choose your Welfare<br>

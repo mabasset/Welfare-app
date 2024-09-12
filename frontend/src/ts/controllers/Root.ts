@@ -57,7 +57,6 @@ export default class {
 				await renderingFunction(user, urlParams);
 			}
 			catch(error) {
-				console.log(error);
 				this.errorView.render(error instanceof CustomError ? error : new CustomError(503));
 			}
 		};

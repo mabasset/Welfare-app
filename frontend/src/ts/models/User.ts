@@ -29,7 +29,6 @@ export default class extends Model {
 	}
 
 	public async retrievePassword(formData: FormData) {
-		console.log("retrieve password");
 		const url: string = `${this.baseUrl + this.endpoints.forgotPassword}/`;
 		const data = Object.fromEntries(formData);
 		await this.sendRequest(url, "POST", JSON.stringify(data));

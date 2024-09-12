@@ -1,7 +1,7 @@
 import { CustomError, getOffsetDate } from "../helpers";
 import AView from "./AView";
 
-export default class extends AView {
+export default class HomeView extends AView {
 
 	override documentTitle = "Home Page";
 	private user: User | undefined
@@ -27,7 +27,6 @@ export default class extends AView {
 		if (!this.contentSectionMarkupGeneratorFunctions[this.section])
 			throw new CustomError(404);
 		this.user = user;
-		console.log(this.user);
 		this.section = section;
 		super.render();
 	}
@@ -208,31 +207,328 @@ export default class extends AView {
 
 	private physical() {
 		return `
-			<h1>physical</h1>
+			<div class="text-white w-full">
+				<div class="w-full flex bg-wf-physical p-6">
+					<div class="flex flex-col grow me-4">
+						<span class="uppercase text-2xl font-light mb-4">
+							Wellfare in Leonardo is
+						</span>
+						<span class="text-4xl font-medium">
+							Physical<br>Well Being
+						</span>
+					</div>
+					<div class="flex flex-col items-end shrink-0">
+						<div class="grow">
+							<img src="/static/public/images/logo.svg" alt="logo" class="size-16">
+						</div>
+						<div class="hidden sm:flex items-center shrink-0">
+							<span class="text-2xl me-2 font-light">
+								<span class="font-medium">Welfare</span> is on
+							</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-toggle-on size-8 mt-1" viewBox="0 0 16 16">
+								<path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<nav class="w-full bg-slate-700 uppercase text-xs py-3 px-6">
+					<ol role="list" class="flex items-center">
+						<li>
+							<a href="/" class="" data-link>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"></path>
+								</svg>
+								<span>
+									Physical Well Being
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<div class="w-full bg-rose-600 py-1 px-6">
+					<span class="uppercase text-2xl">
+						Physical Well Being
+					</span>
+				</div>
+			</div>
+			<div class="grow bg-white w-full flex flex-col">
+				<div class="p-6 flex flex-col">
+					<span class="mb-6">
+						Training and a healthy lifestyle to take care of you, every day. A supplementary healthcare to support your health and that of your family.
+					</span>
+					<span>
+						Choose the initiatives designed for you and choose which form to give to your physical well being.
+					</span>
+				</div>
+			</div>
 		`;
 	}
 
 	private economic() {
 		return `
-			<h1>economic</h1>
+			<div class="text-white w-full">
+				<div class="w-full flex bg-wf-economic p-6">
+					<div class="flex flex-col grow me-4">
+						<span class="uppercase text-2xl font-light mb-4">
+							Wellfare in Leonardo is
+						</span>
+						<span class="text-4xl font-medium">
+							Economic<br>Well Being
+						</span>
+					</div>
+					<div class="flex flex-col items-end shrink-0">
+						<div class="grow">
+							<img src="/static/public/images/logo.svg" alt="logo" class="size-16">
+						</div>
+						<div class="hidden sm:flex items-center shrink-0">
+							<span class="text-2xl me-2 font-light">
+								<span class="font-medium">Welfare</span> is on
+							</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-toggle-on size-8 mt-1" viewBox="0 0 16 16">
+								<path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<nav class="w-full bg-slate-700 uppercase text-xs py-3 px-6">
+					<ol role="list" class="flex items-center">
+						<li>
+							<a href="/" class="" data-link>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"></path>
+								</svg>
+								<span>
+									Economic Well Being
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<div class="w-full bg-rose-600 py-1 px-6">
+					<span class="uppercase text-2xl">
+						economic Well Being
+					</span>
+				</div>
+			</div>
+			<div class="grow bg-white w-full flex flex-col">
+				<div class="p-6 flex flex-col">
+					<span class="mb-6">
+						Live the present to the fullest with an eye to your future and economic security: Conventions, Supplementary Pension and Flexible Benefit Plan.
+					</span>
+					<span>
+						Discover the available opportunities available and choose those tailored to your needs!
+					</span>
+				</div>
+			</div>
 		`;
 	}
 
 	private psychological() {
 		return `
-			<h1>psychological</h1>
+			<div class="text-white w-full">
+				<div class="w-full flex bg-wf-psychological p-6">
+					<div class="flex flex-col grow me-4">
+						<span class="uppercase text-2xl font-light mb-4">
+							Wellfare in Leonardo is
+						</span>
+						<span class="text-4xl font-medium">
+							Psychological<br>Well Being
+						</span>
+					</div>
+					<div class="flex flex-col items-end shrink-0">
+						<div class="grow">
+							<img src="/static/public/images/logo.svg" alt="logo" class="size-16">
+						</div>
+						<div class="hidden sm:flex items-center shrink-0">
+							<span class="text-2xl me-2 font-light">
+								<span class="font-medium">Welfare</span> is on
+							</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-toggle-on size-8 mt-1" viewBox="0 0 16 16">
+								<path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<nav class="w-full bg-slate-700 uppercase text-xs py-3 px-6">
+					<ol role="list" class="flex items-center">
+						<li>
+							<a href="/" class="" data-link>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"></path>
+								</svg>
+								<span>
+									Psychological Well Being
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<div class="w-full bg-rose-600 py-1 px-6">
+					<span class="uppercase text-2xl">
+						psychological Well Being
+					</span>
+				</div>
+			</div>
+			<div class="grow bg-white w-full flex flex-col">
+				<div class="p-6 flex flex-col">
+					<span class="mb-6">
+						In an enviroment where the rhythms and daily routine are increasingly frenetic, putting one's emotional balance at the center is the key to better facing the challenges of every day.
+					</span>
+					<span>
+						Discover the available opportunities to take care of your psychological well being: from the free orientation and listening service with professional psychologists, to the in-depth content selected for you.
+					</span>
+				</div>
+			</div>
 		`;
 	}
 
 	private family() {
 		return `
-			<h1>family</h1>
+			<div class="text-white w-full">
+				<div class="w-full flex bg-wf-family p-6">
+					<div class="flex flex-col grow me-4">
+						<span class="uppercase text-2xl font-light mb-4">
+							Wellfare in Leonardo is
+						</span>
+						<span class="text-4xl font-medium">
+							Family<br>Well Being
+						</span>
+					</div>
+					<div class="flex flex-col items-end shrink-0">
+						<div class="grow">
+							<img src="/static/public/images/logo.svg" alt="logo" class="size-16">
+						</div>
+						<div class="hidden sm:flex items-center shrink-0">
+							<span class="text-2xl me-2 font-light">
+								<span class="font-medium">Welfare</span> is on
+							</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-toggle-on size-8 mt-1" viewBox="0 0 16 16">
+								<path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<nav class="w-full bg-slate-700 uppercase text-xs py-3 px-6">
+					<ol role="list" class="flex items-center">
+						<li>
+							<a href="/" class="" data-link>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"></path>
+								</svg>
+								<span>
+									Family Well Being
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<div class="w-full bg-rose-600 py-1 px-6">
+					<span class="uppercase text-2xl">
+						family Well Being
+					</span>
+				</div>
+			</div>
+			<div class="grow bg-white w-full flex flex-col">
+				<div class="p-6 flex flex-col">
+					<span class="mb-6">
+						Balancing private and work life is a daily challenge, especially for those who have children or those who take care of loved ones with special needs. For this reason Leonardo has decided to invest in people's family well being with specific initiatives to support parenting and caregiving.
+					</span>
+					<span>
+						Click on the box below to discover leonardo summer camp dedicated to those with children aged 6 to 17 and stay tuned so you don't miss the next initiative dedicated to caregivers.
+					</span>
+				</div>
+			</div>
 		`;
 	}
 
 	private coach() {
 		return `
-			<h1>coach</h1>
+			<div class="text-white w-full">
+				<div class="w-full flex bg-black p-6">
+					<div class="flex flex-col grow me-4">
+						<span class="uppercase text-2xl font-light mb-4">
+							Wellfare in Leonardo is
+						</span>
+						<span class="text-4xl font-medium">
+							Well Being<br>Coach
+						</span>
+					</div>
+					<div class="flex flex-col items-end shrink-0">
+						<div class="grow">
+							<img src="/static/public/images/logo.svg" alt="logo" class="size-16">
+						</div>
+						<div class="hidden sm:flex items-center shrink-0">
+							<span class="text-2xl me-2 font-light">
+								<span class="font-medium">Welfare</span> is on
+							</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-toggle-on size-8 mt-1" viewBox="0 0 16 16">
+								<path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<nav class="w-full bg-slate-700 uppercase text-xs py-3 px-6">
+					<ol role="list" class="flex items-center">
+						<li>
+							<a href="/" class="" data-link>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"></path>
+								</svg>
+								<span>
+									Well Being Coach
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<div class="w-full bg-rose-600 py-1 px-6">
+					<span class="uppercase text-2xl">
+						Well Being Coach
+					</span>
+				</div>
+			</div>
+			<div class="grow bg-white w-full flex flex-col">
+				<div class="p-6 flex flex-col">
+					<span class="">
+						If you're having difficulties with the application, or if you need clarifications on the insites of your personal Welfare, choose your Welfare coach and expose your needs through our chat.
+					</span>
+				</div>
+			</div>
 		`;
 	}
 
@@ -264,14 +560,14 @@ export default class extends AView {
 
 	override generateMainMarkup() {
 		return `
-			<nav id="sidebar" class="z-100 absolute md:static flex flex-col inset-0 overflow-hidden md:!w-80 lg:!w-96 -translate-x-full md:translate-x-0 font-semibold bg-slate-50 z-20 transition-all duration-300 ease-linear">
+			<nav id="sidebar" class="shrink-0 z-100 absolute md:static flex flex-col inset-0 overflow-hidden md:!w-80 lg:!w-96 -translate-x-full md:translate-x-0 font-semibold bg-slate-50 z-20 transition-all duration-300 ease-linear">
 				<div class="sm:hidden flex justify-between items-center text-2xl min-h-20 shadow-md border m-4 rounded-lg">
 					${this.generateToolbar()}
 				</div>
 				<div class="tekne font-normal h-16 sm:h-20 flex px-8 items-center text-lg 2xl:text-xl">
-					Leonardo's Wellbeing is
+					Leonardo's Well Being is
 				</div>
-				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2" data-update-content="physical">
 					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
 						<div class="uppercase text-lg 2xl:text-xl">Physical</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -284,7 +580,7 @@ export default class extends AView {
 						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Supplementary Health Care</a>
 					</div>
 				</label>
-				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2" data-update-content="economic">
 					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
 						<div class="uppercase text-lg 2xl:text-xl">Economic</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -298,7 +594,7 @@ export default class extends AView {
 						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Conventions</a>
 					</div>
 				</label>
-				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2">
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer border-b-2" data-update-content="psychological">
 					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
 						<div class="uppercase text-lg 2xl:text-xl">Psychological</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -311,7 +607,7 @@ export default class extends AView {
 						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Living better</a>
 					</div>
 				</label>
-				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer">
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer" data-update-content="family">
 					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
 						<div class="uppercase text-lg 2xl:text-xl">Family</div>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -322,6 +618,15 @@ export default class extends AView {
 					<div class="overflow-hidden max-h-0 sm:peer-checked:max-h-96 transition-all delay-0 duration-500 ease-in-out text-left">
 						<a class="my-2 block hover:underline" onclick="event.preventDefault();">Leonardo Summer Camp</a>
 					</div>
+				</label>
+				<label class="py-4 px-8 select-none text-gray-700 cursor-pointer" data-update-content="coach">
+					<div class="border-s-4 border-rose-600 ps-4 flex justify-between items-center m-0 p-0 hover:underline">
+						<div class="uppercase text-lg 2xl:text-xl">Coach</div>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+						</svg>
+					</div>
+					<input type="checkbox" id="coach-sidebar-option" class="appearance-none hidden peer" data-sidebar-option="family">
 				</label>
 			</nav>
 			<section id="content-section" class="grow relative flex flex-col items-center">
@@ -344,6 +649,9 @@ export default class extends AView {
 							</li>
 							<li>
 								<a href="https://www.leonardo.com/en/contacts" class="" target="_blank" data-open-window="contacts">Contacts</a>
+							</li>
+							<li>
+								<a href="/coach" class="" data-link>Coach</a>
 							</li>
 						</ul>
 						<ul class="space-y-2">
@@ -534,8 +842,19 @@ export default class extends AView {
 			}
 			sidebar?.classList.toggle('!translate-x-0');
 		}
-		
 		document.getElementById('sidebar-display-toggler')?.addEventListener('click', handleSidebar);
+		
+		(function contentUpdaters(this: HomeView) {
+			const addClickHandler = (updater: HTMLElement) => {
+				const handler = () => {
+					this.section = updater.dataset.updateContent as string;
+					(document.getElementById("content-section") as HTMLElement).innerHTML = this.contentSectionMarkupGeneratorFunctions[this.section].call(this);
+					history.pushState(null, "", this.section);
+				};
+				updater.addEventListener("click", handler);
+			}
+			(document.querySelectorAll("[data-update-content]") as NodeListOf<HTMLElement>).forEach(addClickHandler);
+		}).call(this);
 		super.addEventHandlers();
 	}
 }
